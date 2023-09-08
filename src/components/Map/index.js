@@ -1,7 +1,14 @@
 import dynamic from 'next/dynamic';
+import React, { useMemo } from 'react';
 
-const Map = dynamic(() => import('./Map'), {
-  ssr: false
-});
+const DynamicMap = () => {
+  const Map = useMemo(() => dynamic(() => import('./Map'), {
+    ssr: false
+  }), [])
 
-export default Map;
+  return (
+    <Map />
+  )
+}
+
+export default DynamicMap

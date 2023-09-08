@@ -1,4 +1,17 @@
 .leaflet-container {
-    height: 30rem;
-    margin: 2rem 2rem;
+  width: 100%;
+  height: calc(100vh - 4rem);
+}
+
+.leaflet-geosearch-bar {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 400px;
+}
+
+.leaflet-control {
+  position: absolute;
+  left: calc(100vw - 60px);
+  top: 10px;
 }
