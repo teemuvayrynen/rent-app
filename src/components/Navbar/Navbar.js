@@ -29,6 +29,7 @@ const Container = styled.div`
   align-items: center;
   padding: 0px 20px;
   justify-content: space-between;
+  color: black;
 `
 
 const UserContainer = styled.div`
