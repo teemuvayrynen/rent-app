@@ -9,7 +9,8 @@ function LeafletgeoSearch() {
 
     const searchControl = new GeoSearchControl({
       provider,
-      style: 'bar'
+      style: 'bar',
+      showMarker: false
     });
 
     map.addControl(searchControl);

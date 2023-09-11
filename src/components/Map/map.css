@@ -1,6 +1,7 @@
 .leaflet-container {
   width: 100%;
   height: calc(100vh - 4rem);
+  position: relative;
 }
 
 .leaflet-geosearch-bar {
@@ -14,4 +15,16 @@
   position: absolute;
   left: calc(100vw - 60px);
   top: 10px;
+}
+
+.leaflet-control-geosearch .results {
+  color: black;
+}
+
+.locate-me {
+  position: absolute;
+  left: calc(100vw - 46px);
+  top: 100px;
+  z-index: 1000;
+  cursor: pointer;
 }
