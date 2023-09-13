@@ -8,9 +8,10 @@ import './map.css'
 import { Icon } from 'leaflet';
 import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
 import { useRef } from 'react';
+import apartmentData from '../../../apartmentData.json'
 
 
 const customIcon = new Icon({
@@ -32,18 +33,33 @@ const markers = [
   popUp: "Marker 2"
   }]
 
+const apartmentMarkers = apartmentData.map(apartment => {
+  return apartment.location
+})
+
+console.log(apartmentMarkers)
   
 
 function Map() {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
+
   const goToUserLocation = () => {
     if(userLocation.isLoaded && !userLocation.error){
         mapRef.current.flyTo([userLocation.location.lat, userLocation.location.long], 15, {animate:true, duration: 1})
-     } else {
-        alert(userLocation.error)
      }
+  }
+
+  const widenMap = () => {
+    const map = document.querySelector('.leaflet-container')
+    const widenButton = document.querySelector('.open-me')
+    const container = document.querySelector('.footer-container');
+    container.classList.toggle('show');
+    widenButton.classList.toggle('active')
+    map.classList.toggle('active')
+    setTimeout(() => {mapRef.current.invalidateSize()}, 500)
+    
   }
   
   return (
@@ -55,11 +71,12 @@ function Map() {
         />
         <LeafletgeoSearch/>
         <MarkerClusterGroup chunkedLoading>
-          {markers.map(marker => {
+          {apartmentMarkers.map((marker, index) => {
+            console.log(marker.location)
             return (
-              <Marker key={marker.geocode} position={marker.geocode} icon={customIcon}>
+              <Marker key={index} position={marker} icon={customIcon}>
                 <Popup>
-                  {marker.popUp}
+                  Marker
                 </Popup>
               </Marker>
             )
@@ -67,6 +84,9 @@ function Map() {
         </MarkerClusterGroup>
         <div className='locate-me'>
             <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
+        </div>
+        <div className='open-me'>
+        <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
         </div>
       </MapContainer>
     </>

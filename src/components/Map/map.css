@@ -1,7 +1,13 @@
 .leaflet-container {
   width: 100%;
-  height: calc(100vh - 4rem);
+  height: calc(100vh - 25rem);
   position: relative;
+  transition: height 0.5s ease;
+}
+
+.leaflet-container.active {
+  position: absolute;
+  height: calc(100vh - 4rem);
 }
 
 .leaflet-geosearch-bar {
@@ -9,6 +15,7 @@
   left: 30px;
   top: 10px;
   width: 400px;
+  border-radius: 4rem;
 }
 
 .leaflet-control {
@@ -21,6 +28,16 @@
   color: black;
 }
 
+.leaflet-touch .leaflet-geosearch-bar form {
+  border: 1px solid rgba(0, 0,0, 0.5);
+  border-radius: 0.6rem;
+  overflow: clip;
+}
+
+.leaflet-control-geosearch form input {
+  background-color: white;
+}
+
 .locate-me {
   position: absolute;
   left: calc(100vw - 46px);
@@ -28,3 +45,17 @@
   z-index: 1000;
   cursor: pointer;
 }
+
+.open-me {
+  position: absolute;
+  left: calc(100vw - 46px);
+  bottom: 50px;
+  z-index: 1000;
+  cursor: pointer;
+  transition: transform 250ms ease;
+}
+
+.open-me.active {
+  transform: rotateX(180deg);
+}
+

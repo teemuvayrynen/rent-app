@@ -2,18 +2,37 @@
 
 import './navbar.css'
 import styled from 'styled-components'
+import Image from '../../../node_modules/next/image'
+import logo from '../../../public/logo.svg'
 
 function Navbar() {
+
+    const toggleActive = () => {
+        const hamburgerMenu = document.querySelector('.hamburger-menu')
+        hamburgerMenu.classList.toggle('active')
+    }
+
   return (
     <>
       <Container>
-        <h2>UniRent</h2>
+        <Image alt='logo' src={logo} width={60} height={60}/>
         <UserContainer>
-          <div>Account</div>
+          <div className='sublet'>Sublet</div>
           <Circle>
             TV
           </Circle>
-        </UserContainer>
+          <div className='hamburger-menu' onClick={toggleActive}>
+            <span></span>
+            <span></span>
+            <span></span>
+            <div className='dropdown'>
+            <p>Listings</p>
+            <p>Profile</p>
+            <p>Settings</p>
+            <p>Logout</p>
+            </div> 
+          </div>
+        </UserContainer> 
       </Container>
     </>
   )
@@ -43,7 +62,7 @@ const Circle = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-left: 10px;
+  margin-left: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
