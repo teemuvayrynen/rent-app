@@ -36,6 +36,7 @@
 
 .leaflet-control-geosearch form input {
   background-color: white;
+  color: black;
 }
 
 .locate-me {

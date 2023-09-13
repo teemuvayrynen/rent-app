@@ -6,7 +6,7 @@ function Footer() {
         <Container className="footer-container">
             <Information>
                 <h2>UniRent</h2>
-                <p>Life is a journey filled with twists, turns, and unexpected moments. Embrace each day with curiosity, find beauty in the ordinary, and cherish the people who make your heart smile. In the end, it's the memories and connections that truly define our existence.</p>
+                <p>Life is a journey filled with twists, turns, and unexpected moments. Embrace each day with curiosity, find beauty in the ordinary, and cherish the people who make your heart smile. In the end, it&apos;s the memories and connections that truly define our existence.</p>
             </Information>
         </Container>
     )
