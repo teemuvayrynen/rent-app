@@ -19,26 +19,9 @@ const customIcon = new Icon({
   iconSize: [38,38]
 })
 
-const markers = [
-  {
-  geocode: [60.172, 24.9591],
-  popUp: "Marker 1"
-  },
-  {
-  geocode: [60.172, 24.958],
-  popUp: "Marker 2"
-  },
-  {
-  geocode: [60.1732, 24.9595],
-  popUp: "Marker 2"
-  }]
-
 const apartmentMarkers = apartmentData.map(apartment => {
   return apartment.location
-})
-
-console.log(apartmentMarkers)
-  
+})  
 
 function Map() {
   const kruununhakaCoordinates = [60.1729, 24.9591];
