@@ -2,11 +2,10 @@
   width: 100%;
   height: calc(100vh - 25rem);
   position: relative;
-  transition: height 0.5s ease;
+  transition: height 0.5s ease-in-out;
 }
 
 .leaflet-container.active {
-  position: absolute;
   height: calc(100vh - 4rem);
 }
 
@@ -58,5 +57,28 @@
 
 .open-me.active {
   transform: rotateX(180deg);
+}
+
+.map-apartment-list {
+  position: absolute;
+  left: 30px;
+  top: 130px;
+  width: 400px;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: white;
+  overflow-y: auto;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+.map-apartment-list.active{
+  opacity: 1;
+  pointer-events: all;
+  padding: 0.5rem 0.5rem;
 }
 

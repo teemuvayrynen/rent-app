@@ -1,17 +1,12 @@
-import DynamicMap from '../components/Map/index'
-import Navbar from '../components/Navbar/Navbar'
-import Footer from '../components/Footer'
-import ApartmentList from '../components/ApartmentList/ApartmentList'
+import Link from "../../node_modules/next/link"
 
 export default function Home() {
-
-
   return (
     <>
-      <Navbar />
-      <DynamicMap />
-      <ApartmentList />
-      <Footer />
+      <h1>UniRent Landing page</h1>
+      <Link href="/search">
+        Go to Search Page
+      </Link>
     </>
   )
 }

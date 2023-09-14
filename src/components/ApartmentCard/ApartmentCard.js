@@ -1,10 +1,10 @@
 import './apartmentCard.css'
 import Image from 'next/image'
 
-function ApartmentCard({apartment}) {
+function ApartmentCard({apartment, handleClick}) {
 
     return (
-        <div className='card-container'>
+        <div className='card-container' onClick={() => handleClick(apartment)}>
             <div className='image-container'>
                 <Image alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={700} height={300} className="card-image"/>
             </div>

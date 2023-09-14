@@ -10,8 +10,9 @@ import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import apartmentData from '../../../apartmentData.json'
+import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 
 const customIcon = new Icon({
@@ -24,6 +25,7 @@ const apartmentMarkers = apartmentData.map(apartment => {
 })  
 
 function Map() {
+  const [previousMarker, setPreviousMarker] = useState(null)
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
@@ -34,6 +36,22 @@ function Map() {
      }
   }
 
+
+  const goToApartmentLocation = (apartment) => {
+    if (mapRef.current) {
+      mapRef.current.flyTo(apartment.location, 16, { animate: true, duration: 1 });
+  
+      setTimeout(() => {
+        mapRef.current.eachLayer(function (layer) {
+          if (layer instanceof L.Marker && layer.getLatLng().equals(apartment.location)) {
+            const markerElement = layer.getElement();
+            markerElement.click();
+          }
+        });
+      }, 2000); // Delay the click action for 100 milliseconds
+    }
+  };
+
   const widenMap = () => {
     const map = document.querySelector('.leaflet-container')
     const widenButton = document.querySelector('.open-me')
@@ -41,9 +59,13 @@ function Map() {
     container.classList.toggle('show');
     widenButton.classList.toggle('active')
     map.classList.toggle('active')
+    document.querySelector('.flex-container').classList.toggle('disabled')
     setTimeout(() => {mapRef.current.invalidateSize()}, 500)
-    
-  }
+    const mapList = document.querySelector('.map-apartment-list')
+    const apartmentCards = document.querySelectorAll('.card-container')
+    apartmentCards.forEach(apartmentCard => apartmentCard.classList.toggle('map'))
+    mapList.classList.toggle('active')
+    }
   
   return (
     <>
@@ -71,6 +93,11 @@ function Map() {
         <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
         </div>
       </MapContainer>
+      <div className='map-apartment-list'>
+          {apartmentData.map((apartment, index) => {
+            return <ApartmentCard key={index} apartment={apartment} handleClick={goToApartmentLocation}/>
+          })}
+      </div>
     </>
       
   )
