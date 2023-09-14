@@ -55,7 +55,6 @@ function Map() {
         <LeafletgeoSearch/>
         <MarkerClusterGroup chunkedLoading>
           {apartmentMarkers.map((marker, index) => {
-            console.log(marker.location)
             return (
               <Marker key={index} position={marker} icon={customIcon}>
                 <Popup>
