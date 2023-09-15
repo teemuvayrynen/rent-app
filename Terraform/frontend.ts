@@ -4,14 +4,14 @@ import { S3BucketPolicy } from "@cdktf/provider-aws/lib/s3-bucket-policy";
 import { S3BucketPublicAccessBlock } from "@cdktf/provider-aws/lib/s3-bucket-public-access-block";
 import { Construct } from "constructs";
 import { CloudfrontDistribution } from "@cdktf/provider-aws/lib/cloudfront-distribution";
-import { TerraformOutput  } from "cdktf";
+import { TerraformOutput, Token  } from "cdktf";
 import { S3Object } from "@cdktf/provider-aws/lib/s3-object";
+import { CloudfrontOriginAccessIdentity } from "@cdktf/provider-aws/lib/cloudfront-origin-access-identity";
 import * as path from 'path'
 import * as glob from 'glob'
 import * as mime from 'mime-types'
-
-const S3_ORIGIN_ID = "s3Origin";
-
+import * as fs from 'fs'
+  
 
 // Creates S3 bucket and cloudfront distribution for hosting Next.js static export
 
@@ -28,13 +28,13 @@ export class Frontend extends Construct {
 
     new S3BucketPublicAccessBlock(this, "allowPublicAccess", {
       bucket: bucket.id,
-      blockPublicAcls: false,
-      blockPublicPolicy: false,
-      ignorePublicAcls: false,
-      restrictPublicBuckets: false,
+      blockPublicAcls: true,
+      blockPublicPolicy: true,
+      ignorePublicAcls: true,
+      restrictPublicBuckets: true,
     })
 
-    const bucketWebsite = new S3BucketWebsiteConfiguration(this, "website-configuration", {
+    new S3BucketWebsiteConfiguration(this, "website-configuration", {
       bucket: bucket.bucket,
       indexDocument: {
         suffix: "index.html"
@@ -44,6 +44,10 @@ export class Frontend extends Construct {
       }
     })
 
+    const OAI = new CloudfrontOriginAccessIdentity(this, "websiteOAI", {
+      comment: "OAI for s3 website bucket",
+    });
+
     new S3BucketPolicy(this, "s3_policy", {
       bucket: bucket.bucket,
       policy: JSON.stringify({
@@ -51,9 +55,11 @@ export class Frontend extends Construct {
         Id: "PolicyForWebsiteEndpointsPublicContent",
         Statement: [
           {
-            Sid: "PublicRead",
+            Sid: "OnlyCloudfrontAccess",
             Effect: "Allow",
-            Principal: "*",
+            Principal: {
+              "AWS": `${OAI.iamArn}`
+            },
             Action: ["s3:GetObject"],
             Resource: [`${bucket.arn}/*`, `${bucket.arn}`],
           },
@@ -74,19 +80,18 @@ export class Frontend extends Construct {
           "PUT",
         ],
         cachedMethods: ["GET", "HEAD"],
-        targetOriginId: S3_ORIGIN_ID,
+        targetOriginId: bucket.bucket,
         viewerProtocolPolicy: "redirect-to-https",
         forwardedValues: { queryString: false, cookies: { forward: "none" } },
       },
       origin: [
         {
-          originId: S3_ORIGIN_ID,
-          domainName: bucketWebsite.websiteEndpoint,
-          customOriginConfig: {
-            originProtocolPolicy: "http-only",
-            httpPort: 80,
-            httpsPort: 443,
-            originSslProtocols: ["TLSv1.2", "TLSv1.1", "TLSv1"],
+          originId: bucket.bucket,
+          domainName: bucket.bucketRegionalDomainName,
+          s3OriginConfig: {
+            originAccessIdentity: Token.asString(
+              OAI.cloudfrontAccessIdentityPath
+            ),
           },
         },
       ],
@@ -98,6 +103,13 @@ export class Frontend extends Construct {
     const files = glob.sync('../Frontend/out/**/*', { absolute: false, nodir: true })
 
     for (const file of files) {
+      // Remove .html extension from all files except index and 404 that paging works correctly
+      if (file.includes(".html") && !file.includes("index") && !file.includes("404")) {
+        fs.rename(file, file.replace(".html", ""), function(err) {
+          if ( err ) console.log('ERROR: ' + err);
+      });
+      }
+
       new S3Object(this, `aws_s3_object_${path.basename(file)}`, {
         bucket: bucket.bucket,
         key: file.replace(`../Frontend/out/`, ''),

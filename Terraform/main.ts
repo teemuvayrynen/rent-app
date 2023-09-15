@@ -1,7 +1,7 @@
 import { Construct } from "constructs";
 import { App, TerraformStack, S3Backend } from "cdktf";
 import { Frontend } from "./frontend";
-
+//import { S3ImageBucket } from "./s3imagebucket";
 import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
 import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 
@@ -28,7 +28,7 @@ class MyStack extends TerraformStack {
 
     new Frontend(this, "frontend")
 
-
+    //new S3ImageBucket(this, "image-bucket")
 
     
 
