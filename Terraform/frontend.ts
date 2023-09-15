@@ -26,7 +26,7 @@ export class Frontend extends Construct {
       }
     })
 
-    new S3BucketPublicAccessBlock(this, "allowPublicAccess", {
+    new S3BucketPublicAccessBlock(this, "dontAllowPublicAccess", {
       bucket: bucket.id,
       blockPublicAcls: true,
       blockPublicPolicy: true,
