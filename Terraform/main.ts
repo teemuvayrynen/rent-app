@@ -1,8 +1,10 @@
 import { Construct } from "constructs";
 import { App, TerraformStack, S3Backend } from "cdktf";
+import { Frontend } from "./frontend";
 
 import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
 import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
+
 
 
 class MyStack extends TerraformStack {
@@ -23,8 +25,27 @@ class MyStack extends TerraformStack {
     new S3Bucket(this, "terraform-state", {
       bucket: "terraform-state-unirent"
     })
+
+    new Frontend(this, "frontend")
+
+
+
     
+
     
+
+    // for later use
+
+    // const asset = new TerraformAsset(this, "frontend-asset", {
+    //   path: path.resolve("../", "Frontend"),
+    //   type: AssetType.ARCHIVE,
+    // });
+
+    // new S3BucketObject(this, "frontend-archive", {
+    //   bucket: bucket.bucket,
+    //   key: asset.fileName,
+    //   source: asset.path,
+    // });
   }
 }
 
