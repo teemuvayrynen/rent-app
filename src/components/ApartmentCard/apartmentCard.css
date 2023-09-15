@@ -10,14 +10,14 @@
     box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.card-container:active{
-    background-color: blue;
-}
-
 .card-container.map {
     flex-direction: row;
     height: 6rem;
     overflow: unset;
+}
+
+.card-container.map > .image-container {
+    width: 45%;
 }
 
 .image-container {
@@ -39,6 +39,7 @@
 }
 
 .apartment-info {
+    flex: 1;
     font-size: 0.8rem;
     display: flex;
     flex-direction: column;

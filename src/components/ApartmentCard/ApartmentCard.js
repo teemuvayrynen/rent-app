@@ -1,10 +1,19 @@
 import './apartmentCard.css'
 import Image from 'next/image'
 
-function ApartmentCard({apartment, handleClick}) {
+function ApartmentCard({apartment, goToApartmentLocation}) {
+
+    const handleApartmentClick = (apartment) => {
+        const mapList = document.querySelector('.map-apartment-list');
+        if (mapList.classList.contains('active')) {
+          goToApartmentLocation(apartment)
+        } else {
+          console.log('.map-apartment-list is not active');
+        }
+      }
 
     return (
-        <div className='card-container' onClick={() => handleClick(apartment)}>
+        <div className='card-container' onClick={() => handleApartmentClick(apartment)}>
             <div className='image-container'>
                 <Image alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={700} height={300} className="card-image"/>
             </div>

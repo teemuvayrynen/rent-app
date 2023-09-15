@@ -10,7 +10,7 @@ import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import apartmentData from '../../../apartmentData.json'
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
@@ -25,7 +25,6 @@ const apartmentMarkers = apartmentData.map(apartment => {
 })  
 
 function Map() {
-  const [previousMarker, setPreviousMarker] = useState(null)
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
@@ -48,9 +47,8 @@ function Map() {
             markerElement.click();
           }
         });
-      }, 2000); // Delay the click action for 100 milliseconds
-    }
-  };
+      }, 2000);
+  }}
 
   const widenMap = () => {
     const map = document.querySelector('.leaflet-container')
@@ -95,7 +93,7 @@ function Map() {
       </MapContainer>
       <div className='map-apartment-list'>
           {apartmentData.map((apartment, index) => {
-            return <ApartmentCard key={index} apartment={apartment} handleClick={goToApartmentLocation}/>
+            return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation}/>
           })}
       </div>
     </>
