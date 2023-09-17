@@ -23,6 +23,7 @@
     "@cdktf/provider-aws": "^17.0.5",
     "cdktf": "^0.18.0",
     "constructs": "^10.2.70",
+    "esbuild": "^0.19.3",
     "mime": "^3.0.0",
     "mime-types": "^2.1.35"
   },
