@@ -1,7 +1,6 @@
 import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { Construct } from "constructs";
 
-
 export class ApartmentsStorage extends Construct {
   table: DynamodbTable;
 
@@ -12,8 +11,10 @@ export class ApartmentsStorage extends Construct {
       name: "dynamo-apartment-storage",
       billingMode: "PAY_PER_REQUEST",
       hashKey: "id",
+      rangeKey: "geohash",
       attribute: [
-        { name: "id", type: "S" },        
+        { name: "id", type: "S" },
+        { name: "geohash", type: "S" },        
       ],
     });
   }
