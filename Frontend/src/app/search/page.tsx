@@ -1,7 +1,6 @@
 "use client"
 
 import DynamicMap from '../../components/Map/index'
-import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
 import { useState, useEffect } from 'react'
@@ -18,10 +17,8 @@ export default function SearchPage() {
 
   return (
     <>
-      <Navbar />
       <DynamicMap apartments={apartments}/>
       <ApartmentList apartments={apartments}/>
-      <Footer />
     </>
   )
 }

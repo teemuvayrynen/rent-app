@@ -2,7 +2,7 @@
 .container{
     position: relative;
     background: white;
-    height: 4rem;
+    height: 5rem;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -20,8 +20,8 @@
 
 .profile-picture{
     background: rgb(200, 200, 200);
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     margin-left: 3rem;
     display: flex;
@@ -29,33 +29,23 @@
     align-items: center;
 }
 
-.sublet {
-    background-color: red;
-    border-radius: 5px;
-    height: 2rem;
-    width: 5rem;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .hamburger-menu {
-    width: 2rem;
+    width: 1.5rem;
     aspect-ratio: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.2rem;
     margin-left: 1rem;
     cursor: pointer;
 }
 
 .hamburger-menu > span {
     width: 100%;
-    height: 3px;
+    height: 4px;
     background-color: black;
     transition: transform 200ms ease;
+    border-radius: 10px;
 }
 
 .hamburger-menu.active > span:nth-child(2){
@@ -63,27 +53,28 @@
 }
 
 .hamburger-menu.active > span:nth-child(1){
-    transform: translateY(12px) rotate(45deg);
+    transform: translateY(5px) rotate(45deg);
 }
 
 .hamburger-menu.active > span:nth-child(3){
-    transform: translateY(-10px) rotate(-45deg);
+    transform: translateY(-9px) rotate(-45deg);
 }
 
 .dropdown {
     position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color:rgb(232, 232, 232);
+    background-color: white;
     right: 0;
-    top: 4rem;
-    width: 10rem;
+    top: 5rem;
+    width: 12rem;
     z-index: 2000;
     pointer-events: none;
     transform: translateY(-10px);
     opacity: 0;
     transition: opacity 250ms ease, transform 250ms ease;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
 .hamburger-menu.active > .dropdown {
@@ -94,12 +85,48 @@
 
 .dropdown > p {
     width: 100%;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgb(0, 0,0,0.5);
-    text-align: center;
+    padding: 1rem 3rem;
+    border-bottom: 2px solid rgb(0, 0,0,0.2);
     cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+
 }
 
 .dropdown > p:hover{
     font-weight: 700;
+}
+
+.dropdown-icons {
+    padding-right: 6px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.basic-button {
+    background-color: var(--main-color);
+    border-radius: 10px;
+    height: 2.5rem;
+    width: 6rem;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}   
+
+.basic-button:active {
+    scale: 0.98;
+}
+
+.login {
+    margin-right: 1rem;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
 }

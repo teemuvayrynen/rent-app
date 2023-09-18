@@ -8,8 +8,13 @@ import Filter from './Filter'
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGears, faArrowRightFromBracket, faUser, faList } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 function Navbar() {
+    const pathname = usePathname()
     const [dateRange, setDateRange] = useState([
         {
           startDate: new Date(),
@@ -61,43 +66,80 @@ function Navbar() {
         rangeElement.classList.toggle('active')
     }
 
+    // väliaikainen
+    const user = false
+
   return (
     <>
       <div className='container'>
-        <Image alt='logo' src={logo} width={60} height={60}/>
-        <Filter />
-        <div className='price-range'>
-            <div>
+        <Link href="/">
+          <Image alt='logo' src={logo} width={60} height={60}/>
+        </Link>
+        {pathname === "/" ? null : (
+          <>
+            <Filter />
+            <div className='price-range'>
+              <div>
                 <input placeholder='Insert minimum' type="number" ref={minPriceRef}/>
                 -
                 <input placeholder='Insert maximum' type="number" ref={maxPriceRef}/>
+              </div>
+              <button onClick={changePrice}>OK</button> 
             </div>
-            <button onClick={changePrice}>OK</button> 
-        </div>
-        <DateRange
-            className="calendar"
-            editableDateInputs={true}
-            onChange={item => setDateRange([{...item.selection, isSet: true}])}
-            moveRangeOnFirstSelection={false}
-            ranges={dateRange}
+            <DateRange
+              className="calendar"
+              editableDateInputs={true}
+              onChange={item => setDateRange([{...item.selection, isSet: true}])}
+              moveRangeOnFirstSelection={false}
+              ranges={dateRange}
             />
-        <div className='user-container'>
-          <div className='sublet'>Sublet</div>
-          <div className='profile-picture'>
-            TV
+          </>
+        )}
+        
+        {user ? (
+          <div className='user-container'>
+            <div className='basic-button'>Sublet</div>
+            <div className='profile-picture'>
+              TV
+            </div>
+            <div className='hamburger-menu' onClick={toggleActive}>
+              <span></span>
+              <span></span>
+              <span></span>
+              <div className='dropdown'>
+              <p>
+                <span className='dropdown-icons'>
+                  <FontAwesomeIcon icon={faList} />
+                </span>  
+                Listings
+              </p>
+              <p>
+                <span className='dropdown-icons'>
+                  <FontAwesomeIcon icon={faUser} />
+                </span> 
+                Profile
+              </p>
+              <p>
+                <span className='dropdown-icons'>
+                  <FontAwesomeIcon icon={faGears} />
+                </span> 
+                Settings
+              </p>
+              <p>
+                <span className='dropdown-icons'>
+                  <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                </span> 
+                Logout
+              </p>
+              </div> 
+            </div>
+          </div> 
+        ) : (
+          <div className='login-container'>
+            <div className='login'>Log in</div>
+            <div className='basic-button'>Sign up</div>
           </div>
-          <div className='hamburger-menu' onClick={toggleActive}>
-            <span></span>
-            <span></span>
-            <span></span>
-            <div className='dropdown'>
-            <p>Listings</p>
-            <p>Profile</p>
-            <p>Settings</p>
-            <p>Logout</p>
-            </div> 
-          </div>
-        </div> 
+        )}
       </div>
     </>
   )

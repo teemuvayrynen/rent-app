@@ -13,6 +13,10 @@
   width: 10px;
 }
 
+:root {
+  --main-color: #E85252
+}
+
 * {
   margin: 0;
   padding: 0;
