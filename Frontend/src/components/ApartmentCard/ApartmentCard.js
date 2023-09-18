@@ -15,14 +15,13 @@ function ApartmentCard({apartment, goToApartmentLocation}) {
 
     return (
         <div className='card-container' onClick={() => handleApartmentClick(apartment)}>
-            <div className='image-container'>
-                <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={700} height={300} className="card-image"/>
-            </div>
-            <div className='apartment-info'>
-                <p>{apartment.address}</p>
-                <p>{apartment.price}/kk &emsp; {apartment.size}</p>
-                <p>{apartment.rentDate.start} - {apartment.rentDate.end}</p>
-            </div>
+          <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" className="card-image"/>
+
+          <div className='apartment-info'>
+              <p>{apartment.address}</p>
+              <p>{apartment.price}/kk &emsp; {apartment.size}</p>
+              <p>{apartment.rentDate.start} - {apartment.rentDate.end}</p>
+          </div>
             
         </div>
     );

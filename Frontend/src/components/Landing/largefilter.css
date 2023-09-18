@@ -1,0 +1,53 @@
+.largefilter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 450px;
+  height: 4rem;
+  border-radius: 10px;
+  overflow: clip;
+  box-shadow: 0px 0px 3px rgb(0, 0, 0, 0.4);
+  user-select: none;
+  margin-bottom: 2rem;
+}
+
+.largefilter-container > p {
+  width: 2px;
+  background: rgb(0, 0, 0, 0.2);
+  height: 100%;
+}
+
+.flex-column-largefilter {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-column-largefilter > input {
+  margin-top: 6px;
+  border: none;
+  font-size: 13px;
+  max-width: 90px;
+}
+
+.flex-row-largefilter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+.flex-row-largefilter > p {
+  margin-left: 1rem;
+  font-weight: 600;
+}
+
+.flex-row-largefilter:active {
+  scale: 0.95;
+}
+
+.flex-column-largefilter > p {
+  font-weight: 600;
+}

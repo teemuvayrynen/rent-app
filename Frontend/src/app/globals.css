@@ -22,3 +22,33 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.basic-button {
+  background-color: var(--main-color);
+  border-radius: 10px;
+  height: 2.5rem;
+  width: 6rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  font-size: 1rem;
+}
+
+.basic-button:active {
+  scale: 0.98;
+}
+
+.basic-button.long {
+  width: 16rem;
+}
+
+.divider {
+  width: 100%;
+  height: 3px;
+  background: rgb(0,0,0,0.25);
+  margin-bottom: 10px;
+}

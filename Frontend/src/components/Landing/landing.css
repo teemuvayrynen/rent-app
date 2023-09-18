@@ -1,0 +1,44 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.slogan-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 4rem;;
+}
+
+.slogan-container > p {
+  font-size: 3rem;
+  font-weight: 500;
+  width: 600px;
+}
+
+.slogan-container > p > span {
+  color: red;
+}
+
+.landing-image {
+  border-radius: 20px;
+  margin-left: 5%;
+}
+
+@media screen and (max-width: 900px) {
+  .landing-image {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .slogan-container > p {
+    font-size: 2.5rem;
+    width: 500px;
+  }
+}

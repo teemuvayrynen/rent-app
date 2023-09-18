@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react'
 import './navbar.css'
 import Image from 'next/image'
-import logo from '../../../public/logo.svg'
 import Filter from './Filter'
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
@@ -73,7 +72,7 @@ function Navbar() {
     <>
       <div className='container'>
         <Link href="/">
-          <Image alt='logo' src={logo} width={60} height={60}/>
+          <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
         </Link>
         {pathname === "/" ? null : (
           <>
@@ -98,7 +97,7 @@ function Navbar() {
         
         {user ? (
           <div className='user-container'>
-            <div className='basic-button'>Sublet</div>
+            <button className='basic-button'>Sublet</button>
             <div className='profile-picture'>
               TV
             </div>
@@ -137,7 +136,7 @@ function Navbar() {
         ) : (
           <div className='login-container'>
             <div className='login'>Log in</div>
-            <div className='basic-button'>Sign up</div>
+            <button className='basic-button'>Sign up</button>
           </div>
         )}
       </div>
