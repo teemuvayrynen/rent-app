@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
 import { useRef } from 'react';
-import apartmentData from '../../../apartmentData.json'
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 
@@ -25,12 +24,8 @@ const userLocationIcon = new Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
   iconSize: [38,38]
 })
-
-const apartmentMarkers = apartmentData.map(apartment => {
-  return apartment.location
-})  
-
-function Map() {
+ 
+function Map({apartments}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
@@ -41,6 +36,9 @@ function Map() {
      }
   }
 
+  const apartmentMarkers = apartments.map(apartment => {
+    return apartment.location
+  }) 
 
   const goToApartmentLocation = (apartment) => {
     if (mapRef.current) {
@@ -91,9 +89,9 @@ function Map() {
                 <Popup>
                   <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
                   <div className='apartment-info-popup'>
-                    <p>{apartmentData[index].address}</p>
-                    <p>{apartmentData[index].price}/kk &emsp; {apartmentData[index].size}</p>
-                    <p>{apartmentData[index].rentDate.start} - {apartmentData[index].rentDate.end}</p>
+                    <p>{apartments[index].address}</p>
+                    <p>{apartments[index].price}/kk &emsp; {apartments[index].size}</p>
+                    <p>{apartments[index].rentDate.start} - {apartments[index].rentDate.end}</p>
                   </div>
                 </Popup>
               </Marker>
@@ -108,7 +106,7 @@ function Map() {
         </div>
       </MapContainer>
       <div className='map-apartment-list'>
-          {apartmentData.map((apartment, index) => {
+          {apartments.map((apartment, index) => {
             return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation}/>
           })}
       </div>
