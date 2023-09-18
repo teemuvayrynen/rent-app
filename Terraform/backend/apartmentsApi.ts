@@ -3,6 +3,8 @@ import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { Apigatewayv2Api } from "@cdktf/provider-aws/lib/apigatewayv2-api";
 import { Apigatewayv2Stage } from "@cdktf/provider-aws/lib/apigatewayv2-stage";
 import { GetApartmentsLambda } from "./lambda/getApartments";
+import { AddApartmentsLambda } from "./lambda/addApartment";
+import { DeleteApartmentsLambda } from "./lambda/deleteApartment";
 
 const lambdaRolePolicy = {
   Version: "2012-10-17",
@@ -40,6 +42,18 @@ export class ApartmentsApi extends Construct {
     })
 
     new GetApartmentsLambda(this, "get-apartments-lambda", {
+      table,
+      lambdaRolePolicy,
+      api
+    })
+
+    new AddApartmentsLambda(this, "add-apartments-lambda", {
+      table,
+      lambdaRolePolicy,
+      api
+    })
+
+    new DeleteApartmentsLambda(this, "delete-apartments-lambda", {
       table,
       lambdaRolePolicy,
       api
