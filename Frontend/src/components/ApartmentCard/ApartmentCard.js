@@ -1,5 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import './apartmentCard.css'
-import Image from 'next/image'
+
 
 function ApartmentCard({apartment, goToApartmentLocation}) {
 
@@ -15,7 +16,7 @@ function ApartmentCard({apartment, goToApartmentLocation}) {
     return (
         <div className='card-container' onClick={() => handleApartmentClick(apartment)}>
             <div className='image-container'>
-                <Image alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={700} height={300} className="card-image"/>
+                <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={700} height={300} className="card-image"/>
             </div>
             <div className='apartment-info'>
                 <p>{apartment.address}</p>
