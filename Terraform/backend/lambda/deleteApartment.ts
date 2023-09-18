@@ -15,18 +15,18 @@ interface LambdaOptions {
   api: Apigatewayv2Api
 }
 
-export class AddApartmentsLambda extends Construct {
+export class DeleteApartmentsLambda extends Construct {
   lambda: LambdaFunction
   constructor(scope: Construct, id: string, options: LambdaOptions) {
     super(scope, id);
 
 
     const code = new NodejsFunction(this, "code", {
-      path: path.join(__dirname, "../../../Lambda/addApartment/index.js"),
+      path: path.join(__dirname, "../../../Lambda/deleteApartment/index.js"),
     });
 
     const role = new IamRole(this, "lambda-exec", {
-      name: "add-apartment-lambda-api",
+      name: "delete-apartment-lambda-api",
       assumeRolePolicy: JSON.stringify(options.lambdaRolePolicy),
       inlinePolicy: [
         {
@@ -36,7 +36,7 @@ export class AddApartmentsLambda extends Construct {
             Statement: [
               {
                 Action: [
-                  "dynamodb:PutItem",
+                  "dynamodb:DeleteItem",
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
@@ -48,7 +48,7 @@ export class AddApartmentsLambda extends Construct {
     });
 
     this.lambda = new LambdaFunction(this, "api", {
-      functionName: "add-apartment-lambda-function-api",
+      functionName: "delete-apartment-lambda-function-api",
       handler: "index.handler",
       runtime: "nodejs18.x",
       role: role.arn,
@@ -80,7 +80,7 @@ export class AddApartmentsLambda extends Construct {
 
     new Apigatewayv2Route(this, "api-post-route", {
       apiId: options.api.id,
-      routeKey: "POST /apartments/post",
+      routeKey: "DELETE /apartments/delete",
       target: `integrations/${apiIntegration.id}`,
     })
   }
