@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import 'leaflet/dist/leaflet.css';
-import 'node_modules/leaflet-geosearch/dist/geosearch.css';
+import 'leaflet-geosearch/dist/geosearch.css';
 import './map.css'
 import { Icon } from 'leaflet';
 import LeafletgeoSearch from './LeafletSearch'
@@ -17,6 +18,11 @@ import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 const customIcon = new Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/684/684908.png",
+  iconSize: [38,38]
+})
+
+const userLocationIcon = new Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
   iconSize: [38,38]
 })
 
@@ -73,12 +79,22 @@ function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <LeafletgeoSearch/>
+        {(userLocation.isLoaded && !userLocation.error) && (
+          <Marker position={[userLocation.location.lat, userLocation.location.long]} icon={userLocationIcon}>
+            <Popup>Your Location</Popup>
+          </Marker>
+        )}
         <MarkerClusterGroup chunkedLoading>
           {apartmentMarkers.map((marker, index) => {
             return (
               <Marker key={index} position={marker} icon={customIcon}>
                 <Popup>
-                  Marker
+                  <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
+                  <div className='apartment-info-popup'>
+                    <p>{apartmentData[index].address}</p>
+                    <p>{apartmentData[index].price}/kk &emsp; {apartmentData[index].size}</p>
+                    <p>{apartmentData[index].rentDate.start} - {apartmentData[index].rentDate.end}</p>
+                  </div>
                 </Popup>
               </Marker>
             )

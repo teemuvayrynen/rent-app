@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import './navbar.css'
-import Image from '../../../node_modules/next/image'
+import Image from 'next/image'
 import logo from '../../../public/logo.svg'
 import Filter from './Filter'
 import { DateRange } from 'react-date-range';
