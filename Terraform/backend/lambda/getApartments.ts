@@ -36,9 +36,7 @@ export class GetApartmentsLambda extends Construct {
             Statement: [
               {
                 Action: [
-                  "dynamodb:Scan",
-                  "dynamodb:Query",
-                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem"
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
@@ -82,7 +80,7 @@ export class GetApartmentsLambda extends Construct {
 
     new Apigatewayv2Route(this, "api-get-route", {
       apiId: options.api.id,
-      routeKey: "GET /apartments/get",
+      routeKey: "POST /apartments/get",
       target: `integrations/${apiIntegration.id}`,
     })
   }

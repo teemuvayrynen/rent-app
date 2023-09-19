@@ -7,13 +7,13 @@ import ApartmentRow from "@/components/ApartmentRow/ApartmentRow"
 export default function Home() {
 
   const [apartments, setApartments] = useState([])
-  useEffect(() => {
-    fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get')
-      .then((res) => res.json())
-      .then((data) => {
-        setApartments(data)
-      })
-  }, [])
+  // useEffect(() => {
+  //   fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setApartments(data)
+  //     })
+  // }, [])
 
   return (
     <>

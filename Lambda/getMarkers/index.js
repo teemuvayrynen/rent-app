@@ -7,7 +7,7 @@ var formats = [
   moment.ISO_8601
 ];
 
-export async function handler(event, context) {
+export async function handler(event) {
   let body;
   let statusCode = 200;
   const headers = {

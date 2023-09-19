@@ -1,7 +1,6 @@
 "use client"
 
 import DynamicMap from '../../components/Map/index'
-import Footer from '../../components/Footer'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
 import { useState, useEffect } from 'react'
 

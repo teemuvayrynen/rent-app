@@ -4,14 +4,13 @@ import Ajv from "ajv"
 import { finalApartmentSchema } from "./schema";
 import { ApartmentData } from "./schema";
 
-
 const ajv = new Ajv()
 const dynamo = new AWS.DynamoDB.DocumentClient()
 
 const validate = ajv.compile(finalApartmentSchema)
 
 
-export async function handler(event, context) {
+export async function handler(event) {
   let body;
   let statusCode = 200;
   const headers = {
