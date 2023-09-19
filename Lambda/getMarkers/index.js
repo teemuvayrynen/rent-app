@@ -31,7 +31,7 @@ export async function handler(event, context) {
           headers,
           statusCode: 404,
           body: JSON.stringify({
-            message: "Price can be only numbers"
+            message: "Only numbers allowed"
           })
         }
       }
@@ -50,65 +50,15 @@ export async function handler(event, context) {
     }
 
     if (event.queryStringParameters && event.queryStringParameters.startDate && event.queryStringParameters.endDate) {
-      let rentStart = event.queryStringParameters.startDate
-      let rentEnd = event.queryStringParameters.endDate
+      let startDate = event.queryStringParameters.startDate
+      let endDate = event.queryStringParameters.endDate
       
-      if (rentStart === "now") {
+      if (startDate === "now") {
         const date = new Date(Date.now())
-        rentStart = date.toJSON()
+        startDate = date.toJSON()
       }
 
-      if (moment(rentStart, formats, true).isValid() && moment(rentEnd, formats, true).isValid() && new Date(rentEnd) > new Date(rentStart)) {
-        params = {
-          ...params,
-          FilterExpression: (params.hasOwnProperty("FilterExpression") && params.FilterExpression.length !== 0 ? 
-          params.FilterExpression + " AND #ed <> :temp AND #sd <= :startDate AND #ed >= :endDate" : 
-          "#ed <> :temp AND #sd <= :startDate AND #ed >= :endDate"),
-          ExpressionAttributeValues: (params.hasOwnProperty("ExpressionAttributeValues") ? {
-            ...params.ExpressionAttributeValues,
-            ":startDate": rentStart,
-            ":endDate": rentEnd,
-            ":temp": "temp"
-          } : {
-            ":startDate": rentStart,
-            ":endDate": rentEnd,
-            ":temp": "temp"
-          }),
-          ExpressionAttributeNames: {
-            ...params.ExpressionAttributeNames,
-            "#sd": "startDate",
-            "#ed": "endDate"
-          }
-        }
-      } else if (rentEnd === "temp") {
-        params = {
-          ...params,
-          FilterExpression: (params.hasOwnProperty("FilterExpression") && params.FilterExpression.length !== 0 ? 
-          params.FilterExpression + " AND #ed = :temp AND #sd <= :startDate" : 
-          "#ed = :temp AND #sd <= :startDate"),
-          ExpressionAttributeValues: (params.hasOwnProperty("ExpressionAttributeValues") ? {
-            ...params.ExpressionAttributeValues,
-            ":startDate": rentStart,
-            ":temp": "temp"
-          } : {
-            ":startDate": rentStart,
-            ":temp": "temp"
-          }),
-          ExpressionAttributeNames: {
-            ...params.ExpressionAttributeNames,
-            "#sd": "startDate",
-            "#ed": "endDate"
-          }
-        }
-      } else if (moment(rentStart, formats, true).isValid() && moment(rentEnd, formats, true).isValid() && new Date(rentEnd) < new Date(rentStart)) {
-        return {
-          headers,
-          statusCode: 404,
-          body: JSON.stringify({
-            message: "start date can't be after end date"
-          })
-        }
-      } else if (!moment(rentStart, formats, true).isValid() || !moment(rentEnd, formats, true).isValid()) {
+      if ((endDate !== "temp" && !moment(endDate, formats, true).isValid()) || !moment(startDate, formats, true).isValid()) {
         return {
           headers,
           statusCode: 404,
@@ -117,12 +67,60 @@ export async function handler(event, context) {
           })
         }
       }
-    }
 
+      if (endDate !== "temp" && new Date(startDate) > new Date(endDate)) {
+        return {
+          headers,
+          statusCode: 404,
+          body: JSON.stringify({
+            message: "Starting date can't be after ending date"
+          })
+        }
+      }
+
+      let expression = params.hasOwnProperty("FilterExpression") && params.FilterExpression.length !== 0 ? params.FilterExpression : ""
+      let attributes;
+      const newAttr = {
+        ":startDate": startDate,
+        ":endDate": endDate,
+        ":temp": "temp"
+      }
+      
+      if (endDate !== "temp") {
+        expression = expression.length !== 0 
+        ? expression + " AND #ed <> :temp AND #sd <= :startDate AND #ed >= :endDate" 
+        : "#ed <> :temp AND #sd <= :startDate AND #ed >= :endDate"
+        attributes = params.hasOwnProperty("ExpressionAttributeValues") ? {
+          ...params.ExpressionAttributeValues,
+          ...newAttr
+        } : { ...newAttr }
+      } else {
+        expression = expression.length !== 0 
+        ? expression + " AND #ed = :temp AND #sd <= :startDate" 
+        : "#ed = :temp AND #sd <= :startDate"
+        attributes = params.hasOwnProperty("ExpressionAttributeValues") ? {
+          ...params.ExpressionAttributeValues,
+          ":startDate": startDate,
+          ":temp": "temp"
+        } : { 
+          ":startDate": startDate,
+          ":temp": "temp"
+        }
+      }
+
+      params = {
+        ...params,
+        FilterExpression: expression,
+        ExpressionAttributeValues: attributes,
+        ExpressionAttributeNames: {
+          ...params.ExpressionAttributeNames,
+          "#sd": "startDate",
+          "#ed": "endDate"
+        }
+      }
+    }
   
     body = await dynamo.scan(params).promise()
-
-    
 
   } catch (err) {
     statusCode = 405
