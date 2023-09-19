@@ -1,10 +1,5 @@
 import { JSONSchemaType } from "ajv"
 
-interface RentDate {
-  start: string
-  end: string
-}
-
 interface Location {
   lat: number
   lon: number
@@ -17,13 +12,16 @@ interface Images {
 interface ApartmentData {
   address: string
   place: string
-  zip: number
+  zip: string
   size: number
   apartmentType: string
   ownerId: string
   price: number
   images: Array<Images>
-  location: Location 
+  location: Location
+  description: string
+  startDate: string
+  endDate: string
 }
 
 const imagesSchema: JSONSchemaType<Images> = {
@@ -43,21 +41,12 @@ const locationSchema: JSONSchemaType<Location> = {
   required: ["lat", "lon"]
 }
 
-const rentDateSchema: JSONSchemaType<RentDate> = {
-  type: "object",
-  properties: {
-    start: {type: "string"},
-    end: {type: "string"}
-  },
-  required: ["start", "end"]
-}
-
 const apartmentSchema: JSONSchemaType<ApartmentData> = {
   type: "object",
   properties: {
     address: {type: "string"},
     place: {type: "string"},
-    zip: {type: "number"},
+    zip: {type: "string"},
     size: {type: "number"},
     apartmentType: {type: "string"},
     ownerId: {type: "string"},
@@ -67,7 +56,9 @@ const apartmentSchema: JSONSchemaType<ApartmentData> = {
       items: imagesSchema
     },
     location: locationSchema,
-    rentDate: rentDateSchema
+    description: {type: "string"},
+    startDate: {type: "string"},
+    endDate: {type: "string"}
   },
   required: [],
   additionalProperties: false
@@ -77,3 +68,5 @@ export const finalApartmentSchema = {
   ...apartmentSchema,
   required: Object.keys(apartmentSchema.properties)
 }
+
+export type { ApartmentData as ApartmentData }

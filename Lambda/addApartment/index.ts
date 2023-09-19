@@ -2,6 +2,7 @@ const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid')
 import Ajv from "ajv"
 import { finalApartmentSchema } from "./schema";
+import { ApartmentData } from "./schema";
 
 
 const ajv = new Ajv()
@@ -18,15 +19,27 @@ export async function handler(event, context) {
   }
 
   try {
-    const data = JSON.parse(event.body)
+    const data: ApartmentData = JSON.parse(event.body)
 
-
-    
-    
-    body = {
-      message: "works"
+    if (validate(data)) {
+      const params = {
+        TableName: "dynamo-apartment-storage",
+        Item: {
+          id: uuidv4(),
+          ...data
+        }
+      }
+      
+      await dynamo.put(params).promise()
+      body = {
+        message: "success"
+      }
+    } else {
+      body = {
+        message: validate.errors
+      }
+      statusCode = 404
     }
-
   } catch (err) {
     statusCode = 405
 
@@ -41,19 +54,3 @@ export async function handler(event, context) {
     body
   };
 }
-
-// const params = {
-//   TableName: "dynamo-apartment-storage",
-//   Item: {
-//     id: uuidv4(),
-//     geohash: uuidv4(),
-//     price: data.price
-//   }
-// }
-
-// await dynamo.put(params).promise()
-
-
-
-
-
