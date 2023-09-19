@@ -15,18 +15,18 @@ interface LambdaOptions {
   api: Apigatewayv2Api
 }
 
-export class AddApartmentsLambda extends Construct {
+export class GetMarkersLambda extends Construct {
   lambda: LambdaFunction
   constructor(scope: Construct, id: string, options: LambdaOptions) {
     super(scope, id);
 
 
     const code = new NodejsFunction(this, "code", {
-      path: path.join(__dirname, "../../../Lambda/addApartment/index.ts"),
+      path: path.join(__dirname, "../../../Lambda/getMarkers/index.js"),
     });
 
     const role = new IamRole(this, "lambda-exec", {
-      name: "add-apartment-lambda-api",
+      name: "get-markers-lambda-api",
       assumeRolePolicy: JSON.stringify(options.lambdaRolePolicy),
       inlinePolicy: [
         {
@@ -36,7 +36,7 @@ export class AddApartmentsLambda extends Construct {
             Statement: [
               {
                 Action: [
-                  "dynamodb:PutItem",
+                  "dynamodb:Scan",
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
@@ -48,7 +48,7 @@ export class AddApartmentsLambda extends Construct {
     });
 
     this.lambda = new LambdaFunction(this, "api", {
-      functionName: "add-apartment-lambda-function-api",
+      functionName: "get-markers-lambda-function-api",
       handler: "index.handler",
       runtime: "nodejs18.x",
       role: role.arn,
@@ -70,7 +70,7 @@ export class AddApartmentsLambda extends Construct {
 
     const apiIntegration = new Apigatewayv2Integration(
       this,
-      "api-post-integration",
+      "api-get-integration",
       {
         apiId: options.api.id,
         integrationType: "AWS_PROXY",
@@ -78,9 +78,9 @@ export class AddApartmentsLambda extends Construct {
       }
     );
 
-    new Apigatewayv2Route(this, "api-post-route", {
+    new Apigatewayv2Route(this, "api-get-route", {
       apiId: options.api.id,
-      routeKey: "POST /apartments/post",
+      routeKey: "GET /markers/get",
       target: `integrations/${apiIntegration.id}`,
     })
   }

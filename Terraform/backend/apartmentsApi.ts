@@ -5,6 +5,7 @@ import { Apigatewayv2Stage } from "@cdktf/provider-aws/lib/apigatewayv2-stage";
 import { GetApartmentsLambda } from "./lambda/getApartments";
 import { AddApartmentsLambda } from "./lambda/addApartment";
 import { DeleteApartmentsLambda } from "./lambda/deleteApartment";
+import { GetMarkersLambda } from "./lambda/getMarkers";
 
 const lambdaRolePolicy = {
   Version: "2012-10-17",
@@ -54,6 +55,12 @@ export class ApartmentsApi extends Construct {
     })
 
     new DeleteApartmentsLambda(this, "delete-apartments-lambda", {
+      table,
+      lambdaRolePolicy,
+      api
+    })
+
+    new GetMarkersLambda(this, "get-markers-lambda", {
       table,
       lambdaRolePolicy,
       api
