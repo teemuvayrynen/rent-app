@@ -15,7 +15,7 @@ export async function handler(event) {
   let statusCode = 200;
   const headers = {
     "Content-Type": "application/json"
-  }
+  };
 
   try {
     const data: Apartments = JSON.parse(event.body)

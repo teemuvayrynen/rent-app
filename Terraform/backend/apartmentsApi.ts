@@ -31,7 +31,7 @@ export class ApartmentsApi extends Construct {
       protocolType: "HTTP",
       corsConfiguration: {
         allowOrigins: ["*"],
-        allowMethods: ["GET"],
+        allowMethods: ["GET", "POST", "DELETE", "OPTIONS"],
         allowHeaders: ["Content-Type"],
       },
     });

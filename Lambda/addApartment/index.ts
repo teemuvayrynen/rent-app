@@ -13,9 +13,10 @@ const validate = ajv.compile(finalApartmentSchema)
 export async function handler(event) {
   let body;
   let statusCode = 200;
+
   const headers = {
     "Content-Type": "application/json"
-  }
+  };
 
   try {
     const data: ApartmentData = JSON.parse(event.body)
