@@ -9,12 +9,15 @@
 
 .card-container.map {
     flex-direction: row;
-    height: 6rem;
+    height: 7rem;
     overflow: unset;
+    border: 0.5px solid black;
 }
 
-.card-container.map > .image-container {
-    width: 45%;
+.card-container.map > .card-image {
+    width: 150px;
+    height: 100%;
+    border-radius: unset;
 }
 
 .card-image {

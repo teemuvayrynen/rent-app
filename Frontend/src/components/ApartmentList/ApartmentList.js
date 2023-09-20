@@ -6,7 +6,7 @@ import ApartmentCard from '../ApartmentCard/ApartmentCard'
 
 function ApartmentList({apartments}) {
     
-    const [visible, setVisible] = useState(10)
+    const [visible, setVisible] = useState(6)
     const showMore = () => {
         setVisible(prev => prev + 8)
     }

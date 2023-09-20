@@ -5,13 +5,28 @@ import ApartmentList from '../../components/ApartmentList/ApartmentList'
 import { useState, useEffect } from 'react'
 
 
-function postData(data: any) {
+const sortApartments = (apartments: []) => {
+  return apartments.sort((a: { address: string; }, b: { address: string; }) => {
+    const addressA = a.address.toLowerCase(); 
+    const addressB = b.address.toLowerCase();
+  
+    if (addressA < addressB) {
+      return -1; 
+    } else if (addressA > addressB) {
+      return 1; 
+    } else {
+      return 0;
+    }
+  });
+}
+
+function postData(data: any, setApartments: any) {
   const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get';
 
   const convertedData = {
     keys: data.map((item: { id: any; }) => ({ id: item.id })),
   };
-  console.log(convertedData)
+  
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -28,7 +43,8 @@ function postData(data: any) {
       return response.json(); 
     })
     .then((responseData) => {
-      console.log('Response Data:', responseData);
+      const sortedApartments = sortApartments(responseData.apartments)
+      setApartments(sortedApartments)
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -48,11 +64,20 @@ export default function SearchPage() {
       })
   }, [])
 
-  useEffect(()=>{
-    if(filteredMarkers.length > 0){
-      postData(filteredMarkers)
+  useEffect(() => {
+      if (filteredMarkers.length > 0) {
+        try {
+          postData(filteredMarkers, setApartments);
+
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+      else{
+        setApartments(prev => [])
+      }
     }
-  }, [filteredMarkers])
+  , [filteredMarkers]);
 
   return (
     <>

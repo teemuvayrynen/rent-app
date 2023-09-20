@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
@@ -29,32 +29,22 @@ function Map({apartments, markers, setFilteredMarkers}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
-  const [bounds, setBounds] = useState(null);
+  const [mapListActive, setMapListActive] = useState(false);
 
+  const updateBounds = (map) => {
+    const newBounds = map.getBounds();
+    
+    const filteredMarkers = markers.filter((marker) => {
+      return newBounds.contains([marker.location.lat, marker.location.lon]);
+    });
+    setFilteredMarkers(prev => filteredMarkers.length > 0 ? filteredMarkers : [])
+  };
+  
   useEffect(() => {
-    const delay = setTimeout(() => {
       if (mapRef.current) {
-        const map = mapRef.current;
-        const updateBounds = () => {
-          const newBounds = map.getBounds();
-          console.log(newBounds);
-          const filteredMarkers = markers.filter((marker) => {
-            //const apartmentLocation = L.latLng(apartment.location[0], apartment.location[1]);
-            return newBounds.contains([marker.location.lat, marker.location.lon]);
-          });
-          
-          //fetch apartmets
-          //postData(filteredApartments)
-          console.log(filteredMarkers);
-          setFilteredMarkers(prev => filteredMarkers)
-          setBounds(newBounds);
-        };
-        map.on('moveend', updateBounds);
-        updateBounds();
+        mapRef.current.on('moveend', () => updateBounds(mapRef.current))
       }
-    }, 1000); // Adjust the delay as needed
-    return () => clearTimeout(delay);
-  }, []);
+    }, [mapRef.current])
   
 
   const goToUserLocation = () => {
@@ -87,14 +77,14 @@ function Map({apartments, markers, setFilteredMarkers}) {
     document.querySelector('.flex-container').classList.toggle('disabled')
     setTimeout(() => {mapRef.current.invalidateSize()}, 500)
     const mapList = document.querySelector('.map-apartment-list')
-    const apartmentCards = document.querySelectorAll('.card-container')
-    apartmentCards.forEach(apartmentCard => apartmentCard.classList.toggle('map'))
     mapList.classList.toggle('active')
+    setMapListActive(prev => !prev)
     }
   
   return (
     <>
-      <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true} whenCreated={(map) => (mapRef.current = map)}>
+      <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true} whenReady={(map) => {
+        updateBounds(map.target)}}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -130,7 +120,7 @@ function Map({apartments, markers, setFilteredMarkers}) {
       </MapContainer>
       <div className='map-apartment-list'>
           {apartments.map((apartment, index) => {
-            return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation}/>
+            return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
           })}
       </div>
     </>
