@@ -11,7 +11,7 @@ import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 
@@ -25,20 +25,43 @@ const userLocationIcon = new Icon({
   iconSize: [38,38]
 })
  
-function Map({apartments}) {
+function Map({apartments, markers, setFilteredMarkers}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
+  const [bounds, setBounds] = useState(null);
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      if (mapRef.current) {
+        const map = mapRef.current;
+        const updateBounds = () => {
+          const newBounds = map.getBounds();
+          console.log(newBounds);
+          const filteredMarkers = markers.filter((marker) => {
+            //const apartmentLocation = L.latLng(apartment.location[0], apartment.location[1]);
+            return newBounds.contains([marker.location.lat, marker.location.lon]);
+          });
+          
+          //fetch apartmets
+          //postData(filteredApartments)
+          console.log(filteredMarkers);
+          setFilteredMarkers(prev => filteredMarkers)
+          setBounds(newBounds);
+        };
+        map.on('moveend', updateBounds);
+        updateBounds();
+      }
+    }, 1000); // Adjust the delay as needed
+    return () => clearTimeout(delay);
+  }, []);
+  
 
   const goToUserLocation = () => {
     if(userLocation.isLoaded && !userLocation.error){
         mapRef.current.flyTo([userLocation.location.lat, userLocation.location.long], 15, {animate:true, duration: 1})
      }
   }
-
-  const apartmentMarkers = apartments.map(apartment => {
-    return apartment.location
-  }) 
 
   const goToApartmentLocation = (apartment) => {
     if (mapRef.current) {
@@ -71,7 +94,7 @@ function Map({apartments}) {
   
   return (
     <>
-      <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true}>
+      <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true} whenCreated={(map) => (mapRef.current = map)}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -83,21 +106,21 @@ function Map({apartments}) {
           </Marker>
         )}
         <MarkerClusterGroup chunkedLoading>
-          {apartmentMarkers.map((marker, index) => {
+          {markers.map((marker) => {
             return (
-              <Marker key={index} position={marker} icon={customIcon}>
-                <Popup>
+              <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
+                 <Popup>
                   <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
                   <div className='apartment-info-popup'>
-                    <p>{apartments[index].address}</p>
-                    <p>{apartments[index].price}/kk &emsp; {apartments[index].size}</p>
-                    <p>{apartments[index].rentDate.start} - {apartments[index].rentDate.end}</p>
+                    <p>{marker.id}</p>
+                    <p>{marker.price}/kk</p>
                   </div>
-                </Popup>
+                </Popup> 
               </Marker>
             )
           })}
         </MarkerClusterGroup>
+        
         <div className='locate-me'>
             <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
         </div>
