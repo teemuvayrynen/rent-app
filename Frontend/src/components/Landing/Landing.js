@@ -7,18 +7,17 @@ import LargeFilter from './LargeFilter'
 import { useRef } from 'react'
 
 function formatDateRangeForQuery(dateRange) {
-  // Split the date range string into two parts: start and end date
-  const [startDateStr, endDateStr] = dateRange.split(' - ');
+  const [startStr, endStr] = dateRange.split(' - ');
 
-  // Parse the start and end dates into Date objects
-  const startDate = new Date(startDateStr);
-  const endDate = new Date(endDateStr);
+  const [startDay, startMonth, startYear] = startStr.split('.');
+  const [endDay, endMonth, endYear] = endStr.split('.');
 
-  // Format the dates in ISO string format
+  const startDate = new Date(`20${startYear}`, startMonth - 1, parseInt(startDay) + 1);
+  const endDate = new Date(`20${endYear}`, endMonth - 1, parseInt(endDay) +1);
+
   const formattedStartDate = startDate.toISOString();
   const formattedEndDate = endDate.toISOString();
 
-  // Create the query string
   const formattedQuery = `startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
 
   return formattedQuery;
