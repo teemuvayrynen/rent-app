@@ -3,6 +3,7 @@
 import DynamicMap from '../../components/Map/index'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 
 const sortApartments = (apartments: []) => {
@@ -55,9 +56,11 @@ export default function SearchPage() {
   const [apartments, setApartments] = useState([])
   const [markers, setMarkers] = useState([])
   const [filteredMarkers, setFilteredMarkers] = useState([])
-
+  const searchParams = useSearchParams()
+  const searchString = searchParams.toString()
+  
   useEffect(() => {
-    fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get')
+    fetch(`https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get${(searchString !== '') ? `?${searchString}` : ''}`)
       .then((res) => res.json())
       .then((data) => {
         setMarkers(data.Items)

@@ -11,25 +11,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faArrowRightFromBracket, faUser, faList } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import useDateRange from '@/hooks/useDateRange'
 
 function Navbar() {
     const pathname = usePathname()
-    const [dateRange, setDateRange] = useState([
-        {
-          startDate: new Date(),
-          endDate: null,
-          key: 'selection',
-          isSet: false
-        }
-      ]);
-
-      function formatDateToCustomString(date) {
-        const day = date.getDate().toString().padStart(2, '0'); // Get the day and pad with leading zero if needed
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get the month (months are zero-based) and pad with leading zero if needed
-        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-      
-        return `${day}.${month}.${year}`;
-      }
+    const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
+       
     const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
 
     useEffect(() => {
