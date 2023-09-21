@@ -81,7 +81,7 @@ export default function SearchPage() {
 
   return (
     <>
-      <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers}/>
+      {(markers.length > 0) && <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers}/>}
       <ApartmentList apartments={apartments}/>
     </>
   )

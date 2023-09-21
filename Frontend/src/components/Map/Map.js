@@ -40,13 +40,10 @@ function Map({apartments, markers, setFilteredMarkers}) {
     setFilteredMarkers(prev => filteredMarkers.length > 0 ? filteredMarkers : [])
   };
   
-  useEffect(() => {
-      if (mapRef.current) {
-        mapRef.current.on('moveend', () => updateBounds(mapRef.current))
-      }
-    }, [mapRef.current])
-  
-
+  if (mapRef.current) {
+    mapRef.current.on('moveend', () => updateBounds(mapRef.current))
+  }
+ 
   const goToUserLocation = () => {
     if(userLocation.isLoaded && !userLocation.error){
         mapRef.current.flyTo([userLocation.location.lat, userLocation.location.long], 15, {animate:true, duration: 1})
@@ -84,7 +81,8 @@ function Map({apartments, markers, setFilteredMarkers}) {
   return (
     <>
       <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true} whenReady={(map) => {
-        updateBounds(map.target)}}>
+        updateBounds(map.target)
+      }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
