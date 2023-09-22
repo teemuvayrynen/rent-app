@@ -22,11 +22,10 @@ export async function handler(event) {
       ExpressionAttributeNames: { "#l": "location" },
     }
 
-    if (event.queryStringParameters && event.queryStringParameters.minPrice && event.queryStringParameters.maxPrice) {
-      const minPrice = event.queryStringParameters.minPrice
-      const maxPrice = event.queryStringParameters.maxPrice
+    if (event.queryStringParameters && event.queryStringParameters.price) {
+      const price = event.queryStringParameters.price
 
-      if (isNaN(minPrice) || isNaN(maxPrice)) {
+      if (isNaN(price)) {
         return {
           headers,
           statusCode: 404,
@@ -37,10 +36,9 @@ export async function handler(event) {
       }
 
       let filter = {
-        FilterExpression: "price >= :minPrice AND price <= :maxPrice",
+        FilterExpression: "price <= :maxPrice",
         ExpressionAttributeValues: {
-          ":minPrice": Number(minPrice),
-          ":maxPrice": Number(maxPrice)
+          ":maxPrice": Number(price)
         }
       }
       params = {
