@@ -11,7 +11,7 @@ import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 
@@ -24,7 +24,7 @@ const userLocationIcon = new Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
   iconSize: [38,38]
 })
- 
+
 function Map({apartments, markers, setFilteredMarkers}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
@@ -46,7 +46,7 @@ function Map({apartments, markers, setFilteredMarkers}) {
  
   const goToUserLocation = () => {
     if(userLocation.isLoaded && !userLocation.error){
-        mapRef.current.flyTo([userLocation.location.lat, userLocation.location.long], 15, {animate:true, duration: 1})
+      mapRef.current.flyTo([userLocation.location.lat, userLocation.location.long], 13, {animate:true, duration: 1})
      }
   }
 
@@ -80,7 +80,7 @@ function Map({apartments, markers, setFilteredMarkers}) {
   
   return (
     <>
-      <MapContainer ref={mapRef} center={kruununhakaCoordinates} zoom={13} scrollWheelZoom={true} whenReady={(map) => {
+      <MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
         updateBounds(map.target)
       }}>
         <TileLayer

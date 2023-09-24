@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import useDateRange from '@/hooks/useDateRange';
 import { DateRange } from 'react-date-range';
-import { useEffect } from 'react';
+import { useState } from 'react';
 
 const showCalendar = () => {
   const rangeElement = document.querySelector('.landing-calendar')
@@ -12,16 +12,16 @@ const showCalendar = () => {
 
 function LargeFilter({cityRef, priceRef, dateRef}) {
   const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
+  const [emptyDate, setEmptyDate] = useState(false)
 
-  useEffect(() => {
-    if(dateRange[0].isSet){
-      const rangeElement = document.querySelector('.flex-row-largefilter')
-      const formattedStartDate = formatDateToCustomString(dateRange[0].startDate)
-      const formattedEndDate = formatDateToCustomString(dateRange[0].endDate)
-      rangeElement.textContent = `${formattedStartDate} - ${formattedEndDate}`
-  
-  }
-  }, [dateRange])
+  const handleDateChange = (ranges) => {
+    setDateRange([{...ranges.selection, isSet: true}])
+    setEmptyDate(prev => true)
+}
+
+const clearDate = () => {
+  setDateRange(prev => ([{startDate: new Date(), endDate: null, isSet: false, key: 'selection'}]))
+}
 
   return (
     <div className='largefilter-container'>
@@ -31,18 +31,29 @@ function LargeFilter({cityRef, priceRef, dateRef}) {
       </div>
       <p/>
       <div className='flex-column-largefilter'>
-        <p>Price</p>
+        <p>Max price</p>
         <input ref={priceRef} placeholder='Add price' type='text'  ></input>
       </div>
       <p/>
-      <div ref={dateRef} className='flex-row-largefilter' onClick={showCalendar}>
-        <FontAwesomeIcon icon={faCalendarDays} size="xl"/>
-        <p>Dates</p>
-      </div>
+      {dateRange[0].isSet === false  ? (
+            <div className='flex-row-largefilter' onClick={showCalendar}>
+              <FontAwesomeIcon icon={faCalendarDays} size="xl" />
+              <p>Dates</p>
+            </div>
+            ) : (dateRange[0].startDate && dateRange[0].endDate) ? (
+              
+              <div className='flex-row-largefilter'>
+                <p ref={dateRef} onClick={showCalendar}>{formatDateToCustomString(dateRange[0].startDate)} - {formatDateToCustomString(dateRange[0].endDate)}</p>
+                <div className='clear-date-filter' onClick={clearDate} style={{display: (emptyDate) ? 'flex': 'none'}}>
+                  <span className="x-span"></span>
+                  <span className="x-span"></span>
+                </div>
+              </div>
+            ) : null}
       <DateRange
         className="landing-calendar"
         editableDateInputs={true}
-        onChange={item => setDateRange([{...item.selection, isSet: true}])}
+        onChange={handleDateChange}
         moveRangeOnFirstSelection={false}
         ranges={dateRange}
       />

@@ -64,21 +64,6 @@ function Navbar() {
         {pathname === "/" ? null : (
           <>
             <Filter />
-            <div className='price-range'>
-              <div>
-                <input placeholder='Insert minimum' type="number" ref={minPriceRef}/>
-                -
-                <input placeholder='Insert maximum' type="number" ref={maxPriceRef}/>
-              </div>
-              <button onClick={changePrice}>OK</button> 
-            </div>
-            <DateRange
-              className="calendar"
-              editableDateInputs={true}
-              onChange={item => setDateRange([{...item.selection, isSet: true}])}
-              moveRangeOnFirstSelection={false}
-              ranges={dateRange}
-            />
           </>
         )}
         
