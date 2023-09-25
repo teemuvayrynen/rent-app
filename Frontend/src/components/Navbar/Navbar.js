@@ -10,14 +10,18 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faArrowRightFromBracket, faUser, faList } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import Login from "@/components/Login"
+import Login from '@/components/Auth/Login'
+import Signup from '@/components/Auth/Signup'
 import { usePathname } from 'next/navigation'
 import useDateRange from '@/hooks/useDateRange'
 
 function Navbar() {
     const pathname = usePathname()
     const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
-    const [showLogin, setShowLogin] = useState(true)
+    const [showAuthForm, setShowAuthForm] = useState({
+      login: false,
+      signup: false
+    })
        
     const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
 
@@ -59,7 +63,8 @@ function Navbar() {
 
   return (
     <>
-      {showLogin ? <Login setVisible={setShowLogin} /> : null}
+      {showAuthForm.login ? <Login setVisible={setShowAuthForm} /> : null}
+      {showAuthForm.signup ? <Signup setVisible={setShowAuthForm} /> : null}
       <div className='container'>
         <Link href="/">
           <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
@@ -110,8 +115,8 @@ function Navbar() {
           </div> 
         ) : (
           <div className='login-container'>
-            <div className='login'>Log in</div>
-            <button className='basic-button'>Sign up</button>
+            <div onClick={() => { setShowAuthForm({ signup: false, login: true }) }} className='login'>Log in</div>
+            <button onClick={() => { setShowAuthForm({ signup: true, login: false }) }} className='basic-button'>Sign up</button>
           </div>
         )}
       </div>

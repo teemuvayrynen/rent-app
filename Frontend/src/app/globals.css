@@ -31,6 +31,7 @@ body{
   background-color: var(--main-color);
   border-radius: 10px;
   height: 2.5rem;
+  min-height: 2.5rem;
   width: 6rem;
   color: white;
   display: flex;
@@ -48,6 +49,10 @@ body{
 
 .basic-button.long {
   width: 16rem;
+}
+
+.basic-button.fullWidth {
+  width: 100%;
 }
 
 .divider {
