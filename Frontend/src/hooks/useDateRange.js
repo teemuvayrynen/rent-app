@@ -17,7 +17,7 @@ function useDateRange() {
       const newdate = new Date(date);
     
       // Format the date parts
-      const dateFormatted = `${newdate.toLocaleString('default', {
+      const dateFormatted = `${newdate.toLocaleString('fi-Fi', {
         month: 'numeric',
         day: 'numeric',
         year: 'numeric',
