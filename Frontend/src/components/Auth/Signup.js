@@ -1,14 +1,18 @@
+import React, { useState } from "react"
 import { Formik, Form, ErrorMessage, Field } from "formik"
+import { CognitoUserAttribute } from "amazon-cognito-identity-js"
 import * as Yup from "yup"
+import UserPool from "./UserPool"
 import "./auth.css"
 
 const Signup = ({ setVisible }) => {
+  const [success, setSuccess] = useState(false)
 
   return (
     <>
       <div className="form-container">
         <Formik
-          initialValues={{email: "", password: ""}}
+          initialValues={{email: "", password: "", name: "", passwordConfirmation: ""}}
           validationSchema={Yup.object({
             name: Yup.string()
               .required("Name is required"),
@@ -17,18 +21,39 @@ const Signup = ({ setVisible }) => {
               .email("Invalid email address"),
             password: Yup.string()
               .required("Password is required")
-              .min(8, "Password must be at least 8 characters"),
+              .matches(
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+              ),
             passwordConfirmation: Yup.string()
             .required("Password confirmation is required")
             .oneOf([Yup.ref("password"), null], "Passwords must match")
           })}
-          onSubmit={(values) => {
-            console.log(values)
+          onSubmit={(values, { setErrors, setSubmitting }) => {
+            const nameAttr = new CognitoUserAttribute({ Name: "name", Value: values.name })
+
+            UserPool.signUp(values.email, values.password, [nameAttr], null, (err, data) => {
+              if (err) {
+                switch (err.code) {
+                  case "UsernameExistsException":
+                    setErrors({email: "Account already exists"})
+                    break
+                  default:
+                    break
+                }
+              } else {
+                setSuccess(true)
+              }
+              setSubmitting(false)
+            })
           }}
         >
-          {({
-            isSubmitting
-          }) => (
+          {success ? (
+            <div className="form-success">
+              <h1>Check your email</h1>
+              <p>We have sent you an email with account verification link.</p>
+            </div>
+          ) : ({isSubmitting}) => (
             <Form className="formik-form">
               <span>Sign up</span>
               <div className="form-input-container">
@@ -39,7 +64,7 @@ const Signup = ({ setVisible }) => {
                   placeholder="Enter name"
                   className="form-input"
                 />
-                <ErrorMessage name="email" component="div" className="form-error" />
+                <ErrorMessage name="name" component="div" className="form-error" />
               </div>
               <div className="form-input-container">
                 <Field
@@ -84,10 +109,13 @@ const Signup = ({ setVisible }) => {
           )}
         </Formik>
       </div>
-      <div className="form-background" onClick={() => { setVisible({
-        signup: false,
-        login: false
-      }) }} />
+      <div className="form-background" onClick={() => { 
+        setVisible({
+          signup: false,
+          login: false
+        })
+        setSuccess(false) 
+      }} />
     </>
   )
 }
