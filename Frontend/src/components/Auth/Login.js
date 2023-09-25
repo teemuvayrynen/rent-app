@@ -1,10 +1,13 @@
+import React, { useContext } from "react"
 import { Formik, Form, ErrorMessage, Field } from "formik"
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
-import UserPool from "./UserPool"
 import * as Yup from "yup"
 import "./auth.css"
+import { AccountContext } from "@/context/Account"
+
 
 const Login = ({ setVisible }) => {
+
+  const { authenticate } = useContext(AccountContext)
 
 
   return (
@@ -20,22 +23,11 @@ const Login = ({ setVisible }) => {
               .required("Password is required")
           })}
           onSubmit={(values, { setSubmitting, setErrors }) => {
-            const user = new CognitoUser({
-              Username: values.email,
-              Pool: UserPool
-            })
-
-            const authDetails = new AuthenticationDetails({
-              Username: values.email,
-              Password: values.password
-            })
-
-            user.authenticateUser(authDetails, {
-              onSuccess: (data) => {
+            authenticate(values.email, values.password)
+              .then(data => {
                 console.log(data)
-              },
-              onFailure: (err) => {
-                console.log(err)
+              })
+              .catch(err => {
                 switch (err.code) {
                   case "NotAuthorizedException":
                     setErrors({password: "Incorrect email or password"})
@@ -46,8 +38,7 @@ const Login = ({ setVisible }) => {
                   default:
                     break
                 }
-              }
-            })
+              })
             setSubmitting(false)
           }}
         >
