@@ -10,12 +10,14 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGears, faArrowRightFromBracket, faUser, faList } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+import Login from "@/components/Login"
 import { usePathname } from 'next/navigation'
 import useDateRange from '@/hooks/useDateRange'
 
 function Navbar() {
     const pathname = usePathname()
     const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
+    const [showLogin, setShowLogin] = useState(true)
        
     const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
 
@@ -57,6 +59,7 @@ function Navbar() {
 
   return (
     <>
+      {showLogin ? <Login setVisible={setShowLogin} /> : null}
       <div className='container'>
         <Link href="/">
           <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
