@@ -5,23 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import LargeFilter from './LargeFilter'
 import { useRef } from 'react'
-
-function formatDateRangeForQuery(dateRange) {
-  const [startStr, endStr] = dateRange.split(' - ');
-
-  const [startDay, startMonth, startYear] = startStr.split('.');
-  const [endDay, endMonth, endYear] = endStr.split('.');
-
-  const startDate = new Date(`20${startYear}`, startMonth - 1, parseInt(startDay) + 1);
-  const endDate = new Date(`20${endYear}`, endMonth - 1, parseInt(endDay) +1);
-
-  const formattedStartDate = startDate.toISOString();
-  const formattedEndDate = endDate.toISOString();
-
-  const formattedQuery = `startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
-
-  return formattedQuery;
-}
+import { formatDateRangeForQuery } from '@/hooks/useDateRange'
 
 export default function Landing() {
   const router = useRouter()
@@ -30,11 +14,18 @@ export default function Landing() {
   const dateRef = useRef(null)
 
   const handleClick = () => {
-    const city = cityRef.current.value.toLowerCase() || ''
-    const price = priceRef.current.value || ''
-    const formattedDate = (dateRef.current.textContent !== 'Dates') ? formatDateRangeForQuery(dateRef.current.textContent) : 'startDate=now&endDate=temp'
-    const params = `?minPrice=100&maxPrice=${price}&${formattedDate}`
-    router.push(`/search${params}`)
+    const priceQuery = (priceRef.current.value) ? `price=${priceRef.current.value}` : ''
+    let formattedDate = ''
+    if(dateRef.current && dateRef.current.textContent !== 'Dates'){
+      formattedDate =formatDateRangeForQuery(dateRef.current.textContent)
+    }
+    if(priceQuery !== '' || formattedDate !== ''){
+      const params = `?${priceQuery}&${formattedDate}`
+      router.push(`/search${params}`)
+    }
+    else{
+      router.push('/search')
+    }
   }
 
   return (

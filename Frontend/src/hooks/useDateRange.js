@@ -1,13 +1,29 @@
 import React, {useState} from 'react';
 
+export function formatDateRangeForQuery(dateRange) {
+  const [startDateStr, endDateStr] = dateRange.split(' - ');
+  let [startDay, startMonth, startYear] = startDateStr.split('.');
+  let [endDay, endMonth, endYear] = endDateStr.split('.');
+  startDay = (parseInt(startDay) + 1).toString()
+  endDay = (parseInt(endDay) + 1).toString()
+  const startDate = new Date(`${startYear}`, startMonth - 1, startDay).toISOString();
+  const endDate = new Date(`${endYear}`, endMonth - 1, endDay).toISOString();
+  return `startDate=${startDate}&endDate=${endDate}`;
+}
+
 function useDateRange() {
 
     function formatDateToCustomString(date) {
-        const day = date.getDate().toString().padStart(2, '0'); // Get the day and pad with leading zero if needed
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get the month (months are zero-based) and pad with leading zero if needed
-        const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
-      
-        return `${day}.${month}.${year}`;
+      const newdate = new Date(date);
+    
+      // Format the date parts
+      const dateFormatted = `${newdate.toLocaleString('fi-Fi', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric',
+      })}`;
+     
+      return dateFormatted;
       }
 
     const [dateRange, setDateRange] = useState([
@@ -19,7 +35,7 @@ function useDateRange() {
         }
       ]);
 
-    return [dateRange, setDateRange, formatDateToCustomString]
+    return [dateRange, setDateRange, formatDateToCustomString, formatDateRangeForQuery]
 }
 
 export default useDateRange;

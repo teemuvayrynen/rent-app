@@ -1,6 +1,6 @@
 .leaflet-container {
   width: 100%;
-  height: calc(100vh - 32rem);
+  height: calc(100vh - 20rem);
   position: relative;
   transition: height 0.5s ease-in-out;
 }
@@ -48,7 +48,7 @@
 
 .open-me {
   position: absolute;
-  left: calc(100vw - 46px);
+  left: calc(100vw - 53px);
   bottom: 50px;
   z-index: 1000;
   cursor: pointer;
@@ -80,5 +80,11 @@
   opacity: 1;
   pointer-events: all;
   padding: 0.5rem 0.5rem;
+}
+
+@media screen and (min-width: 2560) {
+  .leaflet-container {
+    height: calc(100vh - 32rem);
+  }
 }
 

@@ -23,8 +23,8 @@
 .card-image {
     display: block;
     border-radius: 20px;
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
     object-position: center;
     transition: 200ms transform ease;

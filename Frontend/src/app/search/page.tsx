@@ -45,7 +45,7 @@ function postData(data: any, setApartments: any) {
     })
     .then((responseData) => {
       const sortedApartments = sortApartments(responseData.apartments)
-      setApartments(sortedApartments)
+      setApartments((prev: any) => sortedApartments)
     })
     .catch((error) => {
       console.error('Error:', error);
