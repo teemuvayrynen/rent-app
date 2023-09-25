@@ -103,7 +103,7 @@ const Signup = ({ setVisible }) => {
                     signup: false,
                     login: true
                   })
-                }}>Login</span>
+                }}>Sign up</span>
               </p>
             </Form>
           )}

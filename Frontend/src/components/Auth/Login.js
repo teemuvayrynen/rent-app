@@ -1,4 +1,6 @@
 import { Formik, Form, ErrorMessage, Field } from "formik"
+import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
+import UserPool from "./UserPool"
 import * as Yup from "yup"
 import "./auth.css"
 
@@ -16,10 +18,37 @@ const Login = ({ setVisible }) => {
               .email("Invalid email address"),
             password: Yup.string()
               .required("Password is required")
-              .min(8, "Password must be at least 8 characters")
           })}
-          onSubmit={(values) => {
-            console.log(values)
+          onSubmit={(values, { setSubmitting, setErrors }) => {
+            const user = new CognitoUser({
+              Username: values.email,
+              Pool: UserPool
+            })
+
+            const authDetails = new AuthenticationDetails({
+              Username: values.email,
+              Password: values.password
+            })
+
+            user.authenticateUser(authDetails, {
+              onSuccess: (data) => {
+                console.log(data)
+              },
+              onFailure: (err) => {
+                console.log(err)
+                switch (err.code) {
+                  case "NotAuthorizedException":
+                    setErrors({password: "Incorrect email or password"})
+                    break
+                  case "UserNotConfirmedException":
+                    setErrors({password: "User is not confirmed"})
+                    break
+                  default:
+                    break
+                }
+              }
+            })
+            setSubmitting(false)
           }}
         >
           {({
