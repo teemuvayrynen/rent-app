@@ -63,6 +63,7 @@ export default function SearchPage() {
     fetch(`https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get${(searchString !== '') ? `?${searchString}` : ''}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setMarkers(data.Items)
       })
   }, [])
@@ -84,8 +85,9 @@ export default function SearchPage() {
 
   return (
     <>
-      {(markers.length > 0) && <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers}/>}
-      <ApartmentList apartments={apartments}/>
+      <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers}/>
+      {(markers.length !== 0) ? <ApartmentList apartments={apartments}/> : <div style={{display: "flex", flexDirection: "row", height: "200px", justifyContent: "center", alignItems: "center"}}><p>No Apartments available</p></div>}
+      
     </>
   )
 }

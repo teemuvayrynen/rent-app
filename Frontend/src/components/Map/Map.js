@@ -71,7 +71,10 @@ function Map({apartments, markers, setFilteredMarkers}) {
     container.classList.toggle('show');
     widenButton.classList.toggle('active')
     map.classList.toggle('active')
-    document.querySelector('.flex-container').classList.toggle('disabled')
+    const initialApartmentList = document.querySelector('.flex-container')
+    if(initialApartmentList) {
+      initialApartmentList.classList.toggle('disabled')
+    }
     setTimeout(() => {mapRef.current.invalidateSize()}, 500)
     const mapList = document.querySelector('.map-apartment-list')
     mapList.classList.toggle('active')
@@ -84,8 +87,8 @@ function Map({apartments, markers, setFilteredMarkers}) {
         updateBounds(map.target)
       }}>
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
+          url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
         />
         <LeafletgeoSearch/>
         {(userLocation.isLoaded && !userLocation.error) && (
@@ -117,9 +120,10 @@ function Map({apartments, markers, setFilteredMarkers}) {
         </div>
       </MapContainer>
       <div className='map-apartment-list'>
-          {apartments.map((apartment, index) => {
+          {(apartments.length > 0) ? apartments.map((apartment, index) => {
             return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
-          })}
+          }) : <div style={{display: "flex", flexDirection: "colum", justifyContent: "center", height: "100%", alignItems: "center"}}><p>No Apartments available</p></div>}
+          
       </div>
     </>
       
