@@ -20,7 +20,7 @@ import { AccountContext } from '@/context/Account'
 function Navbar() {
     const pathname = usePathname()
     const { getSession, logout } = useContext(AccountContext)
-    const [user, setUser] = useState(false)
+    const [user, setUser] = useState(null)
     const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
     const [showAuthForm, setShowAuthForm] = useState({
       login: false,
@@ -30,8 +30,8 @@ function Navbar() {
     const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
 
     useEffect(() => {
-      getSession().then(() => {
-        setUser(true)
+      getSession().then((session) => {
+        setUser({ name: session.idToken.payload.name })
       })
     }, [])
 
@@ -82,11 +82,11 @@ function Navbar() {
           </>
         )}
         
-        {user ? (
+        {user !== null ? (
           <div className='user-container'>
             <button className='basic-button'>Sublet</button>
             <div className='profile-picture'>
-              TV
+              {(user.name).charAt(0)}
             </div>
             <div className='hamburger-menu' onClick={toggleActive}>
               <span></span>
