@@ -12,8 +12,8 @@ export class ApartmentsStorage extends Construct {
       billingMode: "PAY_PER_REQUEST",
       hashKey: "id",
       attribute: [
-        { name: "id", type: "S" }  
-      ],
+        { name: "id", type: "S" },
+      ]
     });
   }
 }
