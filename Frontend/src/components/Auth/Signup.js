@@ -96,14 +96,14 @@ const Signup = ({ setVisible }) => {
                 />
                 <ErrorMessage name="passwordConfirmation" component="div" className="form-error" />
               </div>
-              <button disabled={isSubmitting} className="basic-button fullWidth" type="submit">Login</button>
+              <button disabled={isSubmitting} className="basic-button fullWidth" type="submit">Sign up</button>
               <p>
                 Already have an account? <span onClick={() => {
                   setVisible({
                     signup: false,
                     login: true
                   })
-                }}>Sign up</span>
+                }}>Login</span>
               </p>
             </Form>
           )}
