@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 import './navbar.css'
 import Image from 'next/image'
 import Filter from './Filter'
@@ -14,9 +14,13 @@ import Login from '@/components/Auth/Login'
 import Signup from '@/components/Auth/Signup'
 import { usePathname } from 'next/navigation'
 import useDateRange from '@/hooks/useDateRange'
+import { AccountContext } from '@/context/Account'
+
 
 function Navbar() {
     const pathname = usePathname()
+    const { getSession, logout } = useContext(AccountContext)
+    const [user, setUser] = useState(false)
     const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
     const [showAuthForm, setShowAuthForm] = useState({
       login: false,
@@ -24,6 +28,12 @@ function Navbar() {
     })
        
     const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
+
+    useEffect(() => {
+      getSession().then(() => {
+        setUser(true)
+      })
+    }, [])
 
     useEffect(() => {
         if(priceRange.isSet) {
@@ -57,9 +67,6 @@ function Navbar() {
         const rangeElement = document.querySelector('.price-range')
         rangeElement.classList.toggle('active')
     }
-
-    // väliaikainen
-    const user = false
 
   return (
     <>
@@ -104,7 +111,10 @@ function Navbar() {
                 </span> 
                 Settings
               </p>
-              <p>
+              <p onClick={() => {
+                logout()
+                window.location.reload()
+              }}>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faArrowRightFromBracket} />
                 </span> 

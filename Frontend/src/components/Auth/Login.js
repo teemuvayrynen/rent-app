@@ -39,7 +39,9 @@ const Login = ({ setVisible }) => {
                     break
                 }
               })
-            setSubmitting(false)
+            setTimeout(() => {
+              window.location.reload()
+            }, 1000)
           }}
         >
           {({
