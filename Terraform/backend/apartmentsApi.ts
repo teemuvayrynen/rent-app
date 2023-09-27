@@ -6,6 +6,8 @@ import { GetApartmentsLambda } from "./lambda/getApartments";
 import { AddApartmentsLambda } from "./lambda/addApartment";
 import { DeleteApartmentsLambda } from "./lambda/deleteApartment";
 import { GetMarkersLambda } from "./lambda/getMarkers";
+import { GetLandingApartmentsLambda } from "./lambda/getLandingApartments";
+import { GetUserApartmentsLambda } from "./lambda/getUserApartments";
 
 const lambdaRolePolicy = {
   Version: "2012-10-17",
@@ -61,6 +63,18 @@ export class ApartmentsApi extends Construct {
     })
 
     new GetMarkersLambda(this, "get-markers-lambda", {
+      table,
+      lambdaRolePolicy,
+      api
+    })
+
+    new GetLandingApartmentsLambda(this, "get-landing-apartments-lambda", {
+      table,
+      lambdaRolePolicy,
+      api
+    })
+
+    new GetUserApartmentsLambda(this, "get-user-apartments-lambda", {
       table,
       lambdaRolePolicy,
       api

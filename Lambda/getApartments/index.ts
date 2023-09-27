@@ -2,12 +2,13 @@ const AWS = require('aws-sdk')
 
 const dynamo = new AWS.DynamoDB.DocumentClient()
 
-interface Keys {
+interface Key {
+  country: string
   id: string
 }
 
 interface Apartments {
-  keys: Array<Keys>
+  keys: Array<Key>
 }
 
 export async function handler(event) {
@@ -25,7 +26,7 @@ export async function handler(event) {
     } else {
       var params = {
         RequestItems: {
-          'dynamo-apartment-storage': {
+          "dynamo-apartment-storage": {
             Keys: data.keys,
             ProjectionExpression: "id, price, #l, address, place, startDate, endDate, images, size",
             ExpressionAttributeNames: { "#l": "location" },

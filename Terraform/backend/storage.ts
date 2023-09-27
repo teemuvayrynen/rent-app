@@ -10,9 +10,31 @@ export class ApartmentsStorage extends Construct {
     this.table = new DynamodbTable(this, "table", {
       name: "dynamo-apartment-storage",
       billingMode: "PAY_PER_REQUEST",
-      hashKey: "id",
+      hashKey: "country",
+      rangeKey: "id",
       attribute: [
         { name: "id", type: "S" },
+        { name: "ownerId", type: "S" },
+        { name: "country", type: "S" },
+        { name: "endDate", type: "S" },
+        { name: "monthlyPrice", type: "N" }
+      ],
+      localSecondaryIndex: [
+        {
+          name: "country-ownerid-index",
+          projectionType: "ALL",
+          rangeKey: "ownerId"
+        },
+        {
+          name: "country-price-index",
+          projectionType: "ALL",
+          rangeKey: "monthlyPrice"
+        },
+        {
+          name: "country-endDate-index",
+          projectionType: "ALL",
+          rangeKey: "endDate"
+        }
       ]
     });
   }

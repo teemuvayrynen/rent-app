@@ -25,7 +25,7 @@ function postData(data: any, setApartments: any) {
   const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get';
 
   const convertedData = {
-    keys: data.map((item: { id: any; }) => ({ id: item.id })),
+    keys: data.map((item: { id: any; }) => ({ id: item.id, country: "finland" })),
   };
   
   const requestOptions = {

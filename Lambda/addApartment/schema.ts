@@ -66,7 +66,7 @@ const apartmentSchema: JSONSchemaType<ApartmentData> = {
 
 export const finalApartmentSchema = {
   ...apartmentSchema,
-  required: Object.keys(apartmentSchema.properties)
+  required: Object.keys(apartmentSchema.properties ? apartmentSchema.properties : [])
 }
 
 export type { ApartmentData as ApartmentData }

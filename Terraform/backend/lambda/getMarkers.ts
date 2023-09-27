@@ -36,7 +36,7 @@ export class GetMarkersLambda extends Construct {
             Statement: [
               {
                 Action: [
-                  "dynamodb:Scan",
+                  "dynamodb:Query",
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
