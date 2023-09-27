@@ -83,17 +83,18 @@
     pointer-events: auto;
 }
 
-.dropdown > p {
+.dropdown-item {
     width: 100%;
     padding: 1rem 3rem;
     border-bottom: 2px solid rgb(0, 0,0,0.2);
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
-
+    text-decoration: none;
+    color: black;
 }
 
-.dropdown > p:hover{
+.dropdown-item:hover{
     font-weight: 700;
 }
 

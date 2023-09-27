@@ -76,7 +76,7 @@ function Navbar() {
         <Link href="/">
           <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
         </Link>
-        {pathname === "/" ? null : (
+        {pathname !== "/search" ? null : (
           <>
             <Filter />
           </>
@@ -93,25 +93,25 @@ function Navbar() {
               <span></span>
               <span></span>
               <div className='dropdown'>
-              <p>
+              <p className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faList} />
                 </span>  
                 Listings
               </p>
-              <p>
+              <p className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faUser} />
                 </span> 
                 Profile
               </p>
-              <p>
+              <Link href="/account/settings" className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faGears} />
                 </span> 
                 Settings
-              </p>
-              <p onClick={() => {
+              </Link>
+              <p className='dropdown-item' onClick={() => {
                 logout()
                 window.location.reload()
               }}>

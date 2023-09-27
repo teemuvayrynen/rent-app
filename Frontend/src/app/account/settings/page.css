@@ -1,0 +1,43 @@
+.settings-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 23rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 6rem;
+  gap: 40px;
+}
+
+.settings-item-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.settings-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.settings-item > div > h2 {
+  font-size: 20px;
+  font-weight: 600;
+  padding-bottom: 5px;
+}
+
+.settings-container > span {
+  width: 50%;
+  height: 1px;
+  background: rgb(67, 67, 67);
+  display: block
+}
+
+.settings-icon {
+  transform: rotate(90);
+  position: relative;
+}
