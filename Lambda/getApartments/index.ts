@@ -28,7 +28,7 @@ export async function handler(event) {
         RequestItems: {
           "dynamo-apartment-storage": {
             Keys: data.keys,
-            ProjectionExpression: "id, price, #l, address, place, startDate, endDate, images, size",
+            ProjectionExpression: "id, monthlyPrice, #l, street_name, city, startDate, endDate, images, size",
             ExpressionAttributeNames: { "#l": "location" },
           }
         }

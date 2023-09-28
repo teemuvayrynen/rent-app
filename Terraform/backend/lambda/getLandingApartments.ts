@@ -38,7 +38,10 @@ export class GetLandingApartmentsLambda extends Construct {
                 Action: [
                   "dynamodb:Query"
                 ],
-                Resource: options.table.arn,
+                Resource: [
+                  options.table.arn,
+                  `${options.table.arn}/index/country-city-index`,
+                ],
                 Effect: "Allow",
               },
             ],

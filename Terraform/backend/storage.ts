@@ -17,11 +17,12 @@ export class ApartmentsStorage extends Construct {
         { name: "ownerId", type: "S" },
         { name: "country", type: "S" },
         { name: "endDate", type: "S" },
-        { name: "monthlyPrice", type: "N" }
+        { name: "monthlyPrice", type: "N" },
+        { name: "city", type: "S" }
       ],
       localSecondaryIndex: [
         {
-          name: "country-ownerid-index",
+          name: "country-ownerId-index",
           projectionType: "ALL",
           rangeKey: "ownerId"
         },
@@ -34,6 +35,11 @@ export class ApartmentsStorage extends Construct {
           name: "country-endDate-index",
           projectionType: "ALL",
           rangeKey: "endDate"
+        },
+        {
+          name: "country-city-index",
+          projectionType: "ALL",
+          rangeKey: "city"
         }
       ]
     });

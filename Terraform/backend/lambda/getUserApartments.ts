@@ -38,7 +38,10 @@ export class GetUserApartmentsLambda extends Construct {
                 Action: [
                   "dynamodb:Query"
                 ],
-                Resource: options.table.arn,
+                Resource: [
+                  options.table.arn,
+                  `${options.table.arn}/index/country-ownerId-index`,
+                ],
                 Effect: "Allow",
               },
             ],
@@ -80,7 +83,7 @@ export class GetUserApartmentsLambda extends Construct {
 
     new Apigatewayv2Route(this, "api-get-route", {
       apiId: options.api.id,
-      routeKey: "GET /apartments/user/get",
+      routeKey: "GET /apartments/user/{id}",
       target: `integrations/${apiIntegration.id}`,
     })
   }

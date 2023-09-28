@@ -12,7 +12,7 @@ export async function handler(event) {
   try {
     let params = {
       TableName: "dynamo-apartment-storage",
-      ProjectionExpression: "id, price, #l",
+      ProjectionExpression: "id, monthlyPrice, #l",
       ExpressionAttributeNames: { 
         "#l": "location",
       },
