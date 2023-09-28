@@ -1,0 +1,11 @@
+.single-apartment-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0px;
+}
+
+.single-apartment-container > p {
+  font-size: 18px;
+  font-weight: 500;
+  align-self: center;
+}
