@@ -14,7 +14,8 @@
 }
 
 :root {
-  --main-color: #E85252
+  --main-color: #E85252;
+  --main-color-shadow: #a33737;
 }
 
 * {
