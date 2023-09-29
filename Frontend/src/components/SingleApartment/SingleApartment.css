@@ -1,0 +1,116 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  width: 75%;
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Styles for screens with a maximum width of 1000 pixels or smaller */
+@media screen and (max-width: 1000px) {
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 40px;
+    width: 85%;
+    margin: 0 auto; /* Center the container horizontally */
+  }
+}
+
+.carousel-container {
+  display: flex;
+  flex: 60%;
+  flex-direction: row; /* Display children in a row */
+  /* border: 1px solid black; */
+  padding: 5px
+}
+
+.address-and-owner{
+  display: flex;
+  flex: 60%;
+  flex-direction: row;
+  padding: 10px 0px;
+  justify-content: space-between;
+}
+
+.h1-streetname {
+  font-size: 26px;
+  font-weight: 600;
+  align-self: center;
+  padding: 5px;
+}
+
+.p-basic-text {
+  font-size: 16px;
+  padding: 5px;
+}
+
+/* Styles for screens with a maximum width of 1000 pixels or smaller */
+@media screen and (max-width: 1000px) {
+  .h1-streetname {
+    font-size: 20px;
+    font-weight: 600;
+    align-self: center;
+    padding: 5px;
+  }
+
+  .p-basic-text {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
+  flex: 40%;
+
+  padding: 5px
+}
+
+.contact-container{
+  display: flex;
+  flex: 40%;
+  padding: 5px;
+  justify-content: space-between;
+  border: 1px solid rgb(233, 228, 228);
+  border-radius: 30px;
+}
+
+.contact-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 20px;
+}
+
+.contact-button {
+  background-color: var(--main-color);
+  color: #ffffff; /* White text color */
+  font-size: 16px;
+  border: none;
+  padding: 15px 35px;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.contact-button:hover {
+  background-color: var(--main-color-shadow); /* Darker red on hover */
+}
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  flex: 60%;
+  padding: 5px;
+  justify-content: space-between;
+}
+
+.description-container > h1 {
+  font-size: 24px;
+}
+
+.description-container > p {
+  font-size: 16px;
+}
