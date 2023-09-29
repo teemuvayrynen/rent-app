@@ -1,6 +1,5 @@
 import { JSONSchemaType } from "ajv"
 import { 
-  Images, 
   Location, 
   Rules, 
   ApartmentData, 
@@ -11,14 +10,6 @@ import {
   Other,
   Premises
 } from "./interface"
-
-const imagesSchema: JSONSchemaType<Images> = {
-  type: "object",
-  properties: {
-    id: {type: "string"}
-  },
-  required: ["id"]
-}
 
 const locationSchema: JSONSchemaType<Location> = {
   type: "object",
@@ -130,10 +121,6 @@ const apartmentSchema: JSONSchemaType<ApartmentData> = {
     created: {type: "string"},
     building_society: {type: "string"},
     status: {type: "number"},
-    images: {
-      type: "array",
-      items: imagesSchema
-    },
     location: locationSchema,
     rules: rulesSchema,
     equipment: {

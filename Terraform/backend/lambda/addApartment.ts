@@ -3,6 +3,7 @@ import { NodejsFunction } from "../../lib/nodejs-function";
 import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { LambdaFunction } from "@cdktf/provider-aws/lib/lambda-function";
 import { Apigatewayv2Api } from "@cdktf/provider-aws/lib/apigatewayv2-api";
+import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { Apigatewayv2Integration } from "@cdktf/provider-aws/lib/apigatewayv2-integration";
 import { Apigatewayv2Route } from "@cdktf/provider-aws/lib/apigatewayv2-route";
 import { LambdaPermission } from "@cdktf/provider-aws/lib/lambda-permission";
@@ -10,9 +11,10 @@ import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
 import * as path from "path"
 
 interface LambdaOptions {
-  table: DynamodbTable,
-  lambdaRolePolicy: object,
+  table: DynamodbTable
+  lambdaRolePolicy: object
   api: Apigatewayv2Api
+  imgBucket: S3Bucket
 }
 
 export class AddApartmentsLambda extends Construct {
@@ -41,6 +43,17 @@ export class AddApartmentsLambda extends Construct {
                 Resource: options.table.arn,
                 Effect: "Allow",
               },
+              {
+                Action: [
+                  "s3:PutObject",
+                ],
+                Resource: [
+                  `${options.imgBucket.arn}/images/*.jpg`,
+                  `${options.imgBucket.arn}/images/*.jpeg`,
+                  `${options.imgBucket.arn}/images/*.png`
+                ],
+                Effect: "Allow",
+              }
             ],
           }),
         },
