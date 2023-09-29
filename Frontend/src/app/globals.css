@@ -24,8 +24,16 @@
   box-sizing: border-box;
 }
 
-body{
+html, body{
   overflow-x: hidden;
+  height: 100%;
+}
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .basic-button {
@@ -61,4 +69,23 @@ body{
   height: 3px;
   background: rgb(0,0,0,0.25);
   margin-bottom: 10px;
+}
+
+.back-button {
+  width: 80px;
+  height: 35px;
+  border-radius: 10px;
+  background: #E4E4E4;
+  border: none;
+  cursor: pointer;
+}
+
+.next-button {
+  width: 80px;
+  height: 35px;
+  border-radius: 10px;
+  background: var(--main-color);
+  color: white;
+  border: none;
+  cursor: pointer;
 }

@@ -31,7 +31,10 @@
   }
   
   .flex-column-largefilter > input {
-    margin-top: 6px;
+    margin: 3px 0;
+    height: 20px;
+    background: none;
+    box-shadow: none;
     border: none;
     font-size: 13px;
     max-width: 90px;

@@ -1,7 +1,6 @@
 .footer-container {
   flex-direction: column;
   align-items: center;
-  bottom: 0px;
   width: 100%;
   height: 18rem;
   background-color: var(--main-color);

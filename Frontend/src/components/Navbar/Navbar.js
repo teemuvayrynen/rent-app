@@ -76,7 +76,7 @@ function Navbar() {
         <Link href="/">
           <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
         </Link>
-        {pathname !== "/search" ? null : (
+        {(pathname === "/" || pathname === "/addApartment" || pathname === "/apartment")? null : (
           <>
             <Filter />
           </>
@@ -84,7 +84,7 @@ function Navbar() {
         
         {user !== null ? (
           <div className='user-container'>
-            <button className='basic-button'>Sublet</button>
+            <button className='basic-button' onClick={() => window.location.href = "/addApartment"}>Sublet</button>
             <div className='profile-picture'>
               {(user.name).charAt(0)}
             </div>

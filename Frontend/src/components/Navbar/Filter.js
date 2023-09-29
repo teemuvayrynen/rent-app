@@ -71,7 +71,7 @@ function Filter() {
         <div className='search-largefilter-container'>
           <div className='flex-column-largefilter'>
             <p>Max price</p>
-            <input placeholder='Add price' type='text'  ></input>
+            <input placeholder='Add price' type='text'></input>
           </div>
           <p></p>
           <DateRange

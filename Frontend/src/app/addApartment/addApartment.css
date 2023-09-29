@@ -1,0 +1,171 @@
+.add-apartment-container {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.step-indicator {
+    position: absolute;
+    right: 1rem;
+    top: 1.4rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: max-content;
+}
+
+form > h2 {
+    margin-bottom: 2rem;
+}
+
+.form-wrapper-column {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.location-information {
+    width: 400px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 1rem 2rem;
+}
+
+.grid-item1 {
+    grid-column: 1 / span 4;
+}
+
+.grid-item2 {
+    grid-column: 5 / span 2;
+}
+
+.grid-item3 {
+    grid-column: 1 / span 3;
+}
+
+.grid-item4 {
+    grid-column: 4 / span 3;
+}
+
+.grid-item5 {
+    grid-column: 1 / span 3;
+}
+
+.grid-item6 {
+    grid-column: 4 / span 3;
+}
+
+.form-wrapper-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+input {
+    margin: 10px 0;
+    width: 100%;
+    height: 35px;
+    padding: 0 1rem;
+    border: none;
+    border-radius: 5px;
+    background: #F5F5F5;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+textarea {
+    resize: none;
+    margin: 10px 0;
+    width: 100%;
+    height: 90px;
+    padding: .5rem .5rem;
+    border: none;
+    border-radius: 5px;
+    background: #F5F5F5;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.buttons {
+    margin: 3rem 0;
+    display: flex;
+    flex-direction: row;
+    gap: 9rem
+}
+
+.map-container {
+    width: 300px;
+    border-radius: 1rem;
+    overflow: clip;
+  }
+
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+  }
+
+
+.information-icon:hover::after {
+    content: "Search you address and click the wanted location for placing a radius on the map.";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    width: 160px;
+    border: 0.5px solid rgba(0, 0, 0, 0.25);
+    color: black;
+    padding: 4px 8px;
+    font-size: 14px;
+    z-index: 9999;
+  }
+
+  .start-date , .end-date {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .start-date {
+    margin-bottom: 2rem;
+  }
+
+  .start-date > div, .end-date > div {
+    padding: .6rem;
+    border-radius: 5px;
+    background: #F5F5F5;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  label {
+    font-weight: 600;
+  }
+
+  .option-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 10px;
+    gap: 15px;
+    padding: 10px;
+    background: #F5F5F5;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .checkbox {
+    width: 13px;
+    height: 13px;
+  }

@@ -63,7 +63,6 @@ export default function SearchPage() {
     fetch(`https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get${(searchString !== '') ? `?${searchString}` : ''}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setMarkers(data.Items)
       })
   }, [])

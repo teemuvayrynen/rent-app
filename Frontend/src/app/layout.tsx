@@ -20,13 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <StyledComponentsRegistry>
-          <Account>
-            <Navbar />
-            {children}
-            <Footer />
-          </Account>
-        </StyledComponentsRegistry>
+        <div className='app'>
+          <StyledComponentsRegistry>
+            <Account>
+              <Navbar />
+              {children}
+              <Footer />
+            </Account>
+          </StyledComponentsRegistry>
+        </div>
       </body>
     </html>
   )

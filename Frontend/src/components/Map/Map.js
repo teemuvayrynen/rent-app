@@ -11,7 +11,7 @@ import LeafletgeoSearch from './LeafletSearch'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-icons'
 import useUserGeoLocation from './useUserGeoLocation'
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
 
@@ -31,6 +31,13 @@ function Map({apartments, markers, setFilteredMarkers}) {
   const mapRef = useRef(null)
   const [mapListActive, setMapListActive] = useState(false);
 
+
+  useEffect(() => {
+    if(mapRef.current){
+      updateBounds(mapRef.current)
+    }
+  }, [markers])
+  
   const updateBounds = (map) => {
     const newBounds = map.getBounds();
     
@@ -96,9 +103,9 @@ function Map({apartments, markers, setFilteredMarkers}) {
             <Popup>Your Location</Popup>
           </Marker>
         )}
-        <MarkerClusterGroup chunkedLoading>
+        {(markers.length > 1) ? <MarkerClusterGroup chunkedLoading>
           {markers.map((marker) => {
-            return (
+            marker.location && (
               <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
                  <Popup>
                   <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
@@ -110,8 +117,15 @@ function Map({apartments, markers, setFilteredMarkers}) {
               </Marker>
             )
           })}
-        </MarkerClusterGroup>
-        
+        </MarkerClusterGroup> : (markers.length === 1) && <Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
+                 <Popup>
+                  <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
+                  <div className='apartment-info-popup'>
+                    <p>{markers[0].id}</p>
+                    <p>{markers[0].price}/kk</p>
+                  </div>
+                </Popup> 
+              </Marker>}
         <div className='locate-me'>
             <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
         </div>
