@@ -38,11 +38,9 @@ export class S3ImageBucket extends Construct {
             },
             Action: ["s3:GetObject"],
             Resource: [`${this.bucket.arn}/*`, `${this.bucket.arn}`],
-          },
+          }
         ],
       }),
     });
-
-    
   }
 }

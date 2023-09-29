@@ -9,10 +9,6 @@ export interface Rules {
   unobstructed: boolean
 }
 
-export interface Images {
-  id: string
-}
-
 export interface Kitchen {
   fridge: boolean
   freezer: boolean
@@ -76,7 +72,6 @@ export interface ApartmentData {
   created: string
   building_society: string
   status: number
-  images: Array<Images>
   location: Location
   rules: Rules
   equipment: {
