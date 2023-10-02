@@ -18,55 +18,55 @@ import { AccountContext } from '@/context/Account'
 
 
 function Navbar() {
-    const pathname = usePathname()
-    const { getSession, logout } = useContext(AccountContext)
-    const [user, setUser] = useState(null)
-    const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
-    const [showAuthForm, setShowAuthForm] = useState({
-      login: false,
-      signup: false
+  const pathname = usePathname()
+  const { getSession, logout } = useContext(AccountContext)
+  const [user, setUser] = useState(null)
+  const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
+  const [showAuthForm, setShowAuthForm] = useState({
+    login: false,
+    signup: false
+  })
+      
+  const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
+
+  useEffect(() => {
+    getSession().then((session) => {
+      setUser({ name: session.attributes.name })
     })
-       
-    const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
+  }, [])
 
-    useEffect(() => {
-      getSession().then((session) => {
-        setUser({ name: session.idToken.payload.name })
-      })
-    }, [])
+  useEffect(() => {
+      if(priceRange.isSet) {
+          const priceFilterElement = document.querySelector('.price-filter')
+          priceFilterElement.textContent = `${priceRange.min}€ - ${priceRange.max}€`
+      }
+      
+      if(dateRange[0].isSet){
+          const rangeElement = document.querySelector('.date-filter')
+          const formattedStartDate = formatDateToCustomString(dateRange[0].startDate)
+          const formattedEndDate = formatDateToCustomString(dateRange[0].endDate)
+          rangeElement.textContent = `${formattedStartDate} - ${formattedEndDate}`
+      
+      }
+  }, [priceRange, dateRange])
 
-    useEffect(() => {
-        if(priceRange.isSet) {
-            const priceFilterElement = document.querySelector('.price-filter')
-            priceFilterElement.textContent = `${priceRange.min}€ - ${priceRange.max}€`
-        }
-        
-        if(dateRange[0].isSet){
-            const rangeElement = document.querySelector('.date-filter')
-            const formattedStartDate = formatDateToCustomString(dateRange[0].startDate)
-            const formattedEndDate = formatDateToCustomString(dateRange[0].endDate)
-            rangeElement.textContent = `${formattedStartDate} - ${formattedEndDate}`
-        
-        }
-    }, [priceRange, dateRange])
+  const minPriceRef = useRef(0)
+  const maxPriceRef = useRef(0)
+  
+  const toggleActive = () => {
+      const hamburgerMenu = document.querySelector('.hamburger-menu')
+      hamburgerMenu.classList.toggle('active')
+  }
 
-    const minPriceRef = useRef(0)
-    const maxPriceRef = useRef(0)
-    
-    const toggleActive = () => {
-        const hamburgerMenu = document.querySelector('.hamburger-menu')
-        hamburgerMenu.classList.toggle('active')
-    }
-
-    const changePrice = () => {
-        setPriceRange({
-            min: minPriceRef.current.value ? minPriceRef.current.value : 0,
-            max: maxPriceRef.current.value ? maxPriceRef.current.value : 0,
-            isSet: (maxPriceRef.current.value && maxPriceRef.current.value !== 0) ? true : false
-          })
-        const rangeElement = document.querySelector('.price-range')
-        rangeElement.classList.toggle('active')
-    }
+  const changePrice = () => {
+      setPriceRange({
+          min: minPriceRef.current.value ? minPriceRef.current.value : 0,
+          max: maxPriceRef.current.value ? maxPriceRef.current.value : 0,
+          isSet: (maxPriceRef.current.value && maxPriceRef.current.value !== 0) ? true : false
+        })
+      const rangeElement = document.querySelector('.price-range')
+      rangeElement.classList.toggle('active')
+  }
 
   return (
     <>
@@ -111,8 +111,8 @@ function Navbar() {
                 </span> 
                 Settings
               </Link>
-              <p className='dropdown-item' onClick={() => {
-                logout()
+              <p className='dropdown-item' onClick={async () => {
+                await logout()
                 window.location.reload()
               }}>
                 <span className='dropdown-icons'>

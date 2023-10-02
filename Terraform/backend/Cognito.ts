@@ -68,8 +68,7 @@ export class Cognito extends Construct {
       explicitAuthFlows: [
         "ALLOW_REFRESH_TOKEN_AUTH",
         "ALLOW_USER_SRP_AUTH"
-      ],
-      supportedIdentityProviders: ["COGNITO"]
+      ]
     })
 
     new CognitoUserPoolDomain(this, "user_pool_domain", {

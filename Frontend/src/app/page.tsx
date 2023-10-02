@@ -4,6 +4,7 @@ import Landing from "@/components/Landing/Landing"
 import React, { useState, useEffect } from "react"
 import ApartmentRow from "@/components/ApartmentRow/ApartmentRow"
 
+
 export default function Home() {
 
   const [apartments, setApartments] = useState([])

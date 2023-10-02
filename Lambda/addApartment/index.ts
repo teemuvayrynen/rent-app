@@ -37,48 +37,8 @@ export async function handler(event) {
     if (validate(data.apartment)) {
       let images: Array<any> = []
 
-      if (data.images.length > 0) {
-        for (let i in data.images) {
-          const imgURI = data.images[i]
-          var regex = /^data:(.+\/.+);base64,(.*)$/;
-          var matches = imgURI.match(regex);
-          if (matches !== null && matches.length >= 3) {
-            if (!mimes.includes(matches[1])) {
-              return {
-                statusCode: 405,
-                body: "mime not supported"
-              }
-            }
-            const id = uuidv4()
 
-            const buffer = Buffer.from(matches[2], 'base64')
-            const fileInfo = await fileType.fileTypeFromBuffer(buffer)
-            const detectedExt = fileInfo?.ext
-            const detectedMime = fileInfo?.mime
-
-            if (detectedMime !== matches[1]) {
-              return {
-                statusCode: 405,
-                body: "mime types don't match"
-              }
-            }
-
-            const key = `images/${id}.${detectedExt}`
-
-            await s3.putObject({
-              Bucket: "s3-image-bucket-apartments",
-              Key: key,
-              Body: buffer,
-              ContentType: matches[1 ]
-            }).promise()
-
-            images.push({
-              id: id
-            })
-          }
-        }
-      }
-
+      
       const params = {
         TableName: "dynamo-apartment-storage",
         Item: {

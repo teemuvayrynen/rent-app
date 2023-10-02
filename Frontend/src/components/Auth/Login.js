@@ -9,7 +9,6 @@ const Login = ({ setVisible }) => {
 
   const { authenticate } = useContext(AccountContext)
 
-
   return (
     <>
       <div className="form-container">
@@ -22,10 +21,9 @@ const Login = ({ setVisible }) => {
             password: Yup.string()
               .required("Password is required")
           })}
-          onSubmit={(values, { setSubmitting, setErrors }) => {
+          onSubmit={async (values, { setSubmitting, setErrors }) => {
             authenticate(values.email, values.password)
-              .then(data => {
-                console.log(data)
+              .then(() => {
                 window.location.reload()
               })
               .catch(err => {
