@@ -1,8 +1,7 @@
 import React, { useState } from "react"
+import { Auth } from "aws-amplify"
 import { Formik, Form, ErrorMessage, Field } from "formik"
-import { CognitoUserAttribute } from "amazon-cognito-identity-js"
 import * as Yup from "yup"
-import UserPool from "./UserPool"
 import "./auth.css"
 
 const Signup = ({ setVisible }) => {
@@ -30,20 +29,29 @@ const Signup = ({ setVisible }) => {
             .oneOf([Yup.ref("password"), null], "Passwords must match")
           })}
           onSubmit={(values, { setErrors, setSubmitting }) => {
-            const nameAttr = new CognitoUserAttribute({ Name: "name", Value: values.name })
-
-            UserPool.signUp(values.email, values.password, [nameAttr], null, (err, data) => {
-              if (err) {
-                switch (err.code) {
-                  case "UsernameExistsException":
-                    setErrors({email: "Account already exists"})
-                    break
-                  default:
-                    break
-                }
-              } else {
-                setSuccess(true)
+            Auth.signUp({
+              username: values.email, 
+              password: values.password,
+              attributes: {
+                name: values.name
+              },
+              autoSignIn: {
+                enabled: true
               }
+            })
+            .then(() => {
+              setSuccess(true)
+            })
+            .catch((err) => {
+              switch (err.code) {
+                case "UsernameExistsException":
+                  setErrors({email: "Account already exists"})
+                  break
+                default:
+                  break
+              }
+            })
+            .finally(() => {
               setSubmitting(false)
             })
           }}

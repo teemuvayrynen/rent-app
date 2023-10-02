@@ -1,8 +1,15 @@
 "use client"
 
 import React, { createContext } from "react"
-import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js"
-import Pool  from "../components/Auth/UserPool"
+import { Amplify, Auth } from 'aws-amplify';
+
+Amplify.configure({
+  Auth: {
+    region: "eu-west-1",
+    userPoolId: "eu-west-1_7yKEZnhvf", 
+    userPoolWebClientId: "4me4cjsoab9pifgiddkms4grt0"
+  }
+});
 
 const AccountContext = createContext()
 
@@ -10,43 +17,33 @@ const Account = (props) => {
 
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
-      const user = Pool.getCurrentUser()
-      if (user) {
-        user.getSession((err, session) => {
-          if (err) {
-            reject()
-          } else {
-            resolve(session)
-          }
-        })
-      }
+      Auth.currentAuthenticatedUser()
+      .then((data) => {
+        resolve(data)
+      })
+      .catch((err) => {
+        reject(err)
+      })
     })
   }
 
-  const authenticate = async (Username, Password) => {
+  const authenticate = async (username, password) => {
     return await new Promise((resolve, reject) => {
-      const user = new CognitoUser({ Username, Pool })
-
-      const authDetails = new AuthenticationDetails({ Username, Password })
-
-      user.authenticateUser(authDetails, {
-        onSuccess: (data) => {
-          resolve(data)
-        },
-        onFailure: (err) => {
-          reject(err)
-        },
-        newPasswordRequired: (data) => {
-          resolve(data)
-        }
+      Auth.signIn(username, password)
+      .then((data) => {
+        resolve(data)
+      })
+      .catch((err) => {
+        reject(err)
       })
     })  
   }
 
-  const logout = () => {
-    const user = Pool.getCurrentUser()
-    if (user) {
-      user.signOut()
+  const logout = async () => {
+    try {
+      await Auth.signOut();
+    } catch (error) {
+      Error(error)
     }
   }
   
