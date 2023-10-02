@@ -36,6 +36,10 @@ html, body{
   justify-content: space-between;
 }
 
+.app.active {
+  justify-content: unset;
+}
+
 .basic-button {
   background-color: var(--main-color);
   border-radius: 10px;

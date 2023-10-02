@@ -13,6 +13,8 @@ import { faLocationDot, faCircleChevronDown} from '@fortawesome/free-solid-svg-i
 import useUserGeoLocation from './useUserGeoLocation'
 import { useRef, useState, useEffect } from 'react';
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 const customIcon = new Icon({
@@ -25,12 +27,19 @@ const userLocationIcon = new Icon({
   iconSize: [38,38]
 })
 
-function Map({apartments, markers, setFilteredMarkers}) {
+function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
   const [mapListActive, setMapListActive] = useState(false);
+  const [mapLoading, setMapLoading] = useState(true)
 
+  useEffect(() => {
+    // Simulate a delay to mimic map loading (you can replace this with actual loading logic)
+    setTimeout(() => {
+      setMapLoading(false);
+    }, 1000); // Adjust the delay as needed
+  }, []);
 
   useEffect(() => {
     if(mapRef.current){
@@ -77,6 +86,8 @@ function Map({apartments, markers, setFilteredMarkers}) {
     const container = document.querySelector('.footer-container');
     container.classList.toggle('show');
     widenButton.classList.toggle('active')
+    const app = document.querySelector('.app')
+    app.classList.toggle('active')
     map.classList.toggle('active')
     const initialApartmentList = document.querySelector('.flex-container')
     if(initialApartmentList) {
@@ -90,7 +101,9 @@ function Map({apartments, markers, setFilteredMarkers}) {
   
   return (
     <>
-      <MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
+      <div className='map-container'>
+        {!mapLoading ? (<MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
+        setMapLoading(prev => false)
         updateBounds(map.target)
       }}>
         <TileLayer
@@ -134,7 +147,8 @@ function Map({apartments, markers, setFilteredMarkers}) {
         <div className='open-me'>
         <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
         </div>
-      </MapContainer>
+      </MapContainer>) : <Skeleton height="100%" width="100%"/>}
+      </div>
       <div className='map-apartment-list'>
           {(apartments.length > 0) ? apartments.map((apartment, index) => {
             return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>

@@ -10,6 +10,8 @@ import ImageForm from '@/components/AddApartment/ImageForm'
 import './addApartment.css'
 import React, { useState, useEffect, useContext } from 'react';
 import { AccountContext } from '@/context/Account'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const initialApartmentState = {
     country: 'finland', // always finland
@@ -88,11 +90,13 @@ export default function AddApartmentsPage() {
     const [apartmentData, setApartmentData] = useState(initialApartmentState);
     const [user, setUser] = useState<any>(null)
     const { getSession, logout } = useContext(AccountContext)
+    const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
         getSession().then((session: any) => {
             setUser({ name: session.idToken.payload.name })
           })
+          setIsLoaded(true)
     }, [])
 
   // useEffect to load data from localStorage on component mount
@@ -184,7 +188,14 @@ export default function AddApartmentsPage() {
         
 
     return (
-        user ? (
+        !isLoaded ? <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem'}}>
+          <Skeleton width={350} height={30}/>
+          <Skeleton width={350} height={30}/>
+          <Skeleton width={350} height={30}/>
+          <Skeleton width={350} height={30}/>
+          <Skeleton width={350} height={30}/>
+        </div> :
+        ((isLoaded && user) ? (
             <div className='add-apartment-container'>
             <form onSubmit={goForward}>
             {step}
@@ -194,8 +205,8 @@ export default function AddApartmentsPage() {
                 : <button className='next-button' style={{background: 'green'}} type='button' onClick={handleSubmission}>Submit</button>}
             </div>
             </form>
-            </div>) : <div style={{padding: "1rem 2rem", display: "flex", flexDirection: 'row', justifyContent: 'center'}}>
+            </div>) : (isLoaded && !user) && <div style={{padding: "1rem 2rem", display: "flex", flexDirection: 'row', justifyContent: 'center'}}>
                 <h2>This page is only for logged users. Plese log in to list your apartment.</h2>
-            </div>
+            </div>)
     )
 }

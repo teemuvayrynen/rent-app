@@ -21,7 +21,7 @@ const sortApartments = (apartments: []) => {
   });
 }
 
-function postData(data: any, setApartments: any) {
+function postData(data: any, setApartments: any, setLoadingApartments: any) {
   const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get';
 
   const convertedData = {
@@ -35,7 +35,7 @@ function postData(data: any, setApartments: any) {
     },
     body: JSON.stringify(convertedData), 
   };
-
+  setLoadingApartments(true)
   fetch(apiUrl, requestOptions)
     .then((response) => {
       if (!response.ok) {
@@ -47,6 +47,7 @@ function postData(data: any, setApartments: any) {
       if(responseData.apartments){
         const sortedApartments = sortApartments(responseData.apartments)
         setApartments((prev: any) => sortedApartments)
+        setLoadingApartments(false)
       }
     })
     .catch((error) => {
@@ -57,6 +58,7 @@ function postData(data: any, setApartments: any) {
 export default function SearchPage() {
   const [apartments, setApartments] = useState([])
   const [markers, setMarkers] = useState([])
+  const [loadingApartments, setLoadingApartments] = useState(true)
   const [filteredMarkers, setFilteredMarkers] = useState([])
   const searchParams = useSearchParams()
   const searchString = searchParams.toString()
@@ -72,7 +74,7 @@ export default function SearchPage() {
   useEffect(() => {
       if (filteredMarkers.length > 0) {
         try {
-          postData(filteredMarkers, setApartments);
+          postData(filteredMarkers, setApartments, setLoadingApartments);
 
         } catch (error) {
           console.error('Error:', error);
@@ -85,10 +87,9 @@ export default function SearchPage() {
   , [filteredMarkers]);
 
   return (
-    <>
-      <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers}/>
-      {(markers.length !== 0) ? <ApartmentList apartments={apartments}/> : <div style={{display: "flex", flexDirection: "row", height: "200px", justifyContent: "center", alignItems: "center"}}><p>No Apartments available</p></div>}
-      
-    </>
+    <div style={{position: 'relative', height: 'calc(100vh - 20rem)'}}>
+      <ApartmentList apartments={apartments}/>
+      <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers} loadingApartments={loadingApartments}/>
+    </div>
   )
 }

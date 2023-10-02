@@ -21,9 +21,6 @@ function ApartmentList({apartments}) {
                     })}
                 </div>
             </div>
-            {visible < apartments.length ? (
-            <button onClick={showMore}>Load More</button>
-            ) : <button onClick={showMore} style={{opacity: 0, pointerEvents: 'none'}}>Load More</button>}
         </div>) : <p>Loading</p>
     );
 }
