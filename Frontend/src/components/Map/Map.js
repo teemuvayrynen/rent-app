@@ -103,9 +103,10 @@ function Map({apartments, markers, setFilteredMarkers}) {
             <Popup>Your Location</Popup>
           </Marker>
         )}
-        {(markers.length > 1) ? <MarkerClusterGroup chunkedLoading>
+        {(markers.length > 1) ? (
+        <MarkerClusterGroup chunkedLoading>
           {markers.map((marker) => {
-            marker.location && (
+            return marker.location && (
               <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
                  <Popup>
                   <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
@@ -117,7 +118,8 @@ function Map({apartments, markers, setFilteredMarkers}) {
               </Marker>
             )
           })}
-        </MarkerClusterGroup> : (markers.length === 1) && <Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
+        </MarkerClusterGroup>
+        ) : ((markers.length === 1) && (<Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
                  <Popup>
                   <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
                   <div className='apartment-info-popup'>
@@ -125,7 +127,7 @@ function Map({apartments, markers, setFilteredMarkers}) {
                     <p>{markers[0].price}/kk</p>
                   </div>
                 </Popup> 
-              </Marker>}
+              </Marker>))}
         <div className='locate-me'>
             <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
         </div>

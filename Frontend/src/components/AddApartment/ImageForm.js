@@ -1,9 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark} from '@fortawesome/free-solid-svg-icons'
 
-function ImageForm() {
-    const [images, setImage] = useState([])
+function ImageForm({apartmentData, handleUpdate}) {
+    const [images, setImage] = useState(apartmentData.images)
+
+    useEffect(() => {
+        console.log(images)
+        handleUpdate('images', images)
+    }, [images])
 
     const handleSubmit = (e) => {
         console.log(e.target)
@@ -16,7 +21,14 @@ function ImageForm() {
     const onImageChange = (event) => {
         if (event.target.files && event.target.files.length > 0) {
             Object.entries(event.target.files).map(([key, value]) => {
-                setImage(prev => [...prev, URL.createObjectURL(value)])
+                if(value){
+                    const reader = new FileReader()
+                    reader.onload = function (event) {
+                        const base64String = event.target.result
+                        setImage(prev => [...prev, base64String])
+                    }
+                    reader.readAsDataURL(value)
+                }
             })
             
         }

@@ -7,9 +7,9 @@ import { useSearchParams } from 'next/navigation'
 
 
 const sortApartments = (apartments: []) => {
-  return apartments.sort((a: { address: string; }, b: { address: string; }) => {
-    const addressA = a.address.toLowerCase(); 
-    const addressB = b.address.toLowerCase();
+  return apartments.sort((a: { street_name: string; }, b: { street_name: string; }) => {
+    const addressA = a.street_name.toLowerCase(); 
+    const addressB = b.street_name.toLowerCase();
   
     if (addressA < addressB) {
       return -1; 
@@ -44,8 +44,10 @@ function postData(data: any, setApartments: any) {
       return response.json(); 
     })
     .then((responseData) => {
-      const sortedApartments = sortApartments(responseData.apartments)
-      setApartments((prev: any) => sortedApartments)
+      if(responseData.apartments){
+        const sortedApartments = sortApartments(responseData.apartments)
+        setApartments((prev: any) => sortedApartments)
+      }
     })
     .catch((error) => {
       console.error('Error:', error);

@@ -12,8 +12,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AccountContext } from '@/context/Account'
 
 const initialApartmentState = {
-    id: '', // added in backend
-    country: 'Finland', // always Finland
+    country: 'finland', // always finland
     street_name: '',
     street_number: '',
     apt: '', // optional
@@ -21,7 +20,7 @@ const initialApartmentState = {
     city: '',
     zip: '',
     size: 0,
-    room_number: 0,
+    roomAmount: 0,
     apartmentType: '',
     ownerId: '', // add in frontend
     ownerName: '', // add in frontend
@@ -37,7 +36,7 @@ const initialApartmentState = {
       kitchen: {
         fridge: false,
         freezer: false,
-        oven: false,
+        owen: false,
         stove: false,
         dishwasher: false,
         microwave: false,
@@ -71,10 +70,10 @@ const initialApartmentState = {
         recycle_point: false,
       },
     },
-    images: [{ id: '' }],
+    images: [],
     location: {
       lat: 0,
-      lng: 0,
+      lon: 0,
     },
     description: '',
     startDate: '',
@@ -142,13 +141,44 @@ export default function AddApartmentsPage() {
     const { steps, currentIndex, goBack, goForward, step } = useMultiStepForm({
         steps: [<InformationForm apartmentData={apartmentData} handleUpdate={handleUpdate}/>, <LoacationForm apartmentData={apartmentData} handleUpdate={handleUpdate}/>,
     <DateForm apartmentData={apartmentData} handleUpdate={handleUpdate}/>, <AdditionalInfo apartmentData={apartmentData} handleUpdate={handleUpdate}/>,
-    <EquipmentInfo apartmentData={apartmentData} handleUpdate={handleUpdate}/>, <ImageForm />],
+    <EquipmentInfo apartmentData={apartmentData} handleUpdate={handleUpdate}/>, <ImageForm apartmentData={apartmentData} handleUpdate={handleUpdate}/>],
       });
       
     const handleSubmission = (e : any) => {
         e.preventDefault()
         console.log("Posting data")
-    }
+        const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/post'
+        const { images, ...updatedState } = apartmentData
+        console.log(updatedState)
+        const body = {
+          apartment: updatedState,
+          images: images
+        }
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body), 
+        };
+      
+        fetch(apiUrl, requestOptions)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json(); 
+          })
+          .then((responseData) => {
+            console.log(responseData)
+            console.log("Post successfull")
+            window.location.href = "/search"
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
+      }
+        
 
     return (
         user ? (

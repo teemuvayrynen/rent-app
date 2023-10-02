@@ -15,7 +15,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.bathroom.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.bathroom.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}
@@ -30,7 +30,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.kitchen.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.kitchen.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}
@@ -45,7 +45,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.electronics.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.electronics.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}
@@ -60,7 +60,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.premises.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.premises.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}
@@ -75,7 +75,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.utility.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.utility.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}
@@ -90,7 +90,7 @@ function EquipmentInfo({apartmentData, handleUpdate}) {
                                         <p>{key.replace(/(^|_)([a-z])/g, (match, separator, letter) =>
                                         (separator === "_" ? " " : "") + letter.toUpperCase()
                                         )}</p>
-                                        <input className='checkbox' checked={value} type="checkbox" onChange={(e) => handleUpdate(`equipment.other.${key}`, e.target.value)}/>
+                                        <input className='checkbox' type="checkbox" checked={value} onChange={(e) => handleUpdate(`equipment.other.${key}`, e.target.checked)}/>
                                     </div>
                                 )
                             })}

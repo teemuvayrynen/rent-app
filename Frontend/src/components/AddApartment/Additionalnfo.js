@@ -7,15 +7,15 @@ function Additionalnfo({apartmentData, handleUpdate}) {
             <div className='additional-information'>
                     <div className='grid-item1'>
                         <label>Rent</label>
-                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['montlyPrice']} onChange={(e) => handleUpdate('montlyPrice', e.target.value)}/>
+                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['monthlyPrice']} onChange={(e) => handleUpdate('monthlyPrice', parseInt(e.target.value, 10))}/>
                     </div>
                     <div className='grid-item2'>
                         <label>Deposit €</label>
-                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['deposit']} onChange={(e) => handleUpdate('deposit', e.target.value)}/>
+                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['deposit']} onChange={(e) => handleUpdate('deposit', parseInt(e.target.value, 10))}/>
                     </div>
                     <div className='grid-item3'>
                         <label>Water price €</label>
-                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['waterPrice']} onChange={(e) => handleUpdate('waterPrice', e.target.value)}/>
+                        <input type="number" autoFocus required placeholder='EUR' value={apartmentData['waterPrice']} onChange={(e) => handleUpdate('waterPrice', parseInt(e.target.value, 10))}/>
                     </div>
                     <div className='grid-item5'>
                         <label>Description</label>

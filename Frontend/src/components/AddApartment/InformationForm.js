@@ -11,9 +11,9 @@ function InformationForm({apartmentData, handleUpdate}) {
             <label>What is the type?</label>
             <input type="text" autoFocus required placeholder='Apartment type' value={apartmentData['apartmentType']} onChange={(e) => handleUpdate('apartmentType', e.target.value)} />
             <label>What is the surface area in m2?</label>
-            <input type="number" autoFocus required placeholder='Apartment size' value={apartmentData['size']} onChange={(e) => handleUpdate('size', e.target.value)}/>
+            <input type="number" autoFocus required placeholder='Apartment size' value={apartmentData['size']} onChange={(e) => handleUpdate('size', parseInt(e.target.value, 10))}/>
             <label>How many rooms?</label>
-            <input type="number" autoFocus required placeholder='Room number' value={apartmentData['room_number']} onChange={(e) => handleUpdate('room_number', e.target.value)}/>
+            <input type="number" autoFocus required placeholder='Room number' value={apartmentData['roomAmount']} onChange={(e) => handleUpdate('roomAmount', parseInt(e.target.value, 10))}/>
             </div>
         </>
     );

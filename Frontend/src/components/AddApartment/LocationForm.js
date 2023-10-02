@@ -7,13 +7,13 @@ import { faCircleInfo} from '@fortawesome/free-solid-svg-icons'
 
 function LocationForm({apartmentData, handleUpdate}) {
 
-    const [circle, setCircle] = useState(null);
+    const [circle, setCircle] = useState({lat: 0, lng: 0});
 
     useEffect(()=>{
         if(apartmentData.location.lat !== 0 && apartmentData.location.lon !== 0) {
             const newCircle = {
                 lat:  apartmentData.location.lat,
-                lng: apartmentData.location.lng
+                lng: apartmentData.location.lon
               }
             setCircle(prev  => newCircle)
         }
@@ -46,7 +46,7 @@ function LocationForm({apartmentData, handleUpdate}) {
                     </div>
                 </div>
                 <div className='map-container'>
-                    <DynamicMap circle={circle} setCircle={setCircle} handleUpdate={handleUpdate}/>
+                    <DynamicMap circle={circle} setCircle={setCircle} handleUpdate={() => handleUpdate('location', {lat: circle.lat, lon: circle.lng})}/>
                     <div className='information-icon' style={{position: "absolute", zIndex: 1000, right: "20px", top: "11px"}}>
                         <FontAwesomeIcon icon={faCircleInfo} size="2x" aria-label='Tooltip'/>
                     </div>
