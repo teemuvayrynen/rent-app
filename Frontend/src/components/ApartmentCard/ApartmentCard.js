@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import './apartmentCard.css'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+import { useState, useEffect } from 'react';
 
 function formatDateToDDMMYY(timeString) {
   if(timeString !== "temp")
@@ -17,6 +20,13 @@ function formatDateToDDMMYY(timeString) {
 }
 
 function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setIsLoaded(prev => true)
+    },1000)
+}, [])
 
     const handleApartmentClick = (apartment) => {
         const mapList = document.querySelector('.map-apartment-list');
@@ -28,7 +38,8 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
       }
 
     return (
-        <div className={`card-container ${mapListActive ? 'map' : ''}`} onClick={() => handleApartmentClick(apartment)}>
+        (isLoaded) ? 
+        (<div className={`card-container ${mapListActive ? 'map' : ''}`} onClick={() => handleApartmentClick(apartment)}>
           <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" className="card-image"/>
 
           <div className='apartment-info'>
@@ -37,7 +48,12 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
               <p>{formatDateToDDMMYY(apartment.startDate)} - {formatDateToDDMMYY(apartment.endDate)}</p>
           </div>
             
-        </div>
+        </div>) : (
+          <div style={{display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px'}}>
+            <Skeleton borderRadius="20px" width="100%" height="200px"/>
+            <Skeleton width="100%" height="20px"/>
+          </div>
+        )
     );
 }
 

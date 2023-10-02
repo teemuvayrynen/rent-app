@@ -1,15 +1,22 @@
 .flex-container {
+    background: white;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0rem;
     gap: 2rem;
     overflow: hidden;
+    z-index: 9999;
+    width: 30%;
+    height: 100%;
+    transition: 1s left ease;
 }
 
 .flex-container.disabled {
-    display: none;
+    left: -100%;
 }
 
 .apartment-list{
@@ -17,8 +24,6 @@
     height: 35rem;
     overflow-y: scroll;
     box-sizing: content-box;
-    padding-right: 20px;
-
 }
 
 .grid-container {
@@ -26,7 +31,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, 14rem);
     justify-content: center;
-    gap: 3rem;
+    gap: 0 1rem;
 }
 
 button {

@@ -26,6 +26,7 @@ const Login = ({ setVisible }) => {
             authenticate(values.email, values.password)
               .then(data => {
                 console.log(data)
+                window.location.reload()
               })
               .catch(err => {
                 switch (err.code) {
@@ -39,9 +40,6 @@ const Login = ({ setVisible }) => {
                     break
                 }
               })
-            setTimeout(() => {
-              window.location.reload()
-            }, 1000)
           }}
         >
           {({
