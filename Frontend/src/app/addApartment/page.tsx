@@ -151,7 +151,10 @@ export default function AddApartmentsPage() {
         const { images, ...updatedState } = apartmentData
         console.log(updatedState)
         const body = {
-          apartment: updatedState,
+          apartment: {
+            ...updatedState,
+            ownerId: "ciwedjweifweiwei"
+          },
           images: images
         }
         const requestOptions = {
@@ -172,7 +175,7 @@ export default function AddApartmentsPage() {
           .then((responseData) => {
             console.log(responseData)
             console.log("Post successfull")
-            window.location.href = "/search"
+            //window.location.href = "/search"
           })
           .catch((error) => {
             console.error('Error:', error);
