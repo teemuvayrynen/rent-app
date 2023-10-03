@@ -94,7 +94,7 @@ export default function AddApartmentsPage() {
 
     useEffect(() => {
         getSession().then((session: any) => {
-            setUser({ name: session.idToken.payload.name })
+            setUser({ name: session.attributes.name })
           })
           setIsLoaded(true)
     }, [])

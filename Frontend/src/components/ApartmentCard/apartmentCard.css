@@ -1,5 +1,4 @@
 .card-container {
-    aspect-ratio: 1;
     display: flex;
     flex-direction: column;
     color: black;
@@ -21,10 +20,10 @@
 }
 
 .card-image {
+    aspect-ratio: 1;
     display: block;
     border-radius: 20px;
     width: 100%;
-    aspect-ratio: 1;
     object-fit: cover;
     object-position: center;
     transition: 200ms transform ease;
@@ -42,7 +41,7 @@
     gap: 0.5rem;
     justify-content: center;
     align-items: left;
-    padding: 1rem 1rem;
+    padding: 0 1rem;
 }
 
 .apartment-info p:first-child{
