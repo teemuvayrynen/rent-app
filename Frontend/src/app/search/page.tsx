@@ -4,6 +4,7 @@ import DynamicMap from '../../components/Map/index'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { Storage } from 'aws-amplify'
 
 
 const sortApartments = (apartments: []) => {
@@ -86,8 +87,12 @@ export default function SearchPage() {
     }
   , [filteredMarkers]);
 
+  
+
+
   return (
     <div style={{position: 'relative', height: 'calc(100vh - 20rem)'}}>
+      
       <ApartmentList apartments={apartments}/>
       <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers} loadingApartments={loadingApartments}/>
     </div>

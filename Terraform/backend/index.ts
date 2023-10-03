@@ -2,7 +2,7 @@ import { Construct } from "constructs";
 import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { ApartmentsStorage } from "./storage";
 import { ApartmentsApi } from "./api/apartments";
-import { Cognito } from "./cognito";
+import { Cognito } from "./Cognito";
 
 export class ServerlessBackend extends Construct {
   constructor(scope: Construct, id: string, imgBucket: S3Bucket) {

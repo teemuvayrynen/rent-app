@@ -42,17 +42,6 @@ export class AddApartmentsLambda extends Construct {
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
-              },
-              {
-                Action: [
-                  "s3:PutObject",
-                ],
-                Resource: [
-                  `${options.imgBucket.arn}/images/*.jpg`,
-                  `${options.imgBucket.arn}/images/*.jpeg`,
-                  `${options.imgBucket.arn}/images/*.png`
-                ],
-                Effect: "Allow",
               }
             ],
           }),
