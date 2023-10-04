@@ -5,14 +5,15 @@ import { S3BucketPolicy } from "@cdktf/provider-aws/lib/s3-bucket-policy";
 import { S3BucketCorsConfiguration } from "@cdktf/provider-aws/lib/s3-bucket-cors-configuration";
 import { CloudfrontOriginAccessIdentity } from "@cdktf/provider-aws/lib/cloudfront-origin-access-identity";
 import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
+import { image_bucket } from "../variables";
 
 export class S3ImageBucket extends Construct {
   bucket: S3Bucket
-  constructor(scope: Construct, id: string, OAI: CloudfrontOriginAccessIdentity, cognitoRole: IamRole) {
+  constructor(scope: Construct, id: string, OAI: CloudfrontOriginAccessIdentity, cognitoRole: IamRole, lambda_role: IamRole) {
     super(scope, id)
 
     this.bucket = new S3Bucket(this, "bucket", {
-      bucket: 's3-image-bucket-apartments',
+      bucket: image_bucket,
       tags: {
         "hc-internet-facing": "true"
       }
@@ -62,6 +63,18 @@ export class S3ImageBucket extends Construct {
             },
             Action: ["s3:PutObject"],
             Resource: [`${this.bucket.arn}/private/*`],
+          },
+          {
+            Sid: "LambdaAllowAccess",
+            Effect: "Allow",
+            Principal: {
+              "AWS": `${lambda_role.arn}`
+            },
+            Action: "*",
+            Resource: [
+              `${this.bucket.arn}/private/*`,
+              `${this.bucket.arn}/images/*`
+            ],
           }
         ],
       }),

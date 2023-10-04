@@ -5,6 +5,7 @@ import { S3BucketPublicAccessBlock } from "@cdktf/provider-aws/lib/s3-bucket-pub
 import { Construct } from "constructs";
 import { S3Object } from "@cdktf/provider-aws/lib/s3-object";
 import { CloudfrontOriginAccessIdentity } from "@cdktf/provider-aws/lib/cloudfront-origin-access-identity";
+import { frontend_bucket } from "../variables";
 import * as path from 'path'
 import * as glob from 'glob'
 import * as mime from 'mime-types'
@@ -18,7 +19,7 @@ export class Frontend extends Construct {
     super(scope, id)
 
     this.bucket = new S3Bucket(this, "bucket", {
-      bucket: 'website-frontend-bucket',
+      bucket: frontend_bucket,
       tags: {
         "hc-internet-facing": "true"
       }

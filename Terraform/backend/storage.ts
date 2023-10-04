@@ -1,5 +1,6 @@
 import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { Construct } from "constructs";
+import { dynamo_apartments_table } from "../variables";
 
 export class ApartmentsStorage extends Construct {
   table: DynamodbTable;
@@ -8,7 +9,7 @@ export class ApartmentsStorage extends Construct {
     super(scope, id);
 
     this.table = new DynamodbTable(this, "table", {
-      name: "dynamo-apartment-storage",
+      name: dynamo_apartments_table,
       billingMode: "PAY_PER_REQUEST",
       hashKey: "country",
       rangeKey: "id",

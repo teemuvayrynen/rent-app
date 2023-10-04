@@ -9,7 +9,7 @@ import { GetMarkersLambda } from "../lambda/getMarkers";
 import { GetLandingApartmentsLambda } from "../lambda/getLandingApartments";
 import { GetUserApartmentsLambda } from "../lambda/getUserApartments";
 import { GetApartmentLambda } from "../lambda/getApartment";
-import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
+import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
 
 const lambdaRolePolicy = {
   Version: "2012-10-17",
@@ -26,7 +26,8 @@ const lambdaRolePolicy = {
 };
 
 export class ApartmentsApi extends Construct {
-  constructor(scope: Construct, id: string, table: DynamodbTable, imgBucket: S3Bucket) {
+  add_ap_lambda_role: IamRole
+  constructor(scope: Construct, id: string, table: DynamodbTable) {
     super(scope, id);
 
     const api = new Apigatewayv2Api(this, "api-gw", {
@@ -57,12 +58,11 @@ export class ApartmentsApi extends Construct {
       api
     })
 
-    new AddApartmentsLambda(this, "add-apartments-lambda", {
+    this.add_ap_lambda_role = new AddApartmentsLambda(this, "add-apartments-lambda", {
       table,
       lambdaRolePolicy,
-      api,
-      imgBucket
-    })
+      api
+    }).role
 
     new DeleteApartmentsLambda(this, "delete-apartments-lambda", {
       table,

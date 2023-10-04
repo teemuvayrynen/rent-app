@@ -12,11 +12,11 @@ export class ServerlessBackend extends Construct {
     super(scope, id);
 
     const cognito = new Cognito(this, "cognito").cognitoRole
-    
-    this.imgBucket = new S3ImageBucket(this, "image-bucket", OAI, cognito).bucket
 
     const storage = new ApartmentsStorage(this, "storage");
 
-    new ApartmentsApi(this, "api", storage.table, this.imgBucket)
+    const api = new ApartmentsApi(this, "api", storage.table)
+
+    this.imgBucket = new S3ImageBucket(this, "image-bucket", OAI, cognito, api.add_ap_lambda_role).bucket
   }
 } 

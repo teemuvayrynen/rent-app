@@ -38,23 +38,22 @@ export async function handler(event) {
         for (let i in data.images) {
           const img = data.images[i]
           
-          // const headRes = await s3.headObject({ Bucket: bucket, Key: `private/${data.federatedId}/${img}` }).promise();
-          // console.log(headRes)
+          await s3.headObject({ Bucket: bucket, Key: `private/${data.federatedId}/${img}` }).promise();
 
-          // const params = {
-          //   Bucket: bucket,
-          //   Key: `images/${img}`,
-          //   CopySource: `${bucket}/private/${data.federatedId}/${img}`
-          // }
+          const params = {
+            Bucket: bucket,
+            Key: `images/${img}`,
+            CopySource: `${bucket}/private/${data.federatedId}/${img}`
+          }
 
-          // await s3.copyObject(params).promise()
+          await s3.copyObject(params).promise()
 
-          // const deleteObjectParams = {
-          //   Bucket: bucket,
-          //   Key: `private/${data.federatedId}/${img}`
-          // }
+          const deleteObjectParams = {
+            Bucket: bucket,
+            Key: `private/${data.federatedId}/${img}`
+          }
 
-          // await s3.deleteObject(deleteObjectParams).promise();
+          await s3.deleteObject(deleteObjectParams).promise();
 
           images.push(img)
         }
