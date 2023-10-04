@@ -10,6 +10,7 @@ import { CognitoIdentityPoolRolesAttachment } from "@cdktf/provider-aws/lib/cogn
 import { Token } from "cdktf";
 
 export class Cognito extends Construct {
+  cognitoRole: IamRole
 
   constructor(scope: Construct, id: string ) {
     super(scope, id);
@@ -117,7 +118,7 @@ export class Cognito extends Construct {
       ]
     })
 
-    const role = new IamRole(this, "authenticated_role", {
+    this.cognitoRole = new IamRole(this, "authenticated_role", {
       name: "cognitoAuthenticatedUser",
       assumeRolePolicy: Token.asString(document.json)
     })
@@ -137,14 +138,14 @@ export class Cognito extends Construct {
 
     new IamRolePolicy(this, "authenticated_role_policy", {
       name: "authenticated_policy",
-      role: role.id,
+      role: this.cognitoRole.id,
       policy: Token.asString(document_auth.json)
     })
 
     new CognitoIdentityPoolRolesAttachment(this, "cognito_pool_attachement", {
       identityPoolId: identityPool.id,
       roles: {
-        "authenticated": role.arn
+        "authenticated": this.cognitoRole.arn
       }
     })
 

@@ -2,11 +2,13 @@ import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { S3BucketPublicAccessBlock } from "@cdktf/provider-aws/lib/s3-bucket-public-access-block";
 import { Construct } from "constructs";
 import { S3BucketPolicy } from "@cdktf/provider-aws/lib/s3-bucket-policy";
+import { S3BucketCorsConfiguration } from "@cdktf/provider-aws/lib/s3-bucket-cors-configuration";
 import { CloudfrontOriginAccessIdentity } from "@cdktf/provider-aws/lib/cloudfront-origin-access-identity";
+import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
 
 export class S3ImageBucket extends Construct {
   bucket: S3Bucket
-  constructor(scope: Construct, id: string, OAI: CloudfrontOriginAccessIdentity) {
+  constructor(scope: Construct, id: string, OAI: CloudfrontOriginAccessIdentity, cognitoRole: IamRole) {
     super(scope, id)
 
     this.bucket = new S3Bucket(this, "bucket", {
@@ -24,6 +26,19 @@ export class S3ImageBucket extends Construct {
       restrictPublicBuckets: true,
     })
 
+    new S3BucketCorsConfiguration(this, "s3_cors_policy", {
+      bucket: this.bucket.id,
+      corsRule: [
+        {
+          allowedHeaders: ["*"],
+          allowedMethods: ["PUT", "POST"],
+          allowedOrigins: ["*"],
+          exposeHeaders: [],
+          maxAgeSeconds: 3000,
+        },
+      ]
+    })
+
     new S3BucketPolicy(this, "s3_policy", {
       bucket: this.bucket.bucket,
       policy: JSON.stringify({
@@ -37,7 +52,16 @@ export class S3ImageBucket extends Construct {
               "AWS": `${OAI.iamArn}`
             },
             Action: ["s3:GetObject"],
-            Resource: [`${this.bucket.arn}/*`, `${this.bucket.arn}`],
+            Resource: [`${this.bucket.arn}/images/*`],
+          },
+          {
+            Sid: "CognitoAllowPut",
+            Effect: "Allow",
+            Principal: {
+              "AWS": `${cognitoRole.arn}`
+            },
+            Action: ["s3:PutObject"],
+            Resource: [`${this.bucket.arn}/private/*`],
           }
         ],
       }),

@@ -91,8 +91,7 @@ export default function SearchPage() {
 
 
   return (
-    <div style={{position: 'relative', height: 'calc(100vh - 20rem)'}}>
-      
+    <div style={{display: 'flex', flexDirection: 'row', height: 'calc(100vh - 20rem)', borderTop: '0.5px solid rgb(0,0,0,0.4)'}}>
       <ApartmentList apartments={apartments}/>
       <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers} loadingApartments={loadingApartments}/>
     </div>

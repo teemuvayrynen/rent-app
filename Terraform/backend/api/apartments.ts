@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { Apigatewayv2Api } from "@cdktf/provider-aws/lib/apigatewayv2-api";
 import { Apigatewayv2Stage } from "@cdktf/provider-aws/lib/apigatewayv2-stage";
-import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { GetApartmentsLambda } from "../lambda/getApartments";
 import { AddApartmentsLambda } from "../lambda/addApartment";
 import { DeleteApartmentsLambda } from "../lambda/deleteApartment";
@@ -10,6 +9,7 @@ import { GetMarkersLambda } from "../lambda/getMarkers";
 import { GetLandingApartmentsLambda } from "../lambda/getLandingApartments";
 import { GetUserApartmentsLambda } from "../lambda/getUserApartments";
 import { GetApartmentLambda } from "../lambda/getApartment";
+import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 
 const lambdaRolePolicy = {
   Version: "2012-10-17",

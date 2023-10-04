@@ -22,12 +22,6 @@ function formatDateToDDMMYY(timeString) {
 function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
   const [isLoaded, setIsLoaded] = useState(false)
 
-  useEffect(() => {
-    const delay = setTimeout(() => {
-      setIsLoaded(prev => true)
-    },1000)
-}, [])
-
     const handleApartmentClick = (apartment) => {
         const mapList = document.querySelector('.map-apartment-list');
         if (mapList.classList.contains('active')) {
@@ -38,22 +32,17 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
       }
 
     return (
-        (isLoaded) ? 
-        (<div className={`card-container ${mapListActive ? 'map' : ''}`} onClick={() => handleApartmentClick(apartment)}>
-          <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" className="card-image"/>
 
+        (<div className={`card-container ${mapListActive ? 'map' : ''}`} onClick={() => handleApartmentClick(apartment)}>
+          <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" onLoad={() => setIsLoaded(true)} className="card-image" style={{display: !isLoaded ? 'none' : 'block'}}/>
+          <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%" height="200px"/>
           <div className='apartment-info'>
               <p>{apartment.address}</p>
               <p>{apartment.price}/kk &emsp; {apartment.size}</p>
               <p>{formatDateToDDMMYY(apartment.startDate)} - {formatDateToDDMMYY(apartment.endDate)}</p>
           </div>
             
-        </div>) : (
-          <div style={{display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px'}}>
-            <Skeleton borderRadius="20px" width="100%" height="200px"/>
-            <Skeleton width="100%" height="20px"/>
-          </div>
-        )
+        </div>)
     );
 }
 

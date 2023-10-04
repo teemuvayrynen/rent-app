@@ -33,6 +33,9 @@ function Navbar() {
     getSession().then((session) => {
       setUser({ name: session.attributes.name })
     })
+    .catch((err) => {
+      Error(err)
+    })
   }, [])
 
   useEffect(() => {

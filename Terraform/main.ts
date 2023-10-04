@@ -2,12 +2,11 @@ import { Construct } from "constructs";
 import { App, TerraformStack, S3Backend } from "cdktf";
 // import { Frontend } from "./frontend/frontend";
 import { CloudfrontOriginAccessIdentity } from "@cdktf/provider-aws/lib/cloudfront-origin-access-identity";
-import { S3ImageBucket } from "./imageStorage/s3imagebucket";
 import { AwsProvider } from "@cdktf/provider-aws/lib/provider";
 import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { CloudfrontDistribution } from "@cdktf/provider-aws/lib/cloudfront-distribution";
 import { TerraformOutput, Token } from "cdktf";
-import { ServerlessBackend } from "./backend";
+import { ServerlessBackend } from "./backend/backend";
 
 
 class MyStack extends TerraformStack {
@@ -35,9 +34,7 @@ class MyStack extends TerraformStack {
 
     // const frontend = new Frontend(this, "frontend", OAI)
 
-    const images = new S3ImageBucket(this, "image-bucket", OAI)
-
-    new ServerlessBackend(this, "serverless-backend", images.bucket)
+    const backend = new ServerlessBackend(this, "serverless-backend", OAI)
 
     const cf = new CloudfrontDistribution(this, "cf", {
       enabled: true,
@@ -53,7 +50,7 @@ class MyStack extends TerraformStack {
           "PUT",
         ],
         cachedMethods: ["GET", "HEAD"],
-        targetOriginId: images.bucket.bucket,
+        targetOriginId: backend.imgBucket.bucket,
         viewerProtocolPolicy: "redirect-to-https",
         forwardedValues: { queryString: false, cookies: { forward: "none" } },
       },
@@ -70,7 +67,7 @@ class MyStack extends TerraformStack {
             queryString: false,
           },
           pathPattern: "/images/*",
-          targetOriginId: images.bucket.bucket,
+          targetOriginId: backend.imgBucket.bucket,
           viewerProtocolPolicy: "redirect-to-https",
         }
       ],
@@ -85,8 +82,8 @@ class MyStack extends TerraformStack {
         //   },
         // },
         {
-          originId: images.bucket.bucket,
-          domainName: images.bucket.bucketRegionalDomainName,
+          originId: backend.imgBucket.bucket,
+          domainName: backend.imgBucket.bucketRegionalDomainName,
           s3OriginConfig: {
             originAccessIdentity: Token.asString(
               OAI.cloudfrontAccessIdentityPath
@@ -102,20 +99,6 @@ class MyStack extends TerraformStack {
     new TerraformOutput(this, "frontend_domainname", {
       value: cf.domainName,
     }).addOverride("value", `https://${cf.domainName}`);
-
-
-    // for later use
-
-    // const asset = new TerraformAsset(this, "frontend-asset", {
-    //   path: path.resolve("../", "Frontend"),
-    //   type: AssetType.ARCHIVE,
-    // });
-
-    // new S3BucketObject(this, "frontend-archive", {
-    //   bucket: bucket.bucket,
-    //   key: asset.fileName,
-    //   source: asset.path,
-    // });
   }
 }
 

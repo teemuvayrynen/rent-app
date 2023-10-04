@@ -1,8 +1,9 @@
 .footer-container {
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 18rem;
+  height: 15rem;
   background-color: var(--main-color);
   display: flex;
 }
@@ -17,7 +18,6 @@
   align-items: center;
   text-align: center;
   width: 32rem;
-  margin-top: 3rem;
   gap: 2.5rem;
   color: white;
   font-weight: 300;

@@ -3,7 +3,7 @@
 import Landing from "@/components/Landing/Landing"
 import React, { useState, useEffect } from "react"
 import ApartmentRow from "@/components/ApartmentRow/ApartmentRow"
-import { Storage } from "aws-amplify"
+import { Storage, Auth } from "aws-amplify"
 
 
 export default function Home() {
@@ -17,14 +17,13 @@ export default function Home() {
   //     })
   // }, [])
 
-
+  // temp
   const handleClick = async () => {
     try {
       const test = {
         test: 24345678765
       }
-  
-      const t = await Storage.put("tes1ghfgt.json", JSON.stringify(test))
+      const t = await Storage.put("tes1gedehfgt.json", JSON.stringify(test))
       console.log(t)
     } catch (err) {
       console.log(err)

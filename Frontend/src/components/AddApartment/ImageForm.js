@@ -19,20 +19,23 @@ function ImageForm({apartmentData, handleUpdate}) {
     }
 
     const onImageChange = (event) => {
-        if (event.target.files && event.target.files.length > 0) {
-            Object.entries(event.target.files).map(([key, value]) => {
-                if(value){
-                    const reader = new FileReader()
-                    reader.onload = function (event) {
-                        const base64String = event.target.result
-                        setImage(prev => [...prev, base64String])
-                    }
-                    reader.readAsDataURL(value)
-                }
-            })
-            
-        }
-       }
+      if (event.target.files && event.target.files.length > 0) {
+        setImage(prev => [...prev, ...event.target.files])
+        // Object.entries(event.target.files).map(([key, value]) => {
+        //     if(value){
+        //         const reader = new FileReader()
+        //         reader.onload = function (event) {
+        //             const base64String = event.target.result
+        //             setImage(prev => [...prev, base64String])
+        //         }
+        //         reader.readAsDataURL(value)
+        //     }
+        // })
+    //     console.log(event.target.files)
+        
+          
+      }
+    }
 
     const deleteImage = (image) => {
         setImage(prev => {

@@ -82,6 +82,14 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
 
   const widenMap = () => {
     const map = document.querySelector('.leaflet-container')
+    /*const mapSearchBar = document.querySelector('.leaflet-geosearch-bar')
+    if (mapSearchBar) {
+      console.log(mapSearchBar)
+      mapSearchBar.classList.toggle('active');
+    }
+    else{
+      console.log("notfound")
+    }*/
     const widenButton = document.querySelector('.open-me')
     const container = document.querySelector('.footer-container');
     container.classList.toggle('show');

@@ -28,13 +28,12 @@ const Account = (props) => {
     return await new Promise((resolve, reject) => {
       Auth.currentAuthenticatedUser()
       .then((data) => {
-        console.log(data)
         resolve(data)
       })
       .catch((err) => {
         reject(err)
       })
-    })
+    }) 
   }
 
   const authenticate = async (username, password) => {
@@ -49,6 +48,18 @@ const Account = (props) => {
     })  
   }
 
+  const getUserInfo = async () => {
+    return await new Promise((resolve, reject) => {
+      Auth.currentUserInfo()
+      .then((data) => {
+        resolve(data)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+    }) 
+  }
+
   const logout = async () => {
     try {
       await Auth.signOut();
@@ -58,7 +69,7 @@ const Account = (props) => {
   }
   
   return (
-    <AccountContext.Provider value={{ authenticate, getSession, logout }}>
+    <AccountContext.Provider value={{ authenticate, getSession, logout, getUserInfo }}>
       {props.children}
     </AccountContext.Provider>
   )

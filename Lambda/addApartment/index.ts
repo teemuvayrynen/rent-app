@@ -9,19 +9,16 @@ const ajv = new Ajv()
 const dynamo = new AWS.DynamoDB.DocumentClient()
 const s3 = new AWS.S3()
 
+
+const bucket = "s3-image-bucket-apartments"
+
 const validate = ajv.compile(finalApartmentSchema)
 
 interface JSONSchema {
-  apartment: ApartmentData,
+  apartment: ApartmentData
   images: Array<string>
+  federatedId: string
 }
-
-const mimes = [
-  "image/png",
-  "image/jpeg",
-  "image/jpg"
-]
-
 
 export async function handler(event) {
   let body;
@@ -34,10 +31,34 @@ export async function handler(event) {
   try {
     const data: JSONSchema = JSON.parse(event.body)
 
-    if (validate(data.apartment)) {
-      let images: Array<any> = []
+    if (validate(data.apartment) && data.federatedId) {
+      let images: Array<string> = []
 
+      if (data.images.length > 0) {
+        for (let i in data.images) {
+          const img = data.images[i]
+          
+          // const headRes = await s3.headObject({ Bucket: bucket, Key: `private/${data.federatedId}/${img}` }).promise();
+          // console.log(headRes)
 
+          // const params = {
+          //   Bucket: bucket,
+          //   Key: `images/${img}`,
+          //   CopySource: `${bucket}/private/${data.federatedId}/${img}`
+          // }
+
+          // await s3.copyObject(params).promise()
+
+          // const deleteObjectParams = {
+          //   Bucket: bucket,
+          //   Key: `private/${data.federatedId}/${img}`
+          // }
+
+          // await s3.deleteObject(deleteObjectParams).promise();
+
+          images.push(img)
+        }
+      }
       
       const params = {
         TableName: "dynamo-apartment-storage",

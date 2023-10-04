@@ -3,11 +3,11 @@ import { NodejsFunction } from "../../lib/nodejs-function";
 import { DynamodbTable } from "@cdktf/provider-aws/lib/dynamodb-table";
 import { LambdaFunction } from "@cdktf/provider-aws/lib/lambda-function";
 import { Apigatewayv2Api } from "@cdktf/provider-aws/lib/apigatewayv2-api";
-import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import { Apigatewayv2Integration } from "@cdktf/provider-aws/lib/apigatewayv2-integration";
 import { Apigatewayv2Route } from "@cdktf/provider-aws/lib/apigatewayv2-route";
 import { LambdaPermission } from "@cdktf/provider-aws/lib/lambda-permission";
 import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
+import { S3Bucket } from "@cdktf/provider-aws/lib/s3-bucket";
 import * as path from "path"
 
 interface LambdaOptions {
@@ -41,6 +41,18 @@ export class AddApartmentsLambda extends Construct {
                   "dynamodb:PutItem",
                 ],
                 Resource: options.table.arn,
+                Effect: "Allow",
+              },
+              {
+                Action: [
+                  "s3:HeadObject",
+                  "s3:CopyObject",
+                  "s3:DeleteObject"
+                ],
+                Resource: [
+                  `${options.imgBucket.arn}/private/*`,
+                  `${options.imgBucket.arn}/images/*`
+                ],
                 Effect: "Allow",
               }
             ],

@@ -12,6 +12,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AccountContext } from '@/context/Account'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { Storage } from 'aws-amplify'
+import { v4 as uuidv4 } from 'uuid';
+
+interface ImgObj {
+  type: string
+  name: string
+  lastModified: number
+  size: number
+  webkitRelativePath: string
+}
 
 const initialApartmentState = {
     country: 'finland', // always finland
@@ -89,12 +99,12 @@ const initialApartmentState = {
 export default function AddApartmentsPage() {
     const [apartmentData, setApartmentData] = useState(initialApartmentState);
     const [user, setUser] = useState<any>(null)
-    const { getSession, logout } = useContext(AccountContext)
+    const { getSession, getUserInfo } = useContext(AccountContext)
     const [isLoaded, setIsLoaded] = useState(false)
 
     useEffect(() => {
         getSession().then((session: any) => {
-            setUser({ name: session.idToken.payload.name })
+            setUser({ name: session.attributes.name })
           })
           setIsLoaded(true)
     }, [])
@@ -148,28 +158,53 @@ export default function AddApartmentsPage() {
     <EquipmentInfo apartmentData={apartmentData} handleUpdate={handleUpdate}/>, <ImageForm apartmentData={apartmentData} handleUpdate={handleUpdate}/>],
       });
       
-    const handleSubmission = (e : any) => {
-        e.preventDefault()
-        console.log("Posting data")
-        const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/post'
-        const { images, ...updatedState } = apartmentData
-        console.log(updatedState)
-        const body = {
-          apartment: {
-            ...updatedState,
-            ownerId: "ciwedjweifweiwei"
-          },
-          images: images
-        }
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body), 
-        };
-      
-        fetch(apiUrl, requestOptions)
+    const handleSubmission = async (e : any) => {
+        try {
+          e.preventDefault()
+          const userData = await getUserInfo()
+          if (!userData) return
+
+          const { images, ...updatedState } = apartmentData
+          const sentImages: Array<string> = []
+
+          if (images.length > 0) {
+            for (let i in images) {
+              const img: ImgObj = images[i]
+              const type = img.type.split("/")
+              const id = uuidv4()
+              const name = `${id}.${type[1]}`
+              const res = await Storage.put(name, img)
+              if (res && res.key === name) {
+                sentImages.push(name)
+                console.log(name)
+              }
+            }
+          }
+          // Varmaan turha koska try catch
+          if (images.length !== sentImages.length) {
+            console.log("Error when sending images")
+            return
+          }
+
+          const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/post'
+          const body = {
+            apartment: {
+              ...updatedState,
+              ownerId: userData.attributes.sub
+            },
+            images: sentImages,
+            federatedId: userData.id
+          }
+
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body), 
+          };
+
+          fetch(apiUrl, requestOptions)
           .then((response) => {
             if (!response.ok) {
               throw new Error('Network response was not ok');
@@ -184,6 +219,11 @@ export default function AddApartmentsPage() {
           .catch((error) => {
             console.error('Error:', error);
           });
+
+
+        } catch (err: any) {
+          throw new Error(err)
+        }
       }
         
 

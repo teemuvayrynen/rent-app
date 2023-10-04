@@ -1,10 +1,8 @@
 .map-container{
-  width: 100%;
-  height: calc(100vh - 20rem);
+  flex: 1;
 }
 
 .leaflet-container {
-  width: 100%;
   height: calc(100vh - 20rem);
   position: relative;
   transition: height 0.5s ease-in-out;
@@ -16,18 +14,19 @@
 
 .leaflet-geosearch-bar {
   position: absolute;
-  left: 50%;
+  left: 280px;
   transform: translateX(-50%);
   top: 10px;
   width: 400px;
+  z-index: 2000;
   border-radius: 4rem;
+  transition: left 250ms ease;
 }
-
-.leaflet-control {
-  position: absolute;
-  left: calc(100vw - 60px);
-  top: 10px;
+/*
+.leaflet-geosearch-bar.active {
+  left: 9%;
 }
+*/
 
 .leaflet-control-geosearch .results {
   color: black;
@@ -46,16 +45,16 @@
 
 .locate-me {
   position: absolute;
-  left: calc(100vw - 46px);
-  top: 100px;
+  left: 14px;
+  top: 140px;
   z-index: 1000;
   cursor: pointer;
 }
 
 .open-me {
   position: absolute;
-  left: calc(100vw - 53px);
-  bottom: 50px;
+  left: 10px;
+  top: 90px;
   z-index: 1000;
   cursor: pointer;
   transform: rotate(90deg);
@@ -68,7 +67,8 @@
 
 .map-apartment-list {
   position: absolute;
-  left: 30px;
+  left: 280px;
+  transform: translateX(-50%);
   top: 140px;
   width: 400px;
   height: 30rem;
