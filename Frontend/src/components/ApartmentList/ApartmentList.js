@@ -13,15 +13,16 @@ function ApartmentList({apartments}) {
 
     return (
         (apartments) ? (
-        <div className='flex-container'>
-            <div className='apartment-list'>
-                <div className='grid-container'>
-                    {apartments.slice(0, visible).map(apartment => {
-                        return <ApartmentCard key={apartment.id} apartment={apartment}/>
-                    })}
+            <div className='flex-container'>
+                <div className='apartment-list'>
+                    <div className='grid-container'>
+                        {apartments.slice(0, visible).map(apartment => {
+                            return <ApartmentCard key={apartment.id} apartment={apartment}/>
+                        })}
+                    </div>
                 </div>
             </div>
-        </div>) : <p>Loading</p>
+        ) : <p>Loading</p>
     );
 }
 

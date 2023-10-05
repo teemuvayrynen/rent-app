@@ -110,58 +110,65 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
   return (
     <>
       <div className='map-container'>
-        {!mapLoading ? (<MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
-        setMapLoading(prev => false)
-        updateBounds(map.target)
-      }}>
-        <TileLayer
-          attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
-          url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
-        />
-        <LeafletgeoSearch/>
-        {(userLocation.isLoaded && !userLocation.error) && (
-          <Marker position={[userLocation.location.lat, userLocation.location.long]} icon={userLocationIcon}>
-            <Popup>Your Location</Popup>
-          </Marker>
-        )}
-        {(markers.length > 1) ? (
-        <MarkerClusterGroup chunkedLoading>
-          {markers.map((marker) => {
-            return marker.location && (
-              <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
-                 <Popup>
-                  <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
-                  <div className='apartment-info-popup'>
-                    <p>{marker.id}</p>
-                    <p>{marker.price}/kk</p>
-                  </div>
-                </Popup> 
+        {!mapLoading ? (
+          <MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
+            setMapLoading(prev => false)
+            updateBounds(map.target)
+          }}>
+            <TileLayer
+              attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
+              url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
+            />
+            <LeafletgeoSearch/>
+            {(userLocation.isLoaded && !userLocation.error) && (
+              <Marker position={[userLocation.location.lat, userLocation.location.long]} icon={userLocationIcon}>
+                <Popup>Your Location</Popup>
               </Marker>
-            )
-          })}
-        </MarkerClusterGroup>
-        ) : ((markers.length === 1) && (<Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
-                 <Popup>
-                  <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
-                  <div className='apartment-info-popup'>
-                    <p>{markers[0].id}</p>
-                    <p>{markers[0].price}/kk</p>
-                  </div>
-                </Popup> 
-              </Marker>))}
-        <div className='locate-me'>
-            <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
-        </div>
-        <div className='open-me'>
-        <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
-        </div>
-      </MapContainer>) : <Skeleton height="100%" width="100%"/>}
+            )}
+            {(markers.length > 1) ? (
+              <MarkerClusterGroup chunkedLoading>
+                {markers.map((marker) => {
+                  return marker.location && (
+                    <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
+                      <Popup>
+                        <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
+                        <div className='apartment-info-popup'>
+                          <p>{marker.id}</p>
+                          <p>{marker.price}/kk</p>
+                        </div>
+                      </Popup> 
+                    </Marker>
+                  )
+                })}
+              </MarkerClusterGroup>
+              ) : ((markers.length === 1) && (
+                  <Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
+                    <Popup>
+                      <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
+                      <div className='apartment-info-popup'>
+                        <p>{markers[0].id}</p>
+                        <p>{markers[0].price}/kk</p>
+                      </div>
+                    </Popup> 
+                  </Marker>
+              ))}
+            <div className='locate-me'>
+              <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
+            </div>
+            <div className='open-me'>
+              <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
+            </div>
+          </MapContainer>
+        ) : <Skeleton height="100%" width="100%"/>}
       </div>
       <div className='map-apartment-list'>
-          {(apartments.length > 0) ? apartments.map((apartment, index) => {
-            return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
-          }) : <div style={{display: "flex", flexDirection: "colum", justifyContent: "center", height: "100%", alignItems: "center"}}><p>No Apartments available</p></div>}
-          
+        {(apartments.length > 0) ? apartments.map((apartment, index) => {
+          return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
+        }
+        ) : 
+          <div style={{display: "flex", flexDirection: "colum", justifyContent: "center", height: "100%", alignItems: "center"}}>
+            <p>No Apartments available</p>
+          </div>}
       </div>
     </>
       
