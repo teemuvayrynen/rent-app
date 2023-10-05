@@ -173,7 +173,10 @@ export default function AddApartmentsPage() {
               const type = img.type.split("/")
               const id = uuidv4()
               const name = `${id}.${type[1]}`
-              const res = await Storage.put(name, img)
+              const res = await Storage.put(name, img, {
+                  contentType: img.type
+                }
+              )
               if (res && res.key === name) {
                 sentImages.push(name)
                 console.log(name)
