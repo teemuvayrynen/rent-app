@@ -30,3 +30,26 @@ INFO: Successfully applied 4 migrations to schema "PUBLIC", now at version v4 (e
 2023.09.29 02:41:03 WARN  no build tool detected in workspace '/home/olli/School/rent-app'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
 Sep 29, 2023 4:14:51 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
 INFO: Unsupported notification method: $/setTrace
+2023.09.29 06:22:10 INFO  Shutting down server
+2023.09.29 06:22:10 INFO  shutting down Metals
+2023.09.29 06:22:10 INFO  Exiting server
+2023.10.05 16:10:15 INFO  Started: Metals version 1.0.1 in folders '/home/olli/School/rent-app' for client Visual Studio Code 1.83.0.
+Oct 05, 2023 4:10:15 PM org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+INFO: Flyway Community Edition 9.21.2 by Redgate
+Oct 05, 2023 4:10:15 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: See release notes here: https://rd.gt/416ObMi
+Oct 05, 2023 4:10:15 PM org.flywaydb.core.internal.license.VersionPrinter printVersion
+INFO: 
+Oct 05, 2023 4:10:16 PM org.flywaydb.core.FlywayExecutor execute
+INFO: Database: jdbc:h2:file:/home/olli/School/rent-app/.metals/metals (H2 2.1)
+Oct 05, 2023 4:10:16 PM org.flywaydb.core.internal.command.DbValidate validate
+INFO: Successfully validated 4 migrations (execution time 00:00.020s)
+Oct 05, 2023 4:10:16 PM org.flywaydb.core.internal.command.DbMigrate migrateGroup
+INFO: Current version of schema "PUBLIC": 4
+Oct 05, 2023 4:10:16 PM org.flywaydb.core.internal.command.DbMigrate logSummary
+INFO: Schema "PUBLIC" is up to date. No migration necessary.
+2023.10.05 16:10:16 INFO  time: initialize in 0.64s
+2023.10.05 16:10:18 WARN  Build server is not auto-connectable.
+2023.10.05 16:10:18 WARN  no build tool detected in workspace '/home/olli/School/rent-app'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. 
+Oct 05, 2023 7:56:23 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
