@@ -3,7 +3,7 @@
 }
 
 .leaflet-container {
-  height: calc(100vh - 20rem);
+  height: 100%;
   position: relative;
   transition: height 0.5s ease-in-out;
 }

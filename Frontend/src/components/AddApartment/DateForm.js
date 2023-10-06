@@ -56,7 +56,7 @@ function DateForm({apartmentData, handleUpdate}) {
             <div className="form-wrapper-column">
                 <div className='start-date'>
                     <label>Rental starts</label>
-                    <div className='now' onClick={() => setDate('.start-date .now', '.start-date > div', 'startDate', 'now')}>
+                    <div className='now' onClick={() => setDate('.start-date .now', '.start-date > div', 'startDate', new Date())}>
                         <p>Right away</p>
                     </div>
                     <div className='later' onClick={() => setDate('.start-date .later', '.start-date > div', 'startDate', 'TODO')}>
