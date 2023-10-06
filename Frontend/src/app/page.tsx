@@ -33,9 +33,6 @@ export default function Home() {
   return (
     <>
       <div style={{ padding: '0px 60px'}}>
-      <button onClick={handleClick}>
-        micjwifweiofmweofmeo
-      </button>
         <Landing />
         <div className='divider' />
         <ApartmentRow apartments={apartments} place={"Helsinki"}  />

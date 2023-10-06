@@ -32,7 +32,7 @@ export class S3ImageBucket extends Construct {
       corsRule: [
         {
           allowedHeaders: ["*"],
-          allowedMethods: ["PUT", "POST"],
+          allowedMethods: ["PUT", "POST", "GET"],
           allowedOrigins: ["*"],
           exposeHeaders: [],
           maxAgeSeconds: 3000,
