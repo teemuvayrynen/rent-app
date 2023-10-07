@@ -92,6 +92,23 @@
     pointer-events: all;
 }
 
+.calendar-end {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2000;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 250ms ease, opacity 250ms ease;
+}
+
+.calendar-end.active{
+  opacity: 1;
+  transform: translateY(10px) translateX(-50%);
+  pointer-events: all;
+}
+
 .clear-date-filter {
   display: flex;
   align-items: center;

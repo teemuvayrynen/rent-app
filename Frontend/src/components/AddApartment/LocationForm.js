@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import DynamicMap from '@/components/AddApartment/index'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo} from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +18,10 @@ function LocationForm({apartmentData, handleUpdate}) {
             setCircle(prev  => newCircle)
         }
     }, [])
+
+    useEffect(() => {
+        handleUpdate('location', {lat: circle.lat, lon: circle.lng})
+    }, [circle])
 
     return (
         <>
@@ -46,7 +50,7 @@ function LocationForm({apartmentData, handleUpdate}) {
                     </div>
                 </div>
                 <div className='map-container'>
-                    <DynamicMap circle={circle} setCircle={setCircle} handleUpdate={() => handleUpdate('location', {lat: circle.lat, lon: circle.lng})}/>
+                    <DynamicMap circle={circle} setCircle={setCircle}/>
                     <div className='information-icon' style={{position: "absolute", zIndex: 1000, right: "20px", top: "11px"}}>
                         <FontAwesomeIcon icon={faCircleInfo} size="2x" aria-label='Tooltip'/>
                     </div>

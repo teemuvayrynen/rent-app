@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 function formatDateToDDMMYY(date) {
+    date = new Date(date)
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
     const year = date.getFullYear().toString().slice(-2); // Get the last 2 digits of the year

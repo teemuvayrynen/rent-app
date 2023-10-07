@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import LeafletgeoSearch from '../Map/LeafletSearch'
 
-function Map({circle, setCircle, handleUpdate}) {
+function Map({circle, setCircle}) {
 
     function AddMarkerToMap() {
         const map = useMapEvents({
@@ -18,10 +18,6 @@ function Map({circle, setCircle, handleUpdate}) {
                   };
 
                   setCircle(prev => newCircle)
-                  handleUpdate('location', {
-                    lat: lat,
-                    lng: lng
-                  })
             }
         })
         return null
