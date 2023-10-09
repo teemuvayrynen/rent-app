@@ -6,28 +6,29 @@
   margin: 0 auto; /* Center the container horizontally */
 }
 
-/* Styles for screens with a maximum width of 1000 pixels or smaller */
-@media screen and (max-width: 1000px) {
-  .main-container {
-    display: flex;
-    flex-direction: row;
-    padding: 20px 40px;
-    width: 85%;
-    margin: 0 auto; /* Center the container horizontally */
-  }
+.slider-map-container {
+  display: flex;
+  flex-direction: row;
+  height: 750px;
 }
 
-.carousel-container {
+.slider-container {
   display: flex;
-  flex: 60%;
-  flex-direction: row; /* Display children in a row */
-  /* border: 1px solid black; */
-  padding: 5px
+  flex: 70%;
+  background-color: rgb(245, 245, 250);
+  padding: 5px;
+  justify-content: center;  /* Center content horizontally */
+  align-items: center;      /* Center content vertically */
+}
+
+.map-container {
+  flex: 30%;
+  padding: 5px;
 }
 
 .address-and-owner{
   display: flex;
-  flex: 60%;
+  flex: 70%;
   flex-direction: row;
   padding: 10px 0px;
   justify-content: space-between;
@@ -45,32 +46,9 @@
   padding: 5px;
 }
 
-/* Styles for screens with a maximum width of 1000 pixels or smaller */
-@media screen and (max-width: 1000px) {
-  .h1-streetname {
-    font-size: 20px;
-    font-weight: 600;
-    align-self: center;
-    padding: 5px;
-  }
-
-  .p-basic-text {
-    font-size: 14px;
-    padding: 5px;
-  }
-}
-
-.map-container {
-  display: flex;
-  flex-direction: column;
-  flex: 40%;
-
-  padding: 5px
-}
-
 .contact-container{
   display: flex;
-  flex: 40%;
+  flex: 30%;
   padding: 5px;
   justify-content: space-between;
   border: 1px solid rgb(233, 228, 228);
@@ -102,7 +80,7 @@
 .description-container {
   display: flex;
   flex-direction: column;
-  flex: 60%;
+  flex: 70%;
   padding: 5px;
   justify-content: space-between;
 }
@@ -113,4 +91,75 @@
 
 .description-container > p {
   font-size: 16px;
+}
+
+/* Styles for screens with a maximum width of 2000px or smaller */
+@media screen and (max-width: 2000px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+    width: 85%;
+    margin: 0 auto; /* Center the container horizontally */
+  }
+
+  .slider-map-container {
+    display: flex;
+    flex-direction: row;
+    height: 400px;
+  }
+
+  .slider-container {
+    display: flex;
+    flex: 60%;
+    background-color: rgb(245, 245, 250);
+    padding: 5px;
+    justify-content: center;  /* Center content horizontally */
+    align-items: center;      /* Center content vertically */
+  }
+  
+  .map-container {
+    display: flex;
+    flex-direction: column;
+    flex: 40%;
+    padding: 5px
+  }
+
+  .address-and-owner{
+    display: flex;
+    flex: 60%;
+    flex-direction: row;
+    padding: 10px 0px;
+    justify-content: space-between;
+  }
+
+  .h1-streetname {
+    font-size: 20px;
+    font-weight: 600;
+    align-self: center;
+    padding: 5px;
+  }
+
+  .p-basic-text {
+    font-size: 14px;
+    padding: 5px;
+  }
+
+
+  .contact-container{
+    display: flex;
+    flex: 40%;
+    padding: 5px;
+    justify-content: space-between;
+    border: 1px solid rgb(233, 228, 228);
+    border-radius: 30px;
+  }
+
+  .description-container {
+    display: flex;
+    flex-direction: column;
+    flex: 60%;
+    padding: 5px;
+    justify-content: space-between;
+  }
 }
