@@ -112,6 +112,17 @@
   padding: 5px
 }
 
+.address-contact-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+}
+
+.address-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .contact-details {
   display: flex;
   flex-direction: column;
