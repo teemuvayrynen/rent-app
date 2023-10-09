@@ -58,6 +58,12 @@ export async function handler(event) {
           images.push(img)
         }
       }
+
+      if (data.apartment.startDate === "") {
+        data.apartment.startDate = new Date().toISOString()
+      }
+
+      data.apartment.created = new Date().toISOString()
       
       const params = {
         TableName: "dynamo-apartment-storage",
