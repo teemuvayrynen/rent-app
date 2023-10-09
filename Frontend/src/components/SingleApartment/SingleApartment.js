@@ -3,11 +3,14 @@
 import { useEffect, useState } from 'react';
 
 import './SingleApartment.css'
-import ApartmentCarousel from './ApartmentCarousel'
+import ImageCarousel from './ApartmentCarousel'
 import DynamicMap from './DynamicMap'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faArrowRight } from '@fortawesome/free-solid-svg-icons'; // Import the necessary icons
+import { faUser, faArrowRight, faChessKing } from '@fortawesome/free-solid-svg-icons'; // Import the necessary icons
+
+import { apiUrl } from '@/app/apiConfig.js'; // Import the apiUrl
+import { imageUrl } from '@/app/apiConfig.js'; // Import the imageUrl
 
 
 function formatDate(inputDate) {
@@ -21,17 +24,22 @@ function formatDate(inputDate) {
 function SingleApartment({id}) {
   // State to hold the apartment data
   const [apartment, setApartment] = useState(null);
+  // State to hold the imageIds
+  const [imageIds, setImageIds] = useState([]);
+  // State to hold the images
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     // Fetch apartment data based on the ID
 
-    const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/'
     if (id) {
       const fetchData = async () => {
         try {
+          console.log(`fetching apartment data... ${apiUrl}/apartments/${id}`);
           const response = await fetch(`${apiUrl}/apartments/${id}`);
           const data = await response.json();
           setApartment(data.Item);
+          setImageIds(data.Item.images);
         } catch (error) {
           console.error('Error fetching apartment data', error);
         }
@@ -41,12 +49,33 @@ function SingleApartment({id}) {
     }
   }, [id]);
 
+  useEffect(() => {
+    // Fetch images
+
+    const fetchImages = async () => {
+      const imagePromises = imageIds.map(async (imageName) => {
+        try {
+          console.log(`fetching images... ${imageUrl}/images/${imageName}`);
+          const response = await fetch(`${imageUrl}/images/${imageName}`);
+          if (response.ok) {
+            return response.url
+          }
+        } catch (error) {
+          console.error(`Error fetching image ${imageName}`, error);
+        }
+      });
+
+      const imageResults = await Promise.all(imagePromises);
+      setImages(imageResults.filter((result) => result !== undefined));
+    };
+
+    fetchImages();
+  }, [imageIds]);
+
   // TODO: loading screen
   if (!apartment) {
     return <div>Loading...</div>;
   }
-  
-  console.log(apartment);
 
   const position = [apartment.location.lat, apartment.location.lon];
   const capitalizedStreetName = apartment.street_name.charAt(0).toUpperCase() + apartment.street_name.slice(1);
@@ -54,13 +83,13 @@ function SingleApartment({id}) {
 
   return (
     <div className='main-container'>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div className='carousel-container'>
-            <ApartmentCarousel/>
+      <div className='slider-map-container'>
+        <div className='slider-container'>
+            <ImageCarousel images={images}/>
         </div>
 
         <div className='map-container'>
-          <div style={{flex: '1'}}>
+          <div style={{height: '100%', width: '100%'}}>
             <DynamicMap position={position} />
           </div>
         </div>
@@ -102,7 +131,8 @@ function SingleApartment({id}) {
           </div>
         </div>
       </div>
-    
+
+      {/* TODO: ADD MORE FORMAL EQUIPMENT SHOWING */}
       <div className='description-container'>
         <h1>
           Description
@@ -149,7 +179,3 @@ function SingleApartment({id}) {
 }
 
 export default SingleApartment;
-
-
-
-
