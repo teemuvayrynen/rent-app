@@ -9,7 +9,7 @@ import {
   Electronics,
   Other,
   Premises
-} from "./interface"
+} from "./types"
 
 const locationSchema: JSONSchemaType<Location> = {
   type: "object",

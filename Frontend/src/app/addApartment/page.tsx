@@ -217,7 +217,7 @@ export default function AddApartmentsPage() {
           .then((responseData) => {
             console.log(responseData)
             console.log("Post successfull")
-            //window.location.href = "/search"
+            window.location.href = "/search"
           })
           .catch((error) => {
             console.error('Error:', error);

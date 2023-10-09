@@ -1,15 +1,15 @@
-export interface Location {
+export type Location = {
   lat: number
   lon: number
 }
 
-export interface Rules {
+export type Rules = {
   pets: boolean
   smoking: boolean
   unobstructed: boolean
 }
 
-export interface Kitchen {
+export type Kitchen = {
   fridge: boolean
   freezer: boolean
   owen: boolean
@@ -18,24 +18,24 @@ export interface Kitchen {
   microwave: boolean
 }
 
-export interface Bathroom {
+export type Bathroom = {
   shower: boolean
   wc: boolean
   bath: boolean
 }
 
-export interface Utility {
+export type Utility = {
   washing_machine: boolean
   dryer: boolean
   laundry: boolean
 }
 
-export interface Electronics {
+export type Electronics = {
   internet: boolean
   tv: boolean
 }
 
-export interface Other {
+export type Other = {
   sauna: boolean
   fireplace: boolean
   pool: boolean
@@ -43,7 +43,7 @@ export interface Other {
   balcony: boolean
 }
 
-export interface Premises {
+export type Premises = {
   elevator: boolean
   bike_storage: boolean
   storage: boolean
@@ -51,7 +51,7 @@ export interface Premises {
   recycle_point: boolean
 }
 
-export interface ApartmentData {
+export type ApartmentData = {
   country: string
   street_name: string
   street_number: string

@@ -17,7 +17,7 @@ export class ApartmentsStorage extends Construct {
         { name: "id", type: "S" },
         { name: "ownerId", type: "S" },
         { name: "country", type: "S" },
-        { name: "endDate", type: "S" },
+        { name: "startDate", type: "S" },
         { name: "monthlyPrice", type: "N" },
         { name: "city", type: "S" }
       ],
@@ -33,9 +33,9 @@ export class ApartmentsStorage extends Construct {
           rangeKey: "monthlyPrice"
         },
         {
-          name: "country-endDate-index",
+          name: "country-startDate-index",
           projectionType: "ALL",
-          rangeKey: "endDate"
+          rangeKey: "startDate"
         },
         {
           name: "country-city-index",
