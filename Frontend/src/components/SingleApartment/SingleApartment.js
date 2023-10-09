@@ -126,9 +126,7 @@ function SingleApartment({id}) {
         </div>
 
         <div className='map-container'>
-          <div style={{height: '100%', width: '100%'}}>
-            <DynamicMap position={position} />
-          </div>
+          <DynamicMap position={position} />
         </div>
       </div>
 

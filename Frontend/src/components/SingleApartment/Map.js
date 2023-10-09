@@ -11,7 +11,7 @@ function Map({ position }) {
         })
 
     return (
-        <MapContainer center={position} zoom={15} scrollWheelZoom={false} className='map'>
+        <MapContainer center={position} zoom={15} className='map'>
             <TileLayer
             attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
             url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
