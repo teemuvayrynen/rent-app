@@ -37,9 +37,11 @@ export async function handler(event) {
       if (data.images.length > 0) {
         for (let i in data.images) {
           const img = data.images[i]
-          
           await s3.headObject({ Bucket: bucket, Key: `private/${data.federatedId}/${img}` }).promise();
+        }
 
+        for (let i in data.images) {
+          const img = data.images[i]
           const params = {
             Bucket: bucket,
             Key: `images/${img}`,

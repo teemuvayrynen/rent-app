@@ -165,25 +165,19 @@ export default function AddApartmentsPage() {
           if (!userData) return
 
           const { images, ...updatedState } = apartmentData
-          const sentImages: Array<string> = []
 
-          if (images.length > 0) {
-            for (let i in images) {
-              const img: ImgObj = images[i]
-              const type = img.type.split("/")
-              const id = uuidv4()
-              const name = `${id}.${type[1]}`
-              const res = await Storage.put(name, img, {
-                  contentType: img.type
-                }
-              )
-              if (res && res.key === name) {
-                sentImages.push(name)
-                console.log(name)
-              }
-            }
-          }
-          // Varmaan turha koska try catch
+          const request = images.map(async (img: ImgObj) => {
+            const type = img.type.split("/")
+            const id = uuidv4()
+            const name = `${id}.${type[1]}`
+            return await Storage.put(name, img, {
+              contentType: img.type
+            })
+          })
+
+          const results = await Promise.all(request)
+          const sentImages = results.map(obj => obj.key);
+
           if (images.length !== sentImages.length) {
             console.log("Error when sending images")
             return

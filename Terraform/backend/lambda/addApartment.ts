@@ -63,6 +63,8 @@ export class AddApartmentsLambda extends Construct {
       role: this.role.arn,
       filename: code.asset.path,
       sourceCodeHash: code.asset.assetHash,
+      timeout: 10,
+      memorySize: 512,
       environment: {
         variables: {
           DYNAMODB_TABLE_NAME: options.table.name,
