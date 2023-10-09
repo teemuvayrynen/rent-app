@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 
 import './SingleApartment.css'
-import ImageCarousel from './ApartmentCarousel'
 import DynamicMap from './DynamicMap'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,6 +27,8 @@ function SingleApartment({id}) {
   const [imageIds, setImageIds] = useState([]);
   // State to hold the images
   const [images, setImages] = useState([]);
+  // State to hold the current viewed image
+  const [imageIndex, setImageIndex] = useState(0);
 
   useEffect(() => {
     // Fetch apartment data based on the ID
@@ -72,9 +73,33 @@ function SingleApartment({id}) {
     fetchImages();
   }, [imageIds]);
 
+  const handleClickPreviousImage = () => {
+    const newIndex = imageIndex - 1 
+    if (newIndex < 0) {   // Out of bounds
+      setImageIndex(images.length - 1)
+    } else {
+      setImageIndex(imageIndex - 1)
+    }
+  }
+
+  const handleClickNextImage = () => {
+    const newIndex = imageIndex + 1 
+    if (newIndex > images.length - 1) {   // Out of bounds
+      setImageIndex(0)
+    } else {
+      setImageIndex(imageIndex + 1)
+    }
+  }
+
   // TODO: loading screen
   if (!apartment) {
     return <div>Loading...</div>;
+  }
+
+  if (!images) {
+    return (
+      <p>loading...</p>
+    )
   }
 
   const position = [apartment.location.lat, apartment.location.lon];
@@ -85,7 +110,19 @@ function SingleApartment({id}) {
     <div className='main-container'>
       <div className='slider-map-container'>
         <div className='slider-container'>
-            <ImageCarousel images={images}/>
+
+            <div className='slider-button slider-button-left' onClick={handleClickPreviousImage}>
+              <p>&#8249;</p>
+            </div>
+
+            <div className='imageContainer'>
+              <img className='image' src={images[imageIndex]}/>
+            </div>
+            
+            <div className='slider-button slider-button-right' onClick={handleClickNextImage}>
+              <p>&#8250;</p>
+            </div>
+
         </div>
 
         <div className='map-container'>
