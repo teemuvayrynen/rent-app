@@ -4,7 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2rem;
     overflow: hidden;
     box-shadow: 5px 0px 4px 0px rgba(0, 0, 0, 0.3);
     width: 40%;

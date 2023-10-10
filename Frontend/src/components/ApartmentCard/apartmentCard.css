@@ -26,11 +26,6 @@
     width: 100%;
     object-fit: cover;
     object-position: center;
-    transition: 200ms transform ease;
-}
-
-.card-container:hover .card-image{
-    transform: scale(1.025);
 }
 
 .apartment-info {

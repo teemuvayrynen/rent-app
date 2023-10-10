@@ -8,7 +8,7 @@ function ApartmentList({apartments}) {
     
     const [visible, setVisible] = useState(6)
     const showMore = () => {
-        setVisible(prev => prev + 8)
+        setVisible(prev => prev + 3)
     }
 
     return (
@@ -21,6 +21,7 @@ function ApartmentList({apartments}) {
                         })}
                     </div>
                 </div>
+                <button onClick={showMore} style={{margin: "2rem 0", display: (visible === apartments.length - 1) ? 'none' : 'block'}}>Show more</button>
             </div>
         ) : <p>Loading</p>
     );
