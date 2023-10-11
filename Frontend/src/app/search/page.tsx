@@ -65,11 +65,16 @@ export default function SearchPage() {
   const searchString = searchParams.toString()
   
   useEffect(() => {
-    fetch(`https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get${(searchString !== '') ? `?${searchString}` : ''}`)
+    const myAbortController = new AbortController();
+    fetch(`https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/markers/get${(searchString !== '') ? `?${searchString}` : ''}`, {signal: myAbortController.signal})
       .then((res) => res.json())
       .then((data) => {
         setMarkers(data.Items)
       })
+
+      return () => {
+        myAbortController.abort();
+      };
   }, [])
 
   useEffect(() => {

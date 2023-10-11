@@ -7,16 +7,21 @@
 }
 
 .card-container.map {
+    height: 8rem;
     flex-direction: row;
-    height: 7rem;
     overflow: unset;
     border: 0.5px solid black;
+    padding: 0;
 }
 
-.card-container.map > .card-image {
-    width: 150px;
+.card-container.map * {
+    height: 100%; /* Set max-height for all direct children */
+    border-radius: 0px !important;
+  }
+
+.card-container.map .card-image {
     height: 100%;
-    border-radius: unset;
+    aspect-ratio: unset;
 }
 
 .card-image {
@@ -36,7 +41,7 @@
     gap: 0.5rem;
     justify-content: center;
     align-items: left;
-    padding: 0 1rem;
+    padding: 1rem 1rem;
 }
 
 .apartment-info p:first-child{

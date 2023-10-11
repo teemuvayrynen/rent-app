@@ -39,10 +39,12 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
   const router = useRouter()
 
   useEffect(() => {
+    console.log("Fetchin images")
+    const myAbortController = new AbortController();
     const fetchImages = async () => {
       const imagePromises = apartment.images.map(async (imageName) => {
         try {
-          const response = await fetch(`${imageUrl}/images/${imageName}`);
+          const response = await fetch(`${imageUrl}/images/${imageName}`,{ signal: myAbortController.signal });
           if (response.ok) {
             return response.url;
           }
@@ -56,24 +58,27 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
     };
 
     fetchImages();
+
+    return () => {
+      myAbortController.abort();
+    };
   }, []);
 
   const handleApartmentClick = (apartment) => {
     const mapList = document.querySelector('.map-apartment-list');
     
-    if (mapList.classList.contains('active')) {
+    if (mapList?.classList.contains('active')) {
       goToApartmentLocation(apartment)
     } else {
-      console.log(apartment);
       // Navigating to single apartment page
-      router.push(`/apartment?id=${apartment.id}`)
+      window.open(`${window.location.origin}/apartment?id=${apartment.id}`, '_blank')
     }
   }
 
   return (
     <div className={`card-container ${mapListActive ? 'map' : ''}`}>
-      <ImageCarousel apartment={apartment} images={images} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
-      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%" height="200px"/>
+      <ImageCarousel style={{height: mapListActive ? '100%' : 'inital'}} apartment={apartment} images={images} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
+      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%" height="220px"/>
       <div className='apartment-info' onClick={() => handleApartmentClick(apartment)}>
           <p>{apartment.street_name}, {apartment.city}</p>
           <p>{apartment.monthlyPrice}/kk &emsp; {apartment.size}m2</p>

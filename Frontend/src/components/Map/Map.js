@@ -46,6 +46,13 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
       updateBounds(mapRef.current)
     }
   }, [markers])
+
+  useEffect(() => {
+    const mapList = document.querySelector('.map-apartment-list')
+    if(mapList){
+      mapList.classList.toggle('active')
+    }
+  }, [mapListActive])
   
   const updateBounds = (map) => {
     const newBounds = map.getBounds();
@@ -102,8 +109,6 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
       initialApartmentList.classList.toggle('disabled')
     }
     setTimeout(() => {mapRef.current.invalidateSize()}, 500)
-    const mapList = document.querySelector('.map-apartment-list')
-    mapList.classList.toggle('active')
     setMapListActive(prev => !prev)
     }
   
@@ -131,11 +136,9 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
                   return marker.location && (
                     <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
                       <Popup>
-                        <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
-                        <div className='apartment-info-popup'>
-                          <p>{marker.id}</p>
-                          <p>{marker.price}/kk</p>
-                        </div>
+                      <div>
+                        <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
+                      </div>
                       </Popup> 
                     </Marker>
                   )
@@ -144,10 +147,8 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
               ) : ((markers.length === 1) && (
                   <Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
                     <Popup>
-                      <img alt="cardimage" src="https://source.unsplash.com/178j8tJrNlc" width={250}/>
-                      <div className='apartment-info-popup'>
-                        <p>{markers[0].id}</p>
-                        <p>{markers[0].price}/kk</p>
+                      <div>
+                        <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
                       </div>
                     </Popup> 
                   </Marker>
@@ -161,7 +162,7 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
           </MapContainer>
         ) : <Skeleton height="100%" width="100%"/>}
       </div>
-      <div className='map-apartment-list'>
+      {mapListActive && <div className='map-apartment-list'>
         {(apartments.length > 0) ? apartments.map((apartment, index) => {
           return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
         }
@@ -169,7 +170,7 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
           <div style={{display: "flex", flexDirection: "colum", justifyContent: "center", height: "100%", alignItems: "center"}}>
             <p>No Apartments available</p>
           </div>}
-      </div>
+      </div>}
     </>
       
   )

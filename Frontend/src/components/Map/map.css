@@ -89,6 +89,16 @@
   padding: 0.5rem 0.5rem;
 }
 
+.map-apartment-list.active .carousel-root{
+  width: 50%;
+}
+
+.map-apartment-list.active .control-dots {
+  height: unset !important;
+}
+.carousel .control-arrow, .carousel.carousel-slider .control-arrow {
+  opacity: 1 !important;
+}
 @media screen and (min-width: 2560) {
   .leaflet-container {
     height: calc(100vh - 32rem);
