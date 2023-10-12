@@ -1,0 +1,27 @@
+.equipment-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .equipment-category {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .category-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .equipment-list {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+  
+  li {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  
