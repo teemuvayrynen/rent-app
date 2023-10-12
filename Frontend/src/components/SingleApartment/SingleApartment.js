@@ -6,6 +6,11 @@ import { faUser, faArrowRight, faChessKing } from '@fortawesome/free-solid-svg-i
 import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
 
+
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+
+
 function formatDate(inputDate) {
   const parts = inputDate.split(/[-T:.+]/);
   const day = parts[2];
@@ -18,7 +23,7 @@ function SingleApartment({ id }) {
   const [apartment, setApartment] = useState(null);
   const [imageIds, setImageIds] = useState([]);
   const [images, setImages] = useState([]);
-  const [imageIndex, setImageIndex] = useState(0);
+  const [imageDimensions, setImageDimensions] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,15 +60,37 @@ function SingleApartment({ id }) {
     fetchImages();
   }, [imageIds]);
 
-  const handleClickPreviousImage = () => {
-    setImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  };
 
-  const handleClickNextImage = () => {
-    setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+  useEffect(() => {
+    // Ensure images are loaded before calculating dimensions
+    const calculateImageDimensions = () => {
+      const dimensions = {};
 
-  if (!apartment || !images.length) {
+      images.forEach((image, index) => {
+        const img = new Image();
+        img.src = image;
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+          const aspectRatio = width / height;
+
+          // Store the dimensions using the image index as the key
+          dimensions[index] = { width, height, aspectRatio };
+
+          // Check if all dimensions have been calculated
+          if (Object.keys(dimensions).length === images.length) {
+            setImageDimensions(dimensions);
+          }
+        };
+      });
+    };
+
+    if (images.length > 0) {
+      calculateImageDimensions();
+    }
+  }, [images]);
+
+  if (!apartment || !images.length || Object.keys(imageDimensions).length !== images.length) {
     return <div>Loading...</div>;
   }
 
@@ -75,15 +102,15 @@ function SingleApartment({ id }) {
     <div className="main-container">
       <div className="slider-map-container">
         <div className="slider-container">
-          <div className="slider-button slider-button-left" onClick={handleClickPreviousImage}>
-            <p>&#8249;</p>
-          </div>
-          <div className="imageContainer">
-            <img className="image" src={images[imageIndex]} alt={`Image ${imageIndex}`} />
-          </div>
-          <div className="slider-button slider-button-right" onClick={handleClickNextImage}>
-            <p>&#8250;</p>
-          </div>
+          <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true}>
+            {images.map((image, index) => {
+              return (
+                <div className="imageContainer" key={index} style={{ width: imageDimensions[index].aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
+                  <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                </div>
+              );
+            })}
+          </Carousel>
         </div>
 
         <div className="map-container">
