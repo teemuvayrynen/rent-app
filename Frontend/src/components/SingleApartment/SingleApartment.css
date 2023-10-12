@@ -12,6 +12,7 @@
   display: flex;
   flex-direction: row;
   height: 750px;
+  gap: 1rem;
 }
 
 .slider-container {
@@ -23,6 +24,13 @@
   overflow: hidden; 
 }
 
+.slider-container * {
+  height: 100%;
+}
+
+.control-dots {
+  height: auto !important;
+}
 .address-and-owner{
   display: flex;
   flex: 2 1;
@@ -112,9 +120,10 @@
   max-height: 100%;
 }
 
-.map-container {
+.slider-map-container .map-container {
   flex: 1 1;
-  padding: 5px
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .address-contact-container {

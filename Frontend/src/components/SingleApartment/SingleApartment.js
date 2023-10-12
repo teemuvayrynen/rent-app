@@ -106,7 +106,7 @@ function SingleApartment({ id }) {
             {images.map((image, index) => {
               return (
                 <div className="imageContainer" key={index} style={{ width: imageDimensions[index].aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
-                  <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                  <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px', height: '100%', objectFit: 'cover', objectPosition: 'bottom'}} />
                 </div>
               );
             })}
