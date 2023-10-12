@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faArrowRight, faChessKing } from '@fortawesome/free-solid-svg-icons';
 import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
-
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+import EquipmentInfo from './EquipmentInfo';
 
 
 function formatDate(inputDate) {
@@ -90,104 +92,140 @@ function SingleApartment({ id }) {
     }
   }, [images]);
 
-  if (!apartment || !images.length || Object.keys(imageDimensions).length !== images.length) {
-    return <div>Loading...</div>;
-  }
-
-  const position = [apartment.location.lat, apartment.location.lon];
-  const capitalizedStreetName = apartment.street_name.charAt(0).toUpperCase() + apartment.street_name.slice(1);
-  const capitalizedCity = apartment.city.charAt(0).toUpperCase() + apartment.city.slice(1);
+  console.log(apartment);
 
   return (
     <div className="main-container">
       <div className="slider-map-container">
         <div className="slider-container">
-          <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true}>
-            {images.map((image, index) => {
-              return (
-                <div className="imageContainer" key={index} style={{ width: imageDimensions[index].aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
-                  <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px', height: '100%', objectFit: 'cover', objectPosition: 'bottom'}} />
-                </div>
-              );
-            })}
-          </Carousel>
+          {images.length && Object.keys(imageDimensions).length === images.length ? 
+            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true}>
+              {images.map((image, index) => {
+                return (
+                  <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
+                    <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                  </div>
+                );
+              })}
+            </Carousel>
+          : 
+            <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>}
         </div>
 
         <div className="map-container">
-          <DynamicMap position={position} />
+          {apartment ? (
+            <DynamicMap position={[apartment.location.lat, apartment.location.lon]} />
+          ): (
+            <Skeleton width={'100%'} height={'100%'} />
+          )}
+          
         </div>
       </div>
 
       <div className='address-contact-container'>
         <div className='address-and-owner'>
           <div className='address-text-container'>
-            <h1 className='h1-streetname'>
-              {capitalizedStreetName} {apartment.street_number}, {capitalizedCity}
-            </h1>
-            <p className='p-basic-text'>
-              {apartment.floor ? (
-                <>{apartment.floor}. floor / {apartment.size}m&sup2;</>
-              ) : (
-                <>{apartment.size}m&sup2;</>
-              )}
-            </p>
+            {apartment ? (
+              <>
+                <h1 className='h1-streetname'>
+                  {apartment.street_name.charAt(0).toUpperCase()}{apartment.street_name.slice(1)} {apartment.street_number}, {apartment.zip}, {apartment.city.charAt(0).toUpperCase()}{apartment.city.slice(1)}
+                </h1>
+                <p className='p-basic-text'>
+                  {apartment.floor ? (
+                    <>{apartment.apartmentType} | {apartment.floor}.floor | {apartment.size}m&sup2;</>
+                  ) : (
+                    <>{apartment.apartmentType} | {apartment.size}m&sup2;</>
+                  )}
+                </p>
+              </>
+            ) : (
+              <>
+              <h1 className='h1-streetname'>
+                <Skeleton width={350} height={'100%'} />
+              </h1>
+              <p className='p-basic-text'>
+                <Skeleton width={200} height={'100%'} />
+              </p>
+              </>
+            )}
+
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingRight: '60px' }}>
-            <FontAwesomeIcon icon={faUser} size="2x" style={{padding: '5px'}} />
-            <span style={{padding: '5px'}}>{apartment.ownerName}</span>
+            {apartment ? (
+              <>
+                <FontAwesomeIcon icon={faUser} size="2x" style={{padding: '5px'}} />
+                <span className='span-basic-text'>{apartment.ownerName}</span>
+              </>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <Skeleton width={40} height={40} style={{ margin: '5px' }} />
+                <Skeleton width={100} height={24} style={{ margin: '5px' }} />
+              </div>
+            )}
           </div>
         </div>
 
         <div className='contact-container'>
-          <div className='contact-details'>
-            <div className='monthly-price'>
-              <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} €</p>
+          {apartment ? (
+            <div className='contact-details'>
+              <div className='monthly-price'>
+                <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} €</p>
+              </div>
+              <div>
+                <span style={{padding: '5px'}}>{formatDate(apartment.startDate)}</span>
+                <FontAwesomeIcon icon={faArrowRight} size="lg" />
+                <span style={{padding: '5px'}}>{formatDate(apartment.endDate)}</span>
+              </div>
             </div>
-            <div>
-              <span style={{padding: '5px'}}>{formatDate(apartment.startDate)}</span>
-              <FontAwesomeIcon icon={faArrowRight} size="lg" />
-              <span style={{padding: '5px'}}>{formatDate(apartment.endDate)}</span>
+          ) : (
+            <div className='contact-details'>
+              <div className='monthly-price'>
+                <Skeleton width={120} height={24} style={{ margin: '5px' }} />
+              </div>
+              <div>
+                <Skeleton width={200} height={24} style={{ margin: '5px' }} />
+              </div>
             </div>
-          </div>
+          )}
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingRight: '40px' }}>
-            <button className='contact-button'>Contact</button>
+            {apartment ? (
+              <button className='contact-button'>Contact</button>
+            ) : (
+              <Skeleton width={100} height={40} style={{ margin: '5px' }} />
+            )}
           </div>
         </div>
+
       </div>
+      
+      <div style={{display: 'flex', flexDirection: 'row'}}>
+        <div className='information-container'>
+          <div className="description-container">
+            <h1>Description</h1>
+            
+            {apartment ? (
+                <p>{apartment.description}</p>
+              ) : (<p>loading...</p>
+              )}    
+              
+          </div>
 
-      {/* TODO: ADD MORE FORMAL EQUIPMENT SHOWING */}
-      <div className="description-container">
-        <h1>Description</h1>
-        <p>{apartment.description}</p>
+          <div className='divider'/>
+          
+          <div className='equipment-container'>
+            <h1>Equipment and Utility</h1>
+            
+            {apartment ? (
+              <EquipmentInfo apartmentData={apartment} />
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
+        </div>
 
-        <h1>Equipment</h1>
-        <ul>
-          {Object.entries(apartment.equipment).map(([category, items]) => (
-            <div key={category}>
-              <h2>{category}</h2>
-              <ul>
-                {Object.entries(items).map(([item, value]) => (
-                  <li key={item}>
-                    {item}: {value ? 'Yes' : 'No'}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ul>
-
-        <h1>Rules</h1>
-        <ul>
-          {Object.entries(apartment.rules).map(([rule, value]) => (
-            <li key={rule}>
-              {rule}: {value ? 'Yes' : 'No'}
-            </li>
-          ))}
-        </ul>
-
-        <h1>Rent</h1>
-        <p>Rent: {apartment.monthlyPrice} + {apartment.waterPrice} (water)</p>
+        <div className='information-container-spacer'/>
       </div>
+    
     </div>
   );
 }
