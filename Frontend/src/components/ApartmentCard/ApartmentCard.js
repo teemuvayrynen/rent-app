@@ -39,7 +39,6 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
   const router = useRouter()
 
   useEffect(() => {
-    console.log("Fetchin images")
     const myAbortController = new AbortController();
     const fetchImages = async () => {
       const imagePromises = apartment.images.map(async (imageName) => {
@@ -78,7 +77,7 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
   return (
     <div className={`card-container ${mapListActive ? 'map' : ''}`}>
       <ImageCarousel style={{height: mapListActive ? '100%' : 'inital'}} apartment={apartment} images={images} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
-      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%" height="220px"/>
+      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%"/>
       <div className='apartment-info' onClick={() => handleApartmentClick(apartment)}>
           <p>{apartment.street_name}, {apartment.city}</p>
           <p>{apartment.monthlyPrice}/kk &emsp; {apartment.size}m2</p>

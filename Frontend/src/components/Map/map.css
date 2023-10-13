@@ -80,7 +80,8 @@
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 500ms ease;
+  transition: opacity 1s ease;
+  transition-delay: 1s;
 }
 
 .map-apartment-list.active{

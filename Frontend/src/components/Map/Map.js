@@ -48,10 +48,14 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
   }, [markers])
 
   useEffect(() => {
-    const mapList = document.querySelector('.map-apartment-list')
-    if(mapList){
-      mapList.classList.toggle('active')
-    }
+    const delay = setTimeout(() => {
+      const mapList = document.querySelector('.map-apartment-list')
+      if(mapList){
+        mapList.classList.toggle('active')
+      }
+    },500)
+    
+    return () => clearTimeout(delay)
   }, [mapListActive])
   
   const updateBounds = (map) => {
