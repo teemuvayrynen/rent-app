@@ -12,14 +12,40 @@ export async function handler(event) {
   try {
     let params = {
       TableName: "dynamo-apartment-storage",
-      ProjectionExpression: "id, monthlyPrice, #l",
+      ProjectionExpression: "id, monthlyPrice, #l, startDate, endDate",
       ExpressionAttributeNames: { 
         "#l": "location",
       },
       ExpressionAttributeValues: {
         ":c": "finland"
       },
-      KeyConditionExpression: 'country = :c',
+      KeyConditionExpression: "country = :c",
+    }
+
+    let expression = ""
+    if (event.queryStringParameters?.price) {
+      params.ExpressionAttributeValues[":p"] = Number(event.queryStringParameters?.price)
+      expression = "monthlyPrice <= :p"
+    }
+
+    if (event.queryStringParameters?.startDate) {
+      params.ExpressionAttributeValues[":startDate"] = event.queryStringParameters?.startDate
+      expression = expression.length > 0 ? expression + " AND startDate <= :startDate" : "startDate <= :startDate"
+    }
+
+    if (event.queryStringParameters?.endDate) {
+      const value = event.queryStringParameters?.endDate
+      if (value === "temp") {
+        params.ExpressionAttributeValues[":endDate"] = ""
+        expression = expression.length > 0 ? expression + " AND endDate = :endDate" : "endDate = :endDate"
+      } else {
+        params.ExpressionAttributeValues[":endDate"] = event.queryStringParameters?.endDate
+        expression = expression.length > 0 ? expression + " AND :endDate <= endDate" : ":endDate <= endDate"
+      }
+    }
+
+    if (expression.length > 0) {
+      params.FilterExpression = expression
     }
   
     body = await dynamo.query(params).promise()
