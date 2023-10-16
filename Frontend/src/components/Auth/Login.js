@@ -1,13 +1,11 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Formik, Form, ErrorMessage, Field } from "formik"
 import * as Yup from "yup"
 import "./auth.css"
-import { AccountContext } from "@/context/Account"
+import { Auth } from "aws-amplify"
 
 
 const Login = ({ setVisible }) => {
-
-  const { authenticate } = useContext(AccountContext)
 
   return (
     <>
@@ -22,7 +20,7 @@ const Login = ({ setVisible }) => {
               .required("Password is required")
           })}
           onSubmit={async (values, { setSubmitting, setErrors }) => {
-            authenticate(values.email, values.password)
+            Auth.signIn(values.email, values.password)
               .then(() => {
                 window.location.reload()
               })
@@ -37,7 +35,8 @@ const Login = ({ setVisible }) => {
                   default:
                     break
                 }
-              })
+              }
+            )
           }}
         >
           {({

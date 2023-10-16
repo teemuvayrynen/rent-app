@@ -14,13 +14,13 @@ import Login from '@/components/Auth/Login'
 import Signup from '@/components/Auth/Signup'
 import { usePathname } from 'next/navigation'
 import useDateRange from '@/hooks/useDateRange'
-import { AccountContext } from '@/context/Account'
+import useUserData from '@/hooks/useUserData'
+import { Auth } from 'aws-amplify'
 
 
 function Navbar() {
   const pathname = usePathname()
-  const { getSession, logout } = useContext(AccountContext)
-  const [user, setUser] = useState(null)
+  const { user } = useUserData()
   const [dateRange, setDateRange, formatDateToCustomString] = useDateRange()
   const [showAuthForm, setShowAuthForm] = useState({
     login: false,
@@ -28,15 +28,6 @@ function Navbar() {
   })
       
   const [priceRange, setPriceRange] = useState({min: 0,max: 0, isSet: false})
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setUser({ name: session.attributes.name })
-    })
-    .catch((err) => {
-      Error(err)
-    })
-  }, [])
 
   useEffect(() => {
       if(priceRange.isSet) {
@@ -71,6 +62,15 @@ function Navbar() {
       rangeElement.classList.toggle('active')
   }
 
+  const logout = async () => {
+    try {
+      await Auth.signOut({ global: true })
+      window.location.reload()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <>
       {showAuthForm.login ? <Login setVisible={setShowAuthForm} /> : null}
@@ -89,7 +89,7 @@ function Navbar() {
           <div className='user-container'>
             <button className='basic-button' onClick={() => window.location.href = "/addApartment"}>Sublet</button>
             <div className='profile-picture'>
-              {(user.name).charAt(0)}
+              {(user.attributes.name).charAt(0)}
             </div>
             <div className='hamburger-menu' onClick={toggleActive}>
               <span></span>
@@ -114,10 +114,7 @@ function Navbar() {
                 </span> 
                 Settings
               </Link>
-              <p className='dropdown-item' onClick={async () => {
-                await logout()
-                window.location.reload()
-              }}>
+              <p className='dropdown-item' onClick={logout}>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faArrowRightFromBracket} />
                 </span> 
