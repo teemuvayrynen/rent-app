@@ -96,12 +96,12 @@ function Navbar() {
               <span></span>
               <span></span>
               <div className='dropdown'>
-              <p className='dropdown-item'>
+              <Link href="/account/apartments" className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faList} />
                 </span>  
                 Listings
-              </p>
+              </Link>
               <p className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faUser} />

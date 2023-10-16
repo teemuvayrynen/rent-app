@@ -1,0 +1,66 @@
+.user_ap_container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-grow: 1;
+  row-gap: 2rem;
+  overflow-x: hidden;
+  position: relative;
+  padding: 5rem 10px 50px 10px;
+}
+
+.header_section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 40rem;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.header_section > h2 {
+  font-weight: 600;
+}
+
+.search_input {
+  max-width: 40rem;;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 3px rgb(0,0,0,0.5);
+  background-color: rgb(250, 250, 250);
+}
+
+.ap_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.no_ap_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.no_ap_box > h2 {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.no_ap_box > h3 {
+  font-weight: 500;
+  font-size: 18px;
+  color: rgb(66, 66, 66);
+}
+
