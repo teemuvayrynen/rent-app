@@ -27,12 +27,13 @@ const userLocationIcon = new Icon({
   iconSize: [38,38]
 })
 
-function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
+function Map({apartments, markers, loadingApartments, handleUpdate}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
   const [mapListActive, setMapListActive] = useState(false);
   const [mapLoading, setMapLoading] = useState(true)
+  const currentMarkers = useRef([])
 
   useEffect(() => {
     // Simulate a delay to mimic map loading (you can replace this with actual loading logic)
@@ -64,7 +65,13 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
     const filteredMarkers = markers.filter((marker) => {
       return newBounds.contains([marker.location.lat, marker.location.lon]);
     });
-    setFilteredMarkers(prev => filteredMarkers.length > 0 ? filteredMarkers : [])
+
+    if (JSON.stringify(currentMarkers.current) === JSON.stringify(filteredMarkers)) {
+      return
+    }
+
+    currentMarkers.current = filteredMarkers.length > 0 ? filteredMarkers : []
+    handleUpdate(filteredMarkers)
   };
   
   if (mapRef.current) {

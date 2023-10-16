@@ -2,7 +2,7 @@
 
 import DynamicMap from '../../components/Map/index'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Storage } from 'aws-amplify'
 
@@ -60,7 +60,6 @@ export default function SearchPage() {
   const [apartments, setApartments] = useState([])
   const [markers, setMarkers] = useState([])
   const [loadingApartments, setLoadingApartments] = useState(true)
-  const [filteredMarkers, setFilteredMarkers] = useState([])
   const searchParams = useSearchParams()
   const searchString = searchParams.toString()
   
@@ -77,20 +76,18 @@ export default function SearchPage() {
       };
   }, [])
 
-  useEffect(() => {
-      if (filteredMarkers.length > 0) {
-        try {
-          postData(filteredMarkers, setApartments, setLoadingApartments);
-
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      }
-      else{
-        setApartments(prev => [])
+  const updateData = (markers: Array<object>) => {
+    if (markers.length > 0) {
+      try {  
+        postData(markers, setApartments, setLoadingApartments);
+      } catch (error) {
+        console.error('Error:', error);
       }
     }
-  , [filteredMarkers]);
+    else{
+      setApartments([])
+    }
+  }
 
   
 
@@ -98,7 +95,12 @@ export default function SearchPage() {
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: 'calc(100vh - 5rem)', borderTop: '0.5px solid rgb(0,0,0,0.4)'}}>
       <ApartmentList apartments={apartments}/>
-      <DynamicMap apartments={apartments} markers={markers} setFilteredMarkers={setFilteredMarkers} loadingApartments={loadingApartments}/>
+      <DynamicMap 
+        apartments={apartments} 
+        markers={markers} 
+        loadingApartments={loadingApartments}
+        handleUpdate={updateData}
+      />
     </div>
   )
 }
