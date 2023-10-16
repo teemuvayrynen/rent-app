@@ -19,13 +19,13 @@ function formatDateToDDMMYY(date) {
     return formattedDate;
 }
 
-function ImageCarousel({apartment, images, isLoaded, setIsLoaded, handleApartmentClick}) {
+function ImageCarousel({apartment, isLoaded, setIsLoaded, handleApartmentClick}) {
   return (
       <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={false}>
-        {images.map((image, index) => {
+        {apartment.images.map((image, index) => {
           return(
             <div key={index} style={{borderRadius: '10px'}}>
-              <img src={image} alt={`Image ${index}`} onLoad={() => setIsLoaded(true)} className="card-image" style={{display: !isLoaded ? 'none' : 'block', borderRadius: '10px'}} onClick={() => handleApartmentClick(apartment)}/>
+              <img src={`${imageUrl}/images/${image}`} alt={`Image ${index}`} onLoad={() => setIsLoaded(true)} className="card-image" style={{display: !isLoaded ? 'none' : 'block', borderRadius: '10px'}} onClick={() => handleApartmentClick(apartment)}/>
             </div>
           )
         })}
@@ -35,33 +35,7 @@ function ImageCarousel({apartment, images, isLoaded, setIsLoaded, handleApartmen
 
 function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [images, setImages] = useState([]);
   const router = useRouter()
-
-  useEffect(() => {
-    const myAbortController = new AbortController();
-    const fetchImages = async () => {
-      const imagePromises = apartment.images.map(async (imageName) => {
-        try {
-          const response = await fetch(`${imageUrl}/images/${imageName}`,{ signal: myAbortController.signal });
-          if (response.ok) {
-            return response.url;
-          }
-        } catch (error) {
-          console.error(`Error fetching image ${imageName}`, error);
-        }
-      });
-
-      const imageResults = await Promise.all(imagePromises);
-      setImages(imageResults.filter((result) => result !== undefined));
-    };
-
-    fetchImages();
-
-    return () => {
-      myAbortController.abort();
-    };
-  }, []);
 
   const handleApartmentClick = (apartment) => {
     const mapList = document.querySelector('.map-apartment-list');
@@ -76,7 +50,7 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive}) {
 
   return (
     <div className={`card-container ${mapListActive ? 'map' : ''}`}>
-      <ImageCarousel style={{height: mapListActive ? '100%' : 'inital'}} apartment={apartment} images={images} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
+      <ImageCarousel style={{height: mapListActive ? '100%' : 'inital'}} apartment={apartment} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
       <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%"/>
       <div className='apartment-info' onClick={() => handleApartmentClick(apartment)}>
           <p>{apartment.street_name}, {apartment.city}</p>

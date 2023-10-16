@@ -114,13 +114,15 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
     }
     setTimeout(() => {mapRef.current.invalidateSize()}, 500)
     setMapListActive(prev => !prev)
-    }
+  }
   
+
+
   return (
     <>
       <div className='map-container'>
         {!mapLoading ? (
-          <MapContainer ref={mapRef} center={userLocation.isLoaded ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
+          <MapContainer ref={mapRef} center={userLocation.isLoaded && !userLocation.error ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
             setMapLoading(prev => false)
             updateBounds(map.target)
           }}>
@@ -130,7 +132,7 @@ function Map({apartments, markers, setFilteredMarkers, loadingApartments}) {
             />
             <LeafletgeoSearch/>
             {(userLocation.isLoaded && !userLocation.error) && (
-              <Marker position={[userLocation.location.lat, userLocation.location.long]} icon={userLocationIcon}>
+              <Marker position={[userLocation.location?.lat, userLocation.location?.long]} icon={userLocationIcon}>
                 <Popup>Your Location</Popup>
               </Marker>
             )}
