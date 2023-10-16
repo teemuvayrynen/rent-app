@@ -1,6 +1,5 @@
 "use client"
-import React, { useContext, useEffect, useState } from "react"
-import { AccountContext } from "@/context/Account"
+import React, { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons"
 import "./page.css"
@@ -12,13 +11,7 @@ const Settings = () => {
     info: false,
     deleteAccount: false
   })
-  const { getSession } = useContext(AccountContext)
 
-  useEffect(() => {
-    getSession().then((session) => {
-      setUser(session)
-    })
-  })
 
 
   return (
