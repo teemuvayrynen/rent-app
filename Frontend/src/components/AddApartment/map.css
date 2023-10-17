@@ -1,0 +1,14 @@
+.leaflet-control-geosearch .results.active {
+ height: 150px;
+ overflow-y: auto;
+ white-space: unset;
+}
+
+.leaflet-touch .leaflet-geosearch-bar form {
+    width: 100%;
+}
+
+.leaflet-control-geosearch .results > * {
+    border: 1px solid rgb(0,0,0,0.3);
+    white-space: unset;
+}

@@ -219,7 +219,7 @@ export default function AddApartmentsPage() {
             console.log(responseData)
             console.log("Post successfull")
             localStorage.removeItem('apartmentData');
-            window.location.href = "/search"
+            window.location.href = "/account/apartments"
           })
           .catch((error) => {
             console.error('Error:', error);

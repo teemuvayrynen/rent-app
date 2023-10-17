@@ -132,7 +132,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
 
   return (
     <>
-      <div className='map-container'>
+      <div className='map-container' style={{borderRadius: "0px !important"}}>
         {!mapLoading ? (
           <MapContainer ref={mapRef} center={userLocation.isLoaded && !userLocation.error ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
             setMapLoading(prev => false)
@@ -179,7 +179,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
               <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
             </div>
           </MapContainer>
-        ) : <Skeleton height="100%" width="100%"/>}
+        ) : <Skeleton style={{display: 'block'}} height="100%" width="100%"/>}
       </div>
       {mapListActive && <div className='map-apartment-list'>
         {(apartments.length > 0) ? apartments.map((apartment, index) => {

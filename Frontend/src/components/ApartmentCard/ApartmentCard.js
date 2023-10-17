@@ -67,11 +67,16 @@ function ApartmentCard({apartment, goToApartmentLocation, mapListActive, setHove
   return (
     <div className={`card-container ${mapListActive ? 'map' : ''}`} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <ImageCarousel style={{height: mapListActive ? '100%' : 'inital'}} apartment={apartment} isLoaded={isLoaded} setIsLoaded={setIsLoaded} handleApartmentClick={handleApartmentClick}/>
-      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%"/>
-      <div className='apartment-info' onClick={() => handleApartmentClick(apartment)}>
+      <div className='apartment-info' onClick={() => handleApartmentClick(apartment)} style={{display: !isLoaded ? 'none' : 'flex'}}>
           <p>{apartment.street_name}, {apartment.city}</p>
           <p>{apartment.monthlyPrice}/kk &emsp; {apartment.size}m2</p>
           <p>{apartment.startDate === "now" ? "Now": formatDateToDDMMYY(apartment.startDate)} - {(apartment.endDate === "temp" || apartment.endDate === "") ? "": formatDateToDDMMYY(apartment.endDate)}</p>
+      </div>
+      <Skeleton className='card-image' style={{display: isLoaded ? 'none' : 'block'}} borderRadius="20px" width="100%"/>
+      <div className='apartment-info' style={{display: isLoaded ? 'none' : 'block'}}>
+        <Skeleton style={{display: isLoaded ? 'none' : 'block'}} height="10px" width="70%"/>
+        <Skeleton style={{display: isLoaded ? 'none' : 'block'}} height="10px" width="70%"/>
+        <Skeleton style={{display: isLoaded ? 'none' : 'block'}} height="10px" width="70%"/>
       </div>
     </div>
   );
