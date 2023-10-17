@@ -20,6 +20,8 @@
     "aws-amplify": "^5.3.11",
     "aws-crt": "^1.18.0",
     "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "emailjs-com": "^3.2.0",
     "encoding": "^0.1.13",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",

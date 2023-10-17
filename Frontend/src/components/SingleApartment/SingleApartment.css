@@ -31,6 +31,7 @@
 .control-dots {
   height: auto !important;
 }
+
 .address-and-owner{
   display: flex;
   flex: 2 1;
@@ -59,10 +60,10 @@
 .contact-container {
   display: flex;
   flex: 1 1;
-  padding: 5px;
   justify-content: space-between;
-  border: 1px solid rgb(233, 228, 228);
+  border: 1px solid #ccbbbb;
   border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .imageContainer {
@@ -86,12 +87,6 @@
 }
 
 .description-container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0px;
-}
-
-.equipment-container {
   display: flex;
   flex-direction: column;
   padding: 10px 0px;
@@ -154,6 +149,7 @@
   display: flex;
   flex-direction: row;
   padding-top: 10px;
+  gap: 1rem;
 }
 
 .address-text-container {
@@ -166,6 +162,13 @@
   flex-direction: column;
   justify-content: space-around;
   padding-left: 20px;
+}
+
+.contact-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 40px;
 }
 
 .contact-button {
@@ -184,10 +187,10 @@
 }
 
 .description-container > h1 {
-  font-size: 26px;
-  font-weight: 600;
-  align-self: center;
-  padding: 5px;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
 }
 
 .description-container > p {
@@ -195,15 +198,9 @@
   font-size: 16px;
 }
 
-.equipment-container > h1 {
-  font-size: 26px;
-  font-weight: 600;
-  align-self: center;
-  padding-bottom: 20px;
-}
-
 .divider {
   color: var(--main-color);
   border-style: solid;
   margin: 20px 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

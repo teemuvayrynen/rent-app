@@ -10,8 +10,10 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import EquipmentInfo from './EquipmentInfo';
 
+import EquipmentInfo from './EquipmentInfo';
+import RentAndRules from './RentAndRules'
+import ContactForm from './ContactForm'
 
 function formatDate(inputDate) {
   const parts = inputDate.split(/[-T:.+]/);
@@ -23,7 +25,6 @@ function formatDate(inputDate) {
 
 function SingleApartment({ id }) {
   const [apartment, setApartment] = useState(null);
-  const [imageIds, setImageIds] = useState([]);
   const [images, setImages] = useState([]);
   const [imageDimensions, setImageDimensions] = useState([]);
 
@@ -33,7 +34,7 @@ function SingleApartment({ id }) {
         const response = await fetch(`${apiUrl}/apartments/${id}`);
         const data = await response.json();
         setApartment(data.Item);
-        setImageIds(data.Item.images);
+        setImages(data.Item.images);
       } catch (error) {
         console.error('Error fetching apartment data', error);
       }
@@ -41,26 +42,6 @@ function SingleApartment({ id }) {
 
     fetchData();
   }, [id]);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      const imagePromises = imageIds.map(async (imageName) => {
-        try {
-          const response = await fetch(`${imageUrl}/images/${imageName}`);
-          if (response.ok) {
-            return response.url;
-          }
-        } catch (error) {
-          console.error(`Error fetching image ${imageName}`, error);
-        }
-      });
-
-      const imageResults = await Promise.all(imagePromises);
-      setImages(imageResults.filter((result) => result !== undefined));
-    };
-
-    fetchImages();
-  }, [imageIds]);
 
 
   useEffect(() => {
@@ -70,7 +51,7 @@ function SingleApartment({ id }) {
 
       images.forEach((image, index) => {
         const img = new Image();
-        img.src = image;
+        img.src = `${imageUrl}/images/${image}`
         img.onload = () => {
           const width = img.width;
           const height = img.height;
@@ -92,6 +73,14 @@ function SingleApartment({ id }) {
     }
   }, [images]);
 
+  const scrollToContactForm = () => {
+    const contactFormElement = document.getElementById('contact-form');
+    if (contactFormElement) {
+      contactFormElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
+
   console.log(apartment);
 
   return (
@@ -103,7 +92,7 @@ function SingleApartment({ id }) {
               {images.map((image, index) => {
                 return (
                   <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
-                    <img className="image" src={image} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                    <img className="image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
                   </div>
                 );
               })}
@@ -165,19 +154,28 @@ function SingleApartment({ id }) {
           </div>
         </div>
 
-        <div className='contact-container'>
-          {apartment ? (
+        {apartment ? (
+          <div className='contact-container'>
             <div className='contact-details'>
               <div className='monthly-price'>
                 <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} €</p>
               </div>
               <div>
-                <span style={{padding: '5px'}}>{formatDate(apartment.startDate)}</span>
+                <span style={{padding: '5px'}}>
+                  {apartment.startDate ? formatDate(apartment.startDate) : "Right away"}
+                </span>
                 <FontAwesomeIcon icon={faArrowRight} size="lg" />
-                <span style={{padding: '5px'}}>{formatDate(apartment.endDate)}</span>
+                <span style={{padding: '5px'}}>
+                  {apartment.endDate ? formatDate(apartment.endDate) : "Open-ended"}
+                </span>
               </div>
             </div>
-          ) : (
+            <div className='contact-button-container'>
+                <button className='contact-button' onClick={scrollToContactForm}>Contact</button>
+            </div>
+          </div>
+        ) : (
+          <div className='contact-container' style={{border: '0px', boxShadow: '0 0 0'}}>
             <div className='contact-details'>
               <div className='monthly-price'>
                 <Skeleton width={120} height={24} style={{ margin: '5px' }} />
@@ -186,43 +184,107 @@ function SingleApartment({ id }) {
                 <Skeleton width={200} height={24} style={{ margin: '5px' }} />
               </div>
             </div>
-          )}
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingRight: '40px' }}>
-            {apartment ? (
-              <button className='contact-button'>Contact</button>
-            ) : (
+            <div className='contact-button-container'>
               <Skeleton width={100} height={40} style={{ margin: '5px' }} />
-            )}
+            </div>
           </div>
-        </div>
-
+        )}
       </div>
       
       <div style={{display: 'flex', flexDirection: 'row'}}>
         <div className='information-container'>
           <div className="description-container">
-            <h1>Description</h1>
             
             {apartment ? (
+              <>
+                <h1>Description</h1>
                 <p>{apartment.description}</p>
-              ) : (<p>loading...</p>
-              )}    
+              </>
+              ) : (
+              <>
+                <h1 style={{marginBottom: '10px', fontSize: '2rem'}}>
+                  <Skeleton width={200}/>
+                </h1>
+                <div style={{alignSelf: 'center', width: '100%'}}>
+                  <Skeleton count={4}/>
+                </div>
+              </>
+            )}    
               
           </div>
 
-          <div className='divider'/>
-          
-          <div className='equipment-container'>
-            <h1>Equipment and Utility</h1>
-            
-            {apartment ? (
-              <EquipmentInfo apartmentData={apartment} />
+          {apartment ? (
+            <div className='divider'/>
             ) : (
-              <p>Loading...</p>
-            )}
-          </div>
-        </div>
+              <div style={{width: '100%'}}>
+                <Skeleton style={{margin: '20px 0px'}}/>
+              </div>
+          )}    
 
+          <div>
+            {apartment ? (
+              <>
+                <EquipmentInfo apartmentData={apartment} />
+              </>
+              ) : (
+              <>
+                <h1 style={{textAlign: 'center', marginBottom: '10px', fontSize: '2rem'}}>
+                  <Skeleton width={200}/>
+                </h1>
+                <div style={{alignSelf: 'center', width: '100%'}}>
+                  <Skeleton count={4}/>
+                </div>
+              </>
+            )}    
+          </div>
+
+          {apartment ? (
+            <div className='divider'/>
+            ) : (
+              <div style={{width: '100%'}}>
+                <Skeleton style={{margin: '20px 0px'}}/>
+              </div>
+          )}    
+
+          <div>
+            {apartment ? (
+              <>
+                <RentAndRules apartmentData={apartment} />
+              </>
+              ) : (
+              <>
+                <h1 style={{textAlign: 'center', marginBottom: '10px', fontSize: '2rem'}}>
+                  <Skeleton width={200}/>
+                </h1>
+                <div style={{alignSelf: 'center', width: '100%'}}>
+                  <Skeleton count={6}/>
+                </div>
+              </>
+            )}   
+          </div>
+
+          {apartment ? (
+            <div className='divider'/>
+            ) : (
+              <div style={{width: '100%'}}>
+                <Skeleton style={{margin: '20px 0px'}}/>
+              </div>
+          )}  
+
+          <div id="contact-form">
+            {apartment ? (
+                <ContactForm />
+                ) : (
+                <div style={{flex: '1', textAlign: 'center'}}>
+                  <Skeleton height={275} width={'60%'}/>
+                </div>
+              )}   
+          </div>
+          
+        </div>
+        
+        {/* Just an empty spacer to handle the 2/1 ratio of the image
+            container and the map container */}
         <div className='information-container-spacer'/>
       </div>
     
