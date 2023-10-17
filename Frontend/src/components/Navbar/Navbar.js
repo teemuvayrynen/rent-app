@@ -79,7 +79,8 @@ function Navbar() {
         <Link href="/">
           <Image alt='logo' src={'logo.svg'} width={60} height={60}/>
         </Link>
-        {(pathname === "/" || pathname === "/addApartment" || pathname === "/apartment")? null : (
+        {(pathname === "/" || pathname === "/addApartment" || pathname === "/apartment"
+        || pathname === "/account/settings" || pathname === "/account/apartments")? null : (
           <>
             <Filter />
           </>
