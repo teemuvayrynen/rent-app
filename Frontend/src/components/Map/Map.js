@@ -179,7 +179,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
               <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
             </div>
           </MapContainer>
-        ) : <Skeleton height="100%" width="100%"/>}
+        ) : <Skeleton style={{display: 'block'}} height="100%" width="100%"/>}
       </div>
       {mapListActive && <div className='map-apartment-list'>
         {(apartments.length > 0) ? apartments.map((apartment, index) => {

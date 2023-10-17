@@ -21,6 +21,7 @@ function ApartmentList({ apartments, setHoveredMarkerID }) {
         </div>
         {visible < apartments.length && (
           <button
+            className='basic-button'
             onClick={showMore}
             style={{ margin: "2rem 0", display: (visible === apartments.length - 1) ? 'none' : 'block' }}
           >
@@ -29,7 +30,7 @@ function ApartmentList({ apartments, setHoveredMarkerID }) {
         )}
       </div>
     ) : (
-      <p>Loading</p>
+      <div style={{background: 'red', width: '200px', height: '100px'}}></div>
     )
   );
 }
