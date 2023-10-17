@@ -15,7 +15,7 @@ const useUserData = () => {
           setUser(result)
         }
       } catch (err) {   
-        if (pathname !== "/" && pathname !== "/search") {
+        if (pathname.includes("addApartment") || pathname.includes("account")) {
           router.push("/search")
         }
       }
