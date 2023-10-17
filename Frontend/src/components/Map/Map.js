@@ -132,7 +132,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
 
   return (
     <>
-      <div className='map-container'>
+      <div className='map-container' style={{borderRadius: "0px !important"}}>
         {!mapLoading ? (
           <MapContainer ref={mapRef} center={userLocation.isLoaded && !userLocation.error ? [userLocation.location.lat, userLocation.location.long] : kruununhakaCoordinates} zoom={11} scrollWheelZoom={true} whenReady={(map) => {
             setMapLoading(prev => false)
