@@ -18,7 +18,7 @@ function DateForm({apartmentData, handleUpdate}) {
     const [dateRange, setDateRange, formatDateToCustomString, formatDateRangeForQuery] = useDateRange()
     const [newStartDate, setNewStartDate] = useState(apartmentData['startDate']);
     const [isRightAway, setIsRightAway] = useState(apartmentData['startDate'] === '' ? true : false)
-    const [isOpenEnded, setIsOpenEnded] = useState(apartmentData['endDate'] === '' ? true : false)
+    const [isOpenEnded, setIsOpenEnded] = useState((apartmentData['endDate'] === '' || apartmentData['endDate'] === 'temp') ? true : false)
     const [newEndDate, setNewEndDate] = useState(apartmentData['endDate']);
     const locale = locales['fi']
 
@@ -109,11 +109,11 @@ function DateForm({apartmentData, handleUpdate}) {
                     <label>Rental ends</label>
                     <div className='now' onClick={() => {
                         setIsOpenEnded(true)
-                        setDate('.end-date .now', '.end-date > div', 'endDate', '')}}>
+                        setDate('.end-date .now', '.end-date > div', 'endDate', 'temp')}}>
                         <p>Open-ended</p>
                     </div>
                     <div className='later' onClick={() => setDate('.end-date .later', '.end-date > div', 'endDate', 'TODO')}>
-                    {newEndDate !== '' && !isOpenEnded ? formatDateToCustomString(newEndDate) : <p>Choose date</p>}
+                    {(newEndDate !== 'temp' && newEndDate !== '') && !isOpenEnded ? formatDateToCustomString(newEndDate) : <p>Choose date</p>}
                         <div className='calendar-end' style={{background: 'initial !important'}}>
                             <Calendar onChange={item => {
                                 const date = new Date(item);
@@ -121,7 +121,7 @@ function DateForm({apartmentData, handleUpdate}) {
                                 const isoDateString = date.toISOString();
                                 setIsOpenEnded(false)
                                 setNewEndDate(prev => isoDateString)}}
-                            locale={locale} date={newEndDate !== '' ? new Date(newEndDate) : null} />
+                            locale={locale} date={(newEndDate !== 'temp' && newEndDate !== '') ? new Date(newEndDate) : null} />
                         </div>
                     </div>
                 </div>

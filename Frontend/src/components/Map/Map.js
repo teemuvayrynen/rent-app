@@ -22,12 +22,17 @@ const customIcon = new Icon({
   iconSize: [38,38]
 })
 
-const userLocationIcon = new Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
+const hovercustomIcon = new Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/535/535188.png",
   iconSize: [38,38]
 })
 
-function Map({apartments, markers, loadingApartments, handleUpdate}) {
+const userLocationIcon = new Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
+  iconSize: [30,30]
+})
+
+function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMarkerID}) {
   const kruununhakaCoordinates = [60.1729, 24.9591];
   const userLocation = useUserGeoLocation()
   const mapRef = useRef(null)
@@ -144,10 +149,11 @@ function Map({apartments, markers, loadingApartments, handleUpdate}) {
               </Marker>
             )}
             {(markers.length > 1) ? (
-              <MarkerClusterGroup chunkedLoading>
+              <MarkerClusterGroup disableClusteringAtZoom={11} spiderfyOnMaxZoom={false}
+              chunkedLoading>
                 {markers.map((marker) => {
                   return marker.location && (
-                    <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={customIcon}>
+                    <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={(hoveredMarkerID === marker.id) ? hovercustomIcon : customIcon}>
                       <Popup>
                       <div>
                         <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
@@ -177,7 +183,7 @@ function Map({apartments, markers, loadingApartments, handleUpdate}) {
       </div>
       {mapListActive && <div className='map-apartment-list'>
         {(apartments.length > 0) ? apartments.map((apartment, index) => {
-          return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive}/>
+          return <ApartmentCard key={index} apartment={apartment} goToApartmentLocation={goToApartmentLocation} mapListActive={mapListActive} setHoveredMarkerID={setHoveredMarkerID}/>
         }
         ) : 
           <div style={{display: "flex", flexDirection: "colum", justifyContent: "center", height: "100%", alignItems: "center"}}>

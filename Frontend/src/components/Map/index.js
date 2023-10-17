@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import React, { useMemo } from 'react';
 
-const DynamicMap = ({apartments, markers, loadingApartments, handleUpdate}) => {
+const DynamicMap = ({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMarkerID}) => {
   const Map = useMemo(() => dynamic(() => import('./Map'), {
     ssr: false
   }), [])
@@ -10,8 +10,9 @@ const DynamicMap = ({apartments, markers, loadingApartments, handleUpdate}) => {
     <Map 
       apartments={apartments}
       markers={markers} 
-      loadingApartments={loadingApartments}
+      setHoveredMarkerID={setHoveredMarkerID}
       handleUpdate={handleUpdate}
+      hoveredMarkerID={hoveredMarkerID}
     />
   )
 }

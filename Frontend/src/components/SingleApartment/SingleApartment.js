@@ -28,9 +28,11 @@ function SingleApartment({ id }) {
   const [imageDimensions, setImageDimensions] = useState([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
     const fetchData = async () => {
       try {
-        const response = await fetch(`${apiUrl}/apartments/${id}`);
+        const response = await fetch(`${apiUrl}/apartments/${id}`, {signal: signal});
         const data = await response.json();
         setApartment(data.Item);
         setImageIds(data.Item.images);
@@ -40,13 +42,18 @@ function SingleApartment({ id }) {
     };
 
     fetchData();
+    return () => {
+      abortController.abort()
+    }
   }, [id]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
     const fetchImages = async () => {
       const imagePromises = imageIds.map(async (imageName) => {
         try {
-          const response = await fetch(`${imageUrl}/images/${imageName}`);
+          const response = await fetch(`${imageUrl}/images/${imageName}`, {signal: signal});
           if (response.ok) {
             return response.url;
           }
@@ -60,6 +67,9 @@ function SingleApartment({ id }) {
     };
 
     fetchImages();
+    return () => {
+      abortController.abort()
+    }
   }, [imageIds]);
 
 

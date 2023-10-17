@@ -2,9 +2,8 @@
 
 import DynamicMap from '../../components/Map/index'
 import ApartmentList from '../../components/ApartmentList/ApartmentList'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Storage } from 'aws-amplify'
 
 
 const sortApartments = (apartments: []) => {
@@ -22,7 +21,7 @@ const sortApartments = (apartments: []) => {
   });
 }
 
-function postData(data: any, setApartments: any, setLoadingApartments: any) {
+function postData(data: any, setApartments: any) {
   const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get';
 
   const convertedData = {
@@ -36,7 +35,6 @@ function postData(data: any, setApartments: any, setLoadingApartments: any) {
     },
     body: JSON.stringify(convertedData), 
   };
-  setLoadingApartments(true)
   fetch(apiUrl, requestOptions)
     .then((response) => {
       if (!response.ok) {
@@ -48,7 +46,6 @@ function postData(data: any, setApartments: any, setLoadingApartments: any) {
       if(responseData.apartments){
         const sortedApartments = sortApartments(responseData.apartments)
         setApartments((prev: any) => sortedApartments)
-        setLoadingApartments(false)
       }
     })
     .catch((error) => {
@@ -59,7 +56,7 @@ function postData(data: any, setApartments: any, setLoadingApartments: any) {
 export default function SearchPage() {
   const [apartments, setApartments] = useState([])
   const [markers, setMarkers] = useState([])
-  const [loadingApartments, setLoadingApartments] = useState(true)
+  const [hoveredMarkerID, setHoveredMarkerID] = useState(null)
   const searchParams = useSearchParams()
   const searchString = searchParams.toString()
   
@@ -79,7 +76,7 @@ export default function SearchPage() {
   const updateData = (markers: Array<object>) => {
     if (markers.length > 0) {
       try {  
-        postData(markers, setApartments, setLoadingApartments);
+        postData(markers, setApartments);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -94,13 +91,12 @@ export default function SearchPage() {
 
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: 'calc(100vh - 5rem)', borderTop: '0.5px solid rgb(0,0,0,0.4)'}}>
-      <ApartmentList apartments={apartments}/>
-      <DynamicMap 
-        apartments={apartments} 
-        markers={markers} 
-        loadingApartments={loadingApartments}
+      <ApartmentList apartments={apartments} setHoveredMarkerID={setHoveredMarkerID}/>
+      <DynamicMap apartments={apartments}
+        markers={markers}
+        setHoveredMarkerID={setHoveredMarkerID}
         handleUpdate={updateData}
-      />
+        hoveredMarkerID={hoveredMarkerID}/>
     </div>
   )
 }

@@ -105,7 +105,7 @@ const initialApartmentState = {
     },
     description: '',
     startDate: '',
-    endDate: '',
+    endDate: 'temp',
     created: '',
     building_society: '', // optional
     status: 1, // 1 or 0 depending on the listing's online status
@@ -218,6 +218,7 @@ export default function AddApartmentsPage() {
           .then((responseData) => {
             console.log(responseData)
             console.log("Post successfull")
+            localStorage.removeItem('apartmentData');
             window.location.href = "/search"
           })
           .catch((error) => {
