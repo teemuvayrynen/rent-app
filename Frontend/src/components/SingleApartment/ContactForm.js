@@ -140,10 +140,12 @@ function ContactForm() {
                 rows={4}
                 style={{ resize: 'vertical' }}
               />
-            <ReCAPTCHA
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
-                onChange={() => setVerified(true)}
-              />
+            </div>
+            <div style={{alignSelf: 'center'}}>
+                <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+                    onChange={() => setVerified(true)}
+                />
             </div>
             <button 
                 disabled={!captchaVerified} 
