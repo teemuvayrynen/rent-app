@@ -113,25 +113,6 @@ function ContactForm() {
             </div>
 
             <div className="form-group">
-                <label>Owner email:</label>
-                <input
-                  type='email'
-                  value={emailOwner}
-                  onChange={(e) => setEmailOwner(e.target.value)}
-                  required
-                />
-              </div>
-            <div className="form-group">
-                <label>Owner name:</label>
-                <input
-                  type='text'
-                  value={nameOwner}
-                  onChange={(e) => setNameOwner(e.target.value)}
-                  required
-                />
-              </div>
-
-            <div className="form-group">
               <label>Message:</label>
               <textarea
                 value={message}

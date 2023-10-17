@@ -93,7 +93,9 @@ function SingleApartment({ id }) {
       <div className="slider-map-container">
         <div className="slider-container">
           {images.length && Object.keys(imageDimensions).length === images.length ? 
-            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true}>
+            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true} 
+              style={{ backgroundColor: '#fadede', width: '750px', height: '100px' }} // Add this line
+            >
               {images.map((image, index) => {
                 return (
                   <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
