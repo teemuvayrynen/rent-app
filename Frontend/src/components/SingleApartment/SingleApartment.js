@@ -27,6 +27,9 @@ function SingleApartment({ id }) {
   const [apartment, setApartment] = useState(null);
   const [images, setImages] = useState([]);
   const [imageDimensions, setImageDimensions] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  const defaultImage = "https://source.unsplash.com/178j8tJrNlc"
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -37,6 +40,7 @@ function SingleApartment({ id }) {
         const data = await response.json();
         setApartment(data.Item);
         setImages(data.Item.images);
+        setIsLoaded(true)
       } catch (error) {
         console.error('Error fetching apartment data', error);
       }
@@ -92,17 +96,19 @@ function SingleApartment({ id }) {
     <div className="main-container">
       <div className="slider-map-container">
         <div className="slider-container">
-          {images.length && Object.keys(imageDimensions).length === images.length ? 
-            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true} 
-              style={{ backgroundColor: '#fadede', width: '750px', height: '100px' }} // Add this line
-            >
-              {images.map((image, index) => {
+          {isLoaded && Object.keys(imageDimensions).length === images.length ? 
+            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true} >
+              {images.length > 0 ? images.map((image, index) => {
                 return (
                   <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
                     <img className="image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
                   </div>
-                );
-              })}
+                )
+              }):
+              <div className="imageContainer" style={{ width: '-webkit-fill-available' }}>
+                  <img src={defaultImage} className="imageContainer" alt={`Default Image`} />
+              </div>
+              }
             </Carousel>
           : 
             <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>}
@@ -165,7 +171,7 @@ function SingleApartment({ id }) {
           <div className='contact-container'>
             <div className='contact-details'>
               <div className='monthly-price'>
-                <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} €</p>
+                <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} € / mo.</p>
               </div>
               <div>
                 <span style={{padding: '5px'}}>
@@ -173,7 +179,7 @@ function SingleApartment({ id }) {
                 </span>
                 <FontAwesomeIcon icon={faArrowRight} size="lg" />
                 <span style={{padding: '5px'}}>
-                  {apartment.endDate ? formatDate(apartment.endDate) : "Open-ended"}
+                  {apartment.endDate != 'temp' ? formatDate(apartment.endDate) : "Open-ended"}
                 </span>
               </div>
             </div>

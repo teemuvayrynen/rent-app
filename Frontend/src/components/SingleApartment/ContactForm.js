@@ -9,9 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function ContactForm() {
     const [name, setName] = useState('');
-    const [nameOwner, setNameOwner] = useState('This field will be deleted later');
+    const [nameOwner, setNameOwner] = useState('UniRent');
     const [email, setEmail] = useState('');
-    const [emailOwner, setEmailOwner] = useState('This field will be deleted later');
+    const [emailOwner, setEmailOwner] = useState('unirentcontact@gmail.com');
     const [number, setNumber] = useState('');
     const [message, setMessage] = useState('');
     const [captchaVerified, setVerified] = useState(false)
