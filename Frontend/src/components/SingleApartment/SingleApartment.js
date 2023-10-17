@@ -281,7 +281,7 @@ function SingleApartment({ id }) {
                 <ContactForm />
                 ) : (
                 <div style={{flex: '1', textAlign: 'center'}}>
-                  <Skeleton height={275} width={'60%'}/>
+                  <Skeleton height={400} width={'60%'}/>
                 </div>
               )}   
           </div>

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
+import ReCAPTCHA from "react-google-recaptcha";
+
 import './ContactForm.css';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ContactForm() {
     const [name, setName] = useState('');
@@ -10,42 +14,67 @@ function ContactForm() {
     const [emailOwner, setEmailOwner] = useState('This field will be deleted later');
     const [number, setNumber] = useState('');
     const [message, setMessage] = useState('');
+    const [captchaVerified, setVerified] = useState(false)
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        if (captchaVerified) {
+            e.preventDefault();
     
-        // EmailJS initialization
-        emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
-    
-        // EmailJS parameters
-        const emailParams = {
-          name,
-          email,
-          emailOwner,
-          nameOwner,
-          number,
-          message,
-        };
-    
-        emailjs
-          .send(
-            process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-            process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-            emailParams
-          )
-          .then((response) => {
-            console.log('Email sent successfully:', response);
-          })
-          .catch((error) => {
-            console.error('Error sending email:', error);
-          });
-    
-        setName('');
-        setNameOwner('');
-        setEmail('');
-        setEmailOwner('');
-        setNumber('');
-        setMessage('');
+            // EmailJS initialization
+            emailjs.init(process.env.NEXT_PUBLIC_EMAILJS_USER_ID);
+        
+            // EmailJS parameters
+            const emailParams = {
+              name,
+              email,
+              emailOwner,
+              nameOwner,
+              number,
+              message,
+            };
+        
+            emailjs
+              .send(
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+                emailParams
+              )
+              .then((response) => {
+                toast.success('Email sent succesfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    closeButton: false
+                });
+              })
+              .catch((error) => {
+                toast.error('Email was not sent!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    closeButton: false
+                });
+                console.error('Error sending email:', error);
+              });
+        
+            setName('');
+            setNameOwner('');
+            setEmail('');
+            setEmailOwner('');
+            setNumber('');
+            setMessage('');
+        }
+        
     };
 
 
@@ -111,9 +140,18 @@ function ContactForm() {
                 rows={4}
                 style={{ resize: 'vertical' }}
               />
+            <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+                onChange={() => setVerified(true)}
+              />
             </div>
-            <button type='submit'>Send</button>
+            <button 
+                disabled={!captchaVerified} 
+                style={{ opacity: !captchaVerified ? 0.2 : 1 }} 
+                type='submit'
+            > Send </button>
           </form>
+          <ToastContainer />
         </div>
       );
 }
