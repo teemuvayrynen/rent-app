@@ -30,7 +30,7 @@ export default function Landing() {
 
   return (
     <>
-      <div className='landing-container'>
+      <section className='landing-container'>
         <div className='slogan-container'> 
           <p>
             In need of a student apartment? <br/>
@@ -41,7 +41,7 @@ export default function Landing() {
         </div>
         <LargeFilter cityRef={cityRef} priceRef={priceRef} dateRef={dateRef}/>
         <button onClick={handleClick} className='basic-button long'>Start Searching</button>
-      </div>
+      </section>
     </>
   )
 }

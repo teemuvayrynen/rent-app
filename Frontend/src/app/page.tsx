@@ -2,34 +2,37 @@
 
 import Landing from "@/components/Landing/Landing"
 import React, { useState, useEffect } from "react"
+import styles from "./page.module.css"
 import ApartmentRow from "@/components/ApartmentRow/ApartmentRow"
 
 
 export default function Home() {
-
   const [apartments, setApartments] = useState([])
-  // useEffect(() => {
-  //   fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get')
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setApartments(data)
-  //     })
-  // }, [])
+  useEffect(() => {
+    fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/landing/get?places=espoo,helsinki,tampere')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setApartments(data)
+      })
+  }, [])
 
-  // temp
   
 
   return (
     <>
-      <div style={{ padding: '0px 60px'}}>
+      <main className={styles.page_container}>
         <Landing />
         <div className='divider' />
-        <ApartmentRow apartments={apartments} place={"Helsinki"}  />
-        <div className='divider' />
-        <ApartmentRow apartments={apartments} place={"Otaniemi"}  />
-        <div className='divider' />
-        <ApartmentRow apartments={apartments} place={"Tampere"}  />
-      </div>
+        {apartments.map((ap: any) => {
+          return (
+            <>
+              <ApartmentRow key={ap.City} apartments={ap.Items} place={ap.City}  />
+              <div className='divider' />
+            </>
+          )
+        })}
+      </main>
     </>
   )
 }

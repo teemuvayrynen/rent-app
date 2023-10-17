@@ -32,7 +32,8 @@ export async function handler(event) {
             ":c": "finland",
             ":city": item
           },
-          KeyConditionExpression: "country = :c and city = :city"
+          KeyConditionExpression: "country = :c and city = :city",
+          Limit: 6
         }
         const data = await dynamo.query(params).promise()
         if (data.Count > 0) {

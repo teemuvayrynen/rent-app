@@ -13,8 +13,12 @@ function ApartmentRow({apartments, place}) {
           Best of <span> {place}</span>
         </p>
         <div className='apartment-row-flex-row'> 
-          {apartments.slice(0, 10).map(apartment => {
-            return <ApartmentCard key={apartment.id} apartment={apartment}/>
+          {apartments.map(apartment => {
+            return (
+              <div style={{ minWidth: 265, maxWidth: 265}}>
+                <ApartmentCard key={apartment.id} apartment={apartment}/>
+              </div>
+            )
           })}
 
         </div>
