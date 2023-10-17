@@ -23,7 +23,7 @@ function ApartmentList({ apartments, setHoveredMarkerID }) {
           <button
             className='basic-button'
             onClick={showMore}
-            style={{ margin: "2rem 0", display: (visible === apartments.length - 1) ? 'none' : 'block' }}
+            style={{ margin: "2rem 0", display: (visible > apartments.length - 1) ? 'none' : 'block' }}
           >
             Show more
           </button>
