@@ -15,8 +15,8 @@ function ApartmentRow({apartments, place}) {
         <div className='apartment-row-flex-row'> 
           {apartments.map(apartment => {
             return (
-              <div style={{ minWidth: 265, maxWidth: 265}}>
-                <ApartmentCard key={apartment.id} apartment={apartment}/>
+              <div key={apartment.id} style={{ minWidth: 265, maxWidth: 265}}>
+                <ApartmentCard apartment={apartment}/>
               </div>
             )
           })}
