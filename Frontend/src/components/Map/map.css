@@ -76,6 +76,7 @@
   flex-direction: column;
   gap: 0.5rem;
   background-color: white;
+  box-shadow: 5px 7px 4px 0px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
   z-index: 9999;
   opacity: 0;
@@ -99,6 +100,7 @@
 }
 .carousel .control-arrow, .carousel.carousel-slider .control-arrow {
   opacity: 1 !important;
+  border-radius: 10px;
 }
 @media screen and (min-width: 2560) {
   .leaflet-container {

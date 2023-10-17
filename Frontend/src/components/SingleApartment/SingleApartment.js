@@ -29,9 +29,11 @@ function SingleApartment({ id }) {
   const [imageDimensions, setImageDimensions] = useState([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
     const fetchData = async () => {
       try {
-        const response = await fetch(`${apiUrl}/apartments/${id}`);
+        const response = await fetch(`${apiUrl}/apartments/${id}`, {signal: signal});
         const data = await response.json();
         setApartment(data.Item);
         setImages(data.Item.images);
@@ -41,6 +43,9 @@ function SingleApartment({ id }) {
     };
 
     fetchData();
+    return () => {
+      abortController.abort()
+    }
   }, [id]);
 
 
