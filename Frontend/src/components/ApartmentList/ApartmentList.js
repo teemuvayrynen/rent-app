@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './apartmentList.css';
 import ApartmentCard from '../ApartmentCard/ApartmentCard';
 
-function ApartmentList({ apartments }) {
+function ApartmentList({ apartments, setHoveredMarkerID }) {
   const [visible, setVisible] = useState(6);
 
   const showMore = () => {
@@ -15,7 +15,7 @@ function ApartmentList({ apartments }) {
         <div className='apartment-list'>
           <div className='grid-container'>
             {apartments.slice(0, visible).map((apartment, index) => (
-              <ApartmentCard key={apartment.id} apartment={apartment} />
+              <ApartmentCard key={apartment.id} apartment={apartment} setHoveredMarkerID={setHoveredMarkerID}/>
             ))}
           </div>
         </div>

@@ -11,12 +11,12 @@
     flex-direction: row;
     overflow: unset;
     border: 0.5px solid black;
+    border-radius: 10px;
     padding: 0;
 }
 
 .card-container.map * {
     height: 100%; /* Set max-height for all direct children */
-    border-radius: 0px !important;
   }
 
 .card-container.map .card-image {

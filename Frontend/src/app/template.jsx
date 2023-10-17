@@ -1,5 +1,6 @@
 "use client"
 import { Amplify } from "aws-amplify"
+require('dotenv').config()
 
 Amplify.configure({
   Auth: {

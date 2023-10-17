@@ -1,0 +1,13 @@
+.rent-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+    align-items: center;
+  }
+  
+  .rent-container > h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
