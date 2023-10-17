@@ -40,7 +40,8 @@ export async function handler(event) {
         expression = expression.length > 0 ? expression + " AND endDate = :endDate" : "endDate = :endDate"
       } else {
         params.ExpressionAttributeValues[":endDate"] = event.queryStringParameters?.endDate
-        expression = expression.length > 0 ? expression + " AND :endDate <= endDate" : ":endDate <= endDate"
+        params.ExpressionAttributeValues[":empty"] = ""
+        expression = expression.length > 0 ? expression + " AND (:endDate <= endDate OR :empty = endDate)" : "(:endDate <= endDate OR :empty = endDate)"
       }
     }
 
