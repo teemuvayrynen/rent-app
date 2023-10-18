@@ -30,6 +30,7 @@ function SingleApartment({ id }) {
   const [imageDimensions, setImageDimensions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false)
   const [isSaved, setIsSaved] = useState(false);
+  const [viewAllImages, setViewAllImages] = useState(false);
 
   const defaultImage = "https://source.unsplash.com/178j8tJrNlc"
 
@@ -95,6 +96,10 @@ function SingleApartment({ id }) {
     setIsSaved(!isSaved);
   };
 
+  const toggleViewAllImages = () => {
+    setViewAllImages(!viewAllImages);
+  };
+
   console.log(apartment);
 
   return (
@@ -102,10 +107,21 @@ function SingleApartment({ id }) {
       <div className="slider-map-container">
         <div className="slider-container">
           {isLoaded && Object.keys(imageDimensions).length === images.length ? 
-            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true} >
+            <Carousel 
+              swipeable={true} 
+              emulateTouch={true} 
+              showThumbs={false} 
+              dynamicHeight={true} 
+              infiniteLoop={true}
+              useKeyboardArrows={true}
+            >
               {images.length > 0 ? images.map((image, index) => {
                 return (
-                  <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
+                  <div 
+                    className={`imageContainer ${viewAllImages ? 'view-all-images' : ''}`} 
+                    key={index} 
+                    style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
+                  >
                     <img className="image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
                   </div>
                 )
@@ -116,8 +132,16 @@ function SingleApartment({ id }) {
               }
             </Carousel>
           : 
-            <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>}
+            <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>
+          }
+        {images.length > 1 && (
+          <div className='view-all-button' onClick={toggleViewAllImages}>
+            <p>View All Images</p>
+          </div>
+        )}
         </div>
+
+
 
         <div className="map-container">
           {apartment ? (

@@ -22,10 +22,7 @@
   
   /* Hide the image from the corners when changing image */
   overflow: hidden; 
-}
-
-.slider-container * {
-  height: 100%;
+  position: relative;
 }
 
 .control-dots {
@@ -232,4 +229,48 @@
 
 .favorites-button-container:hover {
   background-color: #f8f7f7;
+}
+
+.view-all-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+  bottom: 10px;
+  left: auto;
+  right: 10px;
+  width: 150px;
+  height: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccbbbb;
+}
+
+.view-all-button:hover {
+  background-color: #eeeeee;
+}
+
+.view-all-button > p{
+  color: #000000; /* White text color */
+  font-size: 14px;
+}
+
+/* Styles for all images in "View all images" mode */
+.view-all-images .imageContainer {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Adjust the carousel size to fit all images when in "View all images" mode */
+.view-all-images .carousel .slider-wrapper {
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+/* Hide the "View all images" button when in "View all images" mode */
+.view-all-images .view-all-button {
+  display: none;
 }
