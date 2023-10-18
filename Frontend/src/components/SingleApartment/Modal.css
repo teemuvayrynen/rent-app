@@ -1,3 +1,12 @@
+.modal-container {
+    position: relative;
+    height:85%;
+    width: 75%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .modal-slider-container {
     flex: 1 1;
     background-color: #fadede;
@@ -15,11 +24,12 @@
 
 .modal-imageContainer {
     width: fit-content;
-    display: inline-block
+    display: inline-block;
 }
 
 .modal-image {
-    width:100%;
+    width: 100%;
+    object-fit: contain;
 }
 
 .close-modal-button {

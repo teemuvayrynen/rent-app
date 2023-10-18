@@ -110,6 +110,7 @@ function SingleApartment({ id }) {
       <Modal
         isOpen={show}
         onRequestClose={close}
+        className='modal-container'
       >
         <div className="modal-slider-container">
           <Carousel 
@@ -128,7 +129,11 @@ function SingleApartment({ id }) {
                   key={index} 
                   style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
                 >
-                  <img className="modal-image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                  <img 
+                  className="modal-image"
+                  src={`${imageUrl}/images/${image}`} 
+                  alt={`image ${index}`} 
+                  style={{ borderRadius: '10px', objectFit: imageDimensions[index]?.aspectRatio > 1 ? 'fill' : '' }} />
                 </div>
               )
             })}
@@ -144,14 +149,14 @@ function SingleApartment({ id }) {
   return (
     <div className="main-container">
       <AllImagesModal show={viewAllImages} close={toggleViewAllImages}/>
-      <div className="slider-map-container" style={{ display: viewAllImages ? 'none' : '' }}>
+      <div className="slider-map-container" style={{ visibility: viewAllImages ? 'hidden' : '' }}>
         <div className="slider-container">
           {isLoaded && Object.keys(imageDimensions).length === images.length ? 
             <Carousel 
               swipeable={true} 
               emulateTouch={true} 
               showThumbs={false} 
-              dynamicHeight={true} 
+              dynamicHeight={false} 
               infiniteLoop={true}
               useKeyboardArrows={true}
             >
@@ -162,7 +167,12 @@ function SingleApartment({ id }) {
                     key={index} 
                     style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
                   >
-                    <img className="image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                    <img 
+                      className="image" 
+                      src={`${imageUrl}/images/${image}`}
+                      alt={`image ${index}`}
+                      style={{ borderRadius: '10px', objectFit: imageDimensions[index]?.aspectRatio > 1 ? 'fill' : '' }}
+                    />
                   </div>
                 )
               }):
