@@ -119,6 +119,7 @@ function SingleApartment({ id }) {
             dynamicHeight={false} 
             infiniteLoop={true}
             useKeyboardArrows={true}
+            autoFocus={true}
           >
             {images.map((image, index) => {
               return (
