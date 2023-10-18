@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './SingleApartment.css';
+import './Modal.css'
 import DynamicMap from './DynamicMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faArrowRight, faHeart, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
@@ -11,6 +12,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+
+import Modal from 'react-modal';
 
 import EquipmentInfo from './EquipmentInfo';
 import RentAndRules from './RentAndRules'
@@ -102,9 +105,45 @@ function SingleApartment({ id }) {
 
   console.log(apartment);
 
+  function AllImagesModal({show, close}) {
+    return(
+      <Modal
+        isOpen={show}
+        onRequestClose={close}
+      >
+        <div className="modal-slider-container">
+          <Carousel 
+            swipeable={true} 
+            emulateTouch={true} 
+            showThumbs={false} 
+            dynamicHeight={false} 
+            infiniteLoop={true}
+            useKeyboardArrows={true}
+          >
+            {images.map((image, index) => {
+              return (
+                <div 
+                  className={'modal-imageContainer'} 
+                  key={index} 
+                  style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
+                >
+                  <img className="modal-image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                </div>
+              )
+            })}
+          </Carousel>
+          <div className='close-modal-button' onClick={close}>
+            <FontAwesomeIcon icon={faXmark} />
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
   return (
     <div className="main-container">
-      <div className="slider-map-container">
+      <AllImagesModal show={viewAllImages} close={toggleViewAllImages}/>
+      <div className="slider-map-container" style={{ display: viewAllImages ? 'none' : '' }}>
         <div className="slider-container">
           {isLoaded && Object.keys(imageDimensions).length === images.length ? 
             <Carousel 
@@ -118,7 +157,7 @@ function SingleApartment({ id }) {
               {images.length > 0 ? images.map((image, index) => {
                 return (
                   <div 
-                    className={`imageContainer ${viewAllImages ? 'view-all-images' : ''}`} 
+                    className='imageContainer'
                     key={index} 
                     style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
                   >
@@ -134,14 +173,12 @@ function SingleApartment({ id }) {
           : 
             <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>
           }
-        {images.length > 1 && (
-          <div className='view-all-button' onClick={toggleViewAllImages}>
-            <p>View All Images</p>
-          </div>
-        )}
+          {images.length > 1 && (
+            <div className='view-all-button' onClick={toggleViewAllImages}>
+              <p>View All Images</p>
+            </div>
+          )}
         </div>
-
-
 
         <div className="map-container">
           {apartment ? (
