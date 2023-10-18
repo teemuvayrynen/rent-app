@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './SingleApartment.css';
 import DynamicMap from './DynamicMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faArrowRight, faChessKing } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faArrowRight, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
 import Skeleton from 'react-loading-skeleton'
@@ -28,6 +29,7 @@ function SingleApartment({ id }) {
   const [images, setImages] = useState([]);
   const [imageDimensions, setImageDimensions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isSaved, setIsSaved] = useState(false);
 
   const defaultImage = "https://source.unsplash.com/178j8tJrNlc"
 
@@ -89,6 +91,9 @@ function SingleApartment({ id }) {
     }
   };
   
+  const save = () => {
+    setIsSaved(!isSaved);
+  };
 
   console.log(apartment);
 
@@ -126,6 +131,20 @@ function SingleApartment({ id }) {
 
       <div className='address-contact-container'>
         <div className='address-and-owner'>
+         {apartment ? (
+          <div className="favorites-button-container" onClick={save}>
+            <FontAwesomeIcon
+              icon={isSaved ? faHeart : farHeart}
+              size='2xl'
+            />
+            <p>{isSaved ? 'Saved' : 'Save'}</p>
+          </div>
+         ): (
+          <div style={{alignSelf: 'center'}}>
+              <Skeleton width={40} height={40}/>
+          </div>
+         )}
+          
           <div className='address-text-container'>
             {apartment ? (
               <>
@@ -152,7 +171,7 @@ function SingleApartment({ id }) {
             )}
 
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingRight: '60px' }}>
+          <div className='owner-container'>
             {apartment ? (
               <>
                 <FontAwesomeIcon icon={faUser} size="2x" style={{padding: '5px'}} />

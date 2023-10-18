@@ -155,6 +155,17 @@
 .address-text-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.owner-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 60px;
+  flex: 2 1;
+  justify-content: flex-end;
 }
 
 .contact-details {
@@ -203,4 +214,22 @@
   border-style: solid;
   margin: 20px 0px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorites-button-container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  width: 60px;
+}
+
+.favorites-button-container > p{
+  align-self: center;
+}
+
+.favorites-button-container:hover {
+  background-color: #f8f7f7;
 }
