@@ -22,11 +22,6 @@
   border-radius: 4rem;
   transition: left 250ms ease;
 }
-/*
-.leaflet-geosearch-bar.active {
-  left: 9%;
-}
-*/
 
 .leaflet-control-geosearch .results {
   color: black;
@@ -36,6 +31,7 @@
   border: 1px solid rgba(0, 0,0, 0.5);
   border-radius: 0.6rem;
   overflow: clip;
+  width: 100%;
 }
 
 .leaflet-control-geosearch form input {

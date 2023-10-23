@@ -65,7 +65,7 @@ function EquipmentCategory({ title, icon, data }) {
         <ul className='equipment-list'>
           {Object.entries(data).map(([item, value]) => (
             value && (
-              <li key={item}>
+              <li key={item} className='equipment-listitem'>
                 <label className='icon-label'>
                   <FontAwesomeIcon icon={faSquareCheck} size='xs' style={{paddingRight: '4px'}}/>
                   {formatEquipmentName(item)}

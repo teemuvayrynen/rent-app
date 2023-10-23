@@ -8,7 +8,7 @@ import { faPaw, faSmoking, faUniversalAccess, faSquareCheck, faSquare } from '@f
 function RentAndRules({ apartmentData }) {
     return (
         <div className='rent-container'>
-            <h1>Rent & Rules</h1>
+            <h1>Apartment Rules</h1>
             <p>
                 The monthly rent is <b>{apartmentData.monthlyPrice} €</b>.
                 {apartmentData.waterPrice > 0 && (

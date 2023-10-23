@@ -1,5 +1,6 @@
 "use client"
 
+import "./map.css"
 import React, {useState, useEffect} from 'react';
 import DynamicMap from '@/components/AddApartment/index'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

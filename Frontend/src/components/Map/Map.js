@@ -156,7 +156,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
                     <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={(hoveredMarkerID === marker.id) ? hovercustomIcon : customIcon}>
                       <Popup>
                       <div>
-                        <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
+                        <button className='basic-button' onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
                       </div>
                       </Popup> 
                     </Marker>

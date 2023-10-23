@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './SingleApartment.css';
+import './Modal.css'
 import DynamicMap from './DynamicMap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faArrowRight, faChessKing } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faArrowRight, faHeart, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
 import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
 import Skeleton from 'react-loading-skeleton'
@@ -10,6 +12,8 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+
+import Modal from 'react-modal';
 
 import EquipmentInfo from './EquipmentInfo';
 import RentAndRules from './RentAndRules'
@@ -27,6 +31,11 @@ function SingleApartment({ id }) {
   const [apartment, setApartment] = useState(null);
   const [images, setImages] = useState([]);
   const [imageDimensions, setImageDimensions] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isSaved, setIsSaved] = useState(false);
+  const [viewAllImages, setViewAllImages] = useState(false);
+
+  const defaultImage = "https://source.unsplash.com/178j8tJrNlc"
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -37,6 +46,7 @@ function SingleApartment({ id }) {
         const data = await response.json();
         setApartment(data.Item);
         setImages(data.Item.images);
+        setIsLoaded(true)
       } catch (error) {
         console.error('Error fetching apartment data', error);
       }
@@ -85,25 +95,100 @@ function SingleApartment({ id }) {
     }
   };
   
+  const save = () => {
+    setIsSaved(!isSaved);
+  };
+
+  const toggleViewAllImages = () => {
+    setViewAllImages(!viewAllImages);
+  };
 
   console.log(apartment);
 
+  function AllImagesModal({show, close}) {
+    return(
+      <Modal
+        isOpen={show}
+        onRequestClose={close}
+        className='modal-container'
+      >
+        <div className="modal-slider-container">
+          <Carousel 
+            swipeable={true} 
+            emulateTouch={true} 
+            showThumbs={false} 
+            dynamicHeight={false} 
+            infiniteLoop={true}
+            useKeyboardArrows={true}
+            autoFocus={true}
+          >
+            {images.map((image, index) => {
+              return (
+                <div 
+                  className={'modal-imageContainer'} 
+                  key={index} 
+                  style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
+                >
+                  <img 
+                  className="modal-image"
+                  src={`${imageUrl}/images/${image}`} 
+                  alt={`image ${index}`} 
+                  style={{ borderRadius: '10px', objectFit: imageDimensions[index]?.aspectRatio > 1 ? 'fill' : '' }} />
+                </div>
+              )
+            })}
+          </Carousel>
+          <div className='close-modal-button' onClick={close}>
+            <FontAwesomeIcon icon={faXmark} />
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
   return (
     <div className="main-container">
-      <div className="slider-map-container">
+      <AllImagesModal show={viewAllImages} close={toggleViewAllImages}/>
+      <div className="slider-map-container" style={{ visibility: viewAllImages ? 'hidden' : '' }}>
         <div className="slider-container">
-          {images.length && Object.keys(imageDimensions).length === images.length ? 
-            <Carousel swipeable={true} emulateTouch={true} showThumbs={false} dynamicHeight={true}>
-              {images.map((image, index) => {
+          {isLoaded && Object.keys(imageDimensions).length === images.length ? 
+            <Carousel 
+              swipeable={true} 
+              emulateTouch={true} 
+              showThumbs={false} 
+              dynamicHeight={false} 
+              infiniteLoop={true}
+              useKeyboardArrows={true}
+            >
+              {images.length > 0 ? images.map((image, index) => {
                 return (
-                  <div className="imageContainer" key={index} style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}>
-                    <img className="image" src={`${imageUrl}/images/${image}`} alt={`image ${index}`} style={{ borderRadius: '10px' }} />
+                  <div 
+                    className='imageContainer'
+                    key={index} 
+                    style={{ width: imageDimensions[index]?.aspectRatio > 1 ? '-webkit-fill-available' : 'fit-content' }}
+                  >
+                    <img 
+                      className="image" 
+                      src={`${imageUrl}/images/${image}`}
+                      alt={`image ${index}`}
+                      style={{ borderRadius: '10px', objectFit: imageDimensions[index]?.aspectRatio > 1 ? 'fill' : '' }}
+                    />
                   </div>
-                );
-              })}
+                )
+              }):
+              <div className="imageContainer" style={{ width: '-webkit-fill-available' }}>
+                  <img src={defaultImage} className="imageContainer" alt={`Default Image`} />
+              </div>
+              }
             </Carousel>
           : 
-            <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>}
+            <Skeleton width={'100%'} height={'100%'} style={{paddingTop: '2px'}}/>
+          }
+          {images.length > 1 && (
+            <div className='view-all-button' onClick={toggleViewAllImages}>
+              <p>View All Images</p>
+            </div>
+          )}
         </div>
 
         <div className="map-container">
@@ -118,6 +203,20 @@ function SingleApartment({ id }) {
 
       <div className='address-contact-container'>
         <div className='address-and-owner'>
+         {apartment ? (
+          <div className="favorites-button-container" onClick={save}>
+            <FontAwesomeIcon
+              icon={isSaved ? faHeart : farHeart}
+              size='2xl'
+            />
+            <p>{isSaved ? 'Saved' : 'Save'}</p>
+          </div>
+         ): (
+          <div style={{alignSelf: 'center'}}>
+              <Skeleton width={40} height={40}/>
+          </div>
+         )}
+          
           <div className='address-text-container'>
             {apartment ? (
               <>
@@ -144,7 +243,7 @@ function SingleApartment({ id }) {
             )}
 
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', paddingRight: '60px' }}>
+          <div className='owner-container'>
             {apartment ? (
               <>
                 <FontAwesomeIcon icon={faUser} size="2x" style={{padding: '5px'}} />
@@ -163,7 +262,7 @@ function SingleApartment({ id }) {
           <div className='contact-container'>
             <div className='contact-details'>
               <div className='monthly-price'>
-                <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} €</p>
+                <p style={{padding: '5px', fontSize: '20px', fontWeight: '600'}}>{apartment.monthlyPrice} € / mo.</p>
               </div>
               <div>
                 <span style={{padding: '5px'}}>
@@ -171,7 +270,7 @@ function SingleApartment({ id }) {
                 </span>
                 <FontAwesomeIcon icon={faArrowRight} size="lg" />
                 <span style={{padding: '5px'}}>
-                  {apartment.endDate ? formatDate(apartment.endDate) : "Open-ended"}
+                  {apartment.endDate != 'temp' ? formatDate(apartment.endDate) : "Open-ended"}
                 </span>
               </div>
             </div>

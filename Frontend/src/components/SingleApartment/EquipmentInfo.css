@@ -38,7 +38,7 @@
   list-style-type: none;
 }
   
-li {
+.equipment-listitem {
   padding: 0px 3px;
   margin: 5px 0px;
   font-size: 18px;
