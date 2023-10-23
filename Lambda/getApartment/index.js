@@ -22,7 +22,7 @@ export async function handler(event) {
       body = await dynamo.get(params).promise()
     } else {
       statusCode = 405
-      body = "Error"
+      body = "id not found"
     }
   } catch (err) {
     statusCode = 405

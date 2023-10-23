@@ -1,6 +1,5 @@
 const AWS = require('aws-sdk')
 const { v4: uuidv4 } = require('uuid')
-import * as fileType from "file-type"
 import Ajv from "ajv"
 import { finalApartmentSchema } from "./schema";
 import { ApartmentData } from "./schema";

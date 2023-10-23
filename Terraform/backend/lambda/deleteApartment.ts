@@ -7,6 +7,7 @@ import { Apigatewayv2Integration } from "@cdktf/provider-aws/lib/apigatewayv2-in
 import { Apigatewayv2Route } from "@cdktf/provider-aws/lib/apigatewayv2-route";
 import { LambdaPermission } from "@cdktf/provider-aws/lib/lambda-permission";
 import { IamRole } from "@cdktf/provider-aws/lib/iam-role";
+import { image_bucket } from "../../variables";
 import * as path from "path"
 
 interface LambdaOptions {
@@ -37,10 +38,18 @@ export class DeleteApartmentsLambda extends Construct {
               {
                 Action: [
                   "dynamodb:DeleteItem",
+                  "dynamodb:GetItem"
                 ],
                 Resource: options.table.arn,
                 Effect: "Allow",
               },
+              {
+                Action: "s3:DeleteObject",
+                Resource: [
+                  `arn:aws:s3:::${image_bucket}/images/*`
+                ],
+                Effect: "Allow",
+              }
             ],
           }),
         },
@@ -80,7 +89,7 @@ export class DeleteApartmentsLambda extends Construct {
 
     new Apigatewayv2Route(this, "api-post-route", {
       apiId: options.api.id,
-      routeKey: "DELETE /apartments/delete",
+      routeKey: "DELETE /apartments/{id}",
       target: `integrations/${apiIntegration.id}`,
     })
   }
