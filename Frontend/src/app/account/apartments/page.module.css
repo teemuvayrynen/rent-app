@@ -64,3 +64,34 @@
   color: rgb(66, 66, 66);
 }
 
+.card_container {
+  position: relative;
+}
+
+.circle_button {
+  position: absolute;
+  height: 42px;
+  width: 42px;
+  background-color: white;
+  border: none;
+  border-radius: 50%;
+  top: 20px;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle_button:hover {
+  background-color: rgb(245, 245, 245);
+}
+
+.top_right {
+  right: 20px;
+}
+
+.top_left {
+  left: 20px;
+}
+

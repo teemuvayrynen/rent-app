@@ -1,34 +1,70 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css"
 import useUserData from "@/hooks/useUserData";
 import { apiUrl } from "@/app/apiConfig";
 import ApartmentCard from "@/components/ApartmentCard/ApartmentCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import Alert from "@/components/Alert"
 
 const UserApartments = () => {
   const { user } = useUserData()
   const [apartments, setApartments] = useState([])
   const [search, setSearch] = useState("")
+  const [alertVisible, setAlertVisible] = useState(false)
+  const id = useRef(null)
+
+  const fetchData = async () => {
+    if (user) {
+      try {
+        const result = await fetch(`${apiUrl}/apartments/user/${user?.attributes.sub}`)
+        const data = await result.json()
+        setApartments(data.Items)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
 
 
   useEffect(() => {
-    (async () => {
-      if (user) {
-        try {
-          const result = await fetch(`${apiUrl}//apartments/user/${user?.attributes.sub}`)
-          const data = await result.json()
-          setApartments(data.Items)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-    })()
+    fetchData()
   }, [user])
+
+  const handleAccept = async () => {
+    setAlertVisible(false)
+    const ap = apartments.filter(item => item.id === id.current)
+    if (!id.current || ap.length === 0) {
+      alert("Error deleting listing")
+      return
+    }
+
+    setApartments(prev => prev.filter(item => item.id !== id.current))
+    
+    try {
+      const res = await fetch(`${apiUrl}/apartments/${id.current}`, {
+        method: "DELETE"
+      })
+      id.current = null
+      
+      if (!res.ok) {
+        throw new Error("id not found")
+      }
+      
+    } catch (err) {
+      setApartments(prev => [...prev, ap])
+    }
+  }
+
+  const handleCancel = () => {
+    setAlertVisible(false)
+  }
 
 
   return (
     <>
-      {user ? (
+      {user && (
         <section className={styles.user_ap_container}>
           <div className={styles.header_section}>
             <h2>Own apartments</h2>
@@ -44,7 +80,15 @@ const UserApartments = () => {
                 || item.city.toLowerCase().includes(search.toLowerCase()))
               }).map((ap) => {
                 return (
-                  <ApartmentCard key={ap.id} apartment={ap} />
+                  <div key={ap.id} className={styles.card_container}>
+                    <ApartmentCard key={ap.id} apartment={ap} />
+                    <button onClick={() => { setAlertVisible(true); id.current = ap.id }} className={`${styles.circle_button} ${styles.top_right}`}>
+                      <FontAwesomeIcon icon={faTrash} color="black" size="xl" />
+                    </button>
+                    <button className={`${styles.circle_button} ${styles.top_left}`}>
+                      <FontAwesomeIcon icon={faPen} color="black" size="xl" />
+                    </button>
+                  </div>
                 )
               })}
             </div>
@@ -56,7 +100,8 @@ const UserApartments = () => {
             </div>
           )} 
         </section>  
-      ) : null}
+      )}
+      {alertVisible && <Alert handleAccept={handleAccept} handleCancel={handleCancel} />}
     </>
   )
 }

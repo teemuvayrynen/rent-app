@@ -44,11 +44,11 @@ export async function handler(event) {
         deletedImages: res.Deleted.length
       }
     } else {
-      statusCode = 405
+      statusCode = 400
       body = "id not found"
     }
   } catch (err) {
-    statusCode = 405
+    statusCode = 400
     body = err.message
   } finally {
     body = JSON.stringify(body)
