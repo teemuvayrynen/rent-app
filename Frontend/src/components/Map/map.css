@@ -28,7 +28,7 @@
 }
 
 .leaflet-touch .leaflet-geosearch-bar form {
-  border: 1px solid rgba(0, 0,0, 0.5);
+  border: 0.5px solid rgb(202, 177, 177);
   border-radius: 0.6rem;
   overflow: clip;
   width: 100%;
@@ -67,7 +67,8 @@
   transform: translateX(-50%);
   top: 140px;
   width: 400px;
-  height: 30rem;
+  max-height: 30rem;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -79,6 +80,31 @@
   pointer-events: none;
   transition: opacity 1s ease;
   transition-delay: 1s;
+}
+
+/* Change the color of the scrollbar */
+.map-apartment-list::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(223, 223, 223); /* Change the scrollbar's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the track (scrollbar area not being used) */
+.map-apartment-list::-webkit-scrollbar-track {
+  background-color: rgb(223, 223, 223); /* Change the scrollbar track's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the scrollbar thumb (the draggable part) */
+.map-apartment-list::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 204, 204); /* Change the scrollbar thumb's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the scrollbar thumb on hover */
+.map-apartment-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(204, 204, 204); /* Change the scrollbar thumb's background color on hover */
+  border-radius: 10px;
 }
 
 .map-apartment-list.active{

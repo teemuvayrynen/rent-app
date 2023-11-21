@@ -10,9 +10,20 @@
     height: 8rem;
     flex-direction: row;
     overflow: unset;
-    border: 0.5px solid black;
+    border: 0.5px solid rgb(223, 203, 203);
     border-radius: 10px;
     padding: 0;
+    background-color: rgb(248, 246, 246);
+}
+
+.card-container.map:hover {
+    height: 8rem;
+    flex-direction: row;
+    overflow: unset;
+    border: 0.5px solid rgb(202, 177, 177);
+    border-radius: 10px;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
 }
 
 .card-container.map * {
