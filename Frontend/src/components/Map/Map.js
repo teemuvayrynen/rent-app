@@ -23,12 +23,12 @@ const customIcon = new Icon({
 })
 
 const hovercustomIcon = new Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/128/535/535188.png",
-  iconSize: [38,38]
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/684/684908.png",
+  iconSize: [45,45]
 })
 
 const userLocationIcon = new Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/484/484167.png",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/503/503080.png",
   iconSize: [30,30]
 })
 
@@ -156,7 +156,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
                     <Marker key={marker.id} position={[marker.location.lat, marker.location.lon]} icon={(hoveredMarkerID === marker.id) ? hovercustomIcon : customIcon}>
                       <Popup>
                       <div>
-                        <button className='basic-button' onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
+                        <button className='basic-button' onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>Show more information</button>
                       </div>
                       </Popup> 
                     </Marker>
@@ -167,7 +167,7 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
                   <Marker key={markers[0].id} position={[markers[0].location.lat, markers[0].location.lon]} icon={customIcon}>
                     <Popup>
                       <div>
-                        <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>More informtation</button>
+                        <button onClick={() => window.open(`${window.location.origin}/apartment?id=${marker.id}`, '_blank')}>Show more information</button>
                       </div>
                     </Popup> 
                   </Marker>
