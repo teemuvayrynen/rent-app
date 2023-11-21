@@ -28,7 +28,7 @@ const hovercustomIcon = new Icon({
 })
 
 const userLocationIcon = new Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/128/9800/9800512.png",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/484/484167.png",
   iconSize: [30,30]
 })
 
@@ -173,10 +173,10 @@ function Map({apartments, markers, setHoveredMarkerID, handleUpdate, hoveredMark
                   </Marker>
               ))}
             <div className='locate-me'>
-              <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: 'blue' }} onClick={goToUserLocation}/>
+              <FontAwesomeIcon icon={faLocationDot} size="3x" style={{ color: "var(--main-color)" }} onClick={goToUserLocation}/>
             </div>
             <div className='open-me'>
-              <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: 'blue' }} onClick={widenMap}/>
+              <FontAwesomeIcon icon={faCircleChevronDown} size="3x" style={{ color: "var(--main-color)" }} onClick={widenMap}/>
             </div>
           </MapContainer>
         ) : <Skeleton style={{display: 'block'}} height="100%" width="100%"/>}
