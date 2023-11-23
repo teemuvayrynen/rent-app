@@ -4,6 +4,9 @@ import 'leaflet/dist/leaflet.css';  /* Mandatory import with react-leaflet */
 import './Map.css'
 import { Icon } from 'leaflet';
 
+// Public key
+const key = "pk.797c55abb968af7a1a9e8965b9e9d806"
+
 function Map({ position }) {
     const customIcon = new Icon({
         iconUrl: "https://cdn-icons-png.flaticon.com/128/684/684908.png",
@@ -13,8 +16,7 @@ function Map({ position }) {
     return (
         <MapContainer center={position} zoom={15} className='map'>
             <TileLayer
-            attribution='&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/about" target="_blank">OpenStreetMap</a> contributors'
-            url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png"
+                url={`https://{s}-tiles.locationiq.com/v3/streets/r/{z}/{x}/{y}.raster?key=${key}`}
             />
             <Marker position={position} icon={customIcon}>
                 <Popup>

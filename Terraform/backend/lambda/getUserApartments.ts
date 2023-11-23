@@ -22,7 +22,7 @@ export class GetUserApartmentsLambda extends Construct {
 
 
     const code = new NodejsFunction(this, "code", {
-      path: path.join(__dirname, "../../../Lambda/getUserApartments/index.js"),
+      path: path.join(__dirname, "../../../functions/lambda/getUserApartments/index.js"),
     });
 
     const role = new IamRole(this, "lambda-exec", {

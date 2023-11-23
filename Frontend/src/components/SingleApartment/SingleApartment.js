@@ -9,6 +9,8 @@ import { apiUrl } from '@/app/apiConfig.js';
 import { imageUrl } from '@/app/apiConfig.js';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import useUserData from '@/hooks/useUserData';
+import { updateUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
 
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
@@ -34,8 +36,18 @@ function SingleApartment({ id }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isSaved, setIsSaved] = useState(false);
   const [viewAllImages, setViewAllImages] = useState(false);
+  const { user } = useUserData()
 
   const defaultImage = "https://source.unsplash.com/178j8tJrNlc"
+
+  useEffect(() => {
+    if (!user) return
+    if (!user.hasOwnProperty("custom:favorites")) return
+
+    if (user["custom:favorites"].includes(id)) {
+      setIsSaved(true)
+    }
+  }, [user])
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -95,15 +107,49 @@ function SingleApartment({ id }) {
     }
   };
   
-  const save = () => {
-    setIsSaved(!isSaved);
+  const save = async () => {
+    try {
+      const attr = await fetchUserAttributes()
+      if (isSaved) {
+        setIsSaved(false)
+        if (!attr["custom:favorites"].includes(id)) return
+        const arr = attr["custom:favorites"].split(";")
+        const filtered = arr.filter(item => item !== id)
+        await updateUserAttribute({
+          userAttribute: {
+            attributeKey: "custom:favorites",
+            value: filtered.length > 0 ? filtered.join(";") : ""
+          }
+        });
+      } else {
+        setIsSaved(true)
+        if (attr.hasOwnProperty("custom:favorites")) {
+          const arr = attr["custom:favorites"].split(";")
+          arr.push(id)
+          await updateUserAttribute({
+            userAttribute: {
+              attributeKey: "custom:favorites",
+              value: arr.join(";")
+            }
+          });
+        } else {
+          await updateUserAttribute({
+            userAttribute: {
+              attributeKey: "custom:favorites",
+              value: id
+            }
+          });
+        }
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   const toggleViewAllImages = () => {
     setViewAllImages(!viewAllImages);
   };
-
-  console.log(apartment);
 
   function AllImagesModal({show, close}) {
     return(
@@ -203,17 +249,13 @@ function SingleApartment({ id }) {
 
       <div className='address-contact-container'>
         <div className='address-and-owner'>
-         {apartment ? (
+         {apartment && user && (
           <div className="favorites-button-container" onClick={save}>
             <FontAwesomeIcon
               icon={isSaved ? faHeart : farHeart}
               size='2xl'
             />
             <p>{isSaved ? 'Saved' : 'Save'}</p>
-          </div>
-         ): (
-          <div style={{alignSelf: 'center'}}>
-              <Skeleton width={40} height={40}/>
           </div>
          )}
           

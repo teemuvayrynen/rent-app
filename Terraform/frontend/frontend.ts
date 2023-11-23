@@ -62,27 +62,16 @@ export class Frontend extends Construct {
       }),
     });
 
-    const files = glob.sync('../Frontend/out/**/*', { absolute: false, nodir: true })
+    const files = glob.sync('../frontend/out/**/*', { absolute: false, nodir: true })
 
     for (const file of files) {
-      if (!file.replace(`../Frontend/out/`, '').includes(".")) {
-        new S3Object(this, `aws_s3_object_${path.basename(file)}`, {
-          bucket: this.bucket.bucket,
-          key: file.replace(`../Frontend/out/`, ''),
-          source: path.resolve(file),
-          etag: `${Date.now()}`,
-          contentType: mime.contentType(".html") || undefined
-        })
-
-      } else {
-        new S3Object(this, `aws_s3_object_${path.basename(file)}`, {
-          bucket: this.bucket.bucket,
-          key: file.replace(`../Frontend/out/`, ''),
-          source: path.resolve(file),
-          etag: `${Date.now()}`,
-          contentType: mime.contentType(path.extname(file)) || undefined
-        })
-      }
+      new S3Object(this, `s3_object_${file}`, {
+        bucket: this.bucket.bucket,
+        key: file.replace(`../frontend/out/`, ''),
+        source: path.resolve(file),
+        etag: `${Date.now()}`,
+        contentType: mime.contentType(path.extname(file)) || undefined
+      })
     }
   }
 }

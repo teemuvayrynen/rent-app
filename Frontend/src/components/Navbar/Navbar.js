@@ -1,21 +1,20 @@
 "use client"
 
-import { useState, useRef, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import './navbar.css'
 import Image from 'next/image'
 import Filter from './Filter'
-import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGears, faArrowRightFromBracket, faUser, faList } from '@fortawesome/free-solid-svg-icons'
+import { faGears, faArrowRightFromBracket, faUser, faList, faHeart } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import Login from '@/components/Auth/Login'
 import Signup from '@/components/Auth/Signup'
 import { usePathname } from 'next/navigation'
 import useDateRange from '@/hooks/useDateRange'
 import useUserData from '@/hooks/useUserData'
-import { Auth } from 'aws-amplify'
+import { signOut } from "aws-amplify/auth"
 
 
 function Navbar() {
@@ -43,28 +42,15 @@ function Navbar() {
       
       }
   }, [priceRange, dateRange])
-
-  const minPriceRef = useRef(0)
-  const maxPriceRef = useRef(0)
   
   const toggleActive = () => {
       const hamburgerMenu = document.querySelector('.hamburger-menu')
       hamburgerMenu.classList.toggle('active')
   }
 
-  const changePrice = () => {
-      setPriceRange({
-          min: minPriceRef.current.value ? minPriceRef.current.value : 0,
-          max: maxPriceRef.current.value ? maxPriceRef.current.value : 0,
-          isSet: (maxPriceRef.current.value && maxPriceRef.current.value !== 0) ? true : false
-        })
-      const rangeElement = document.querySelector('.price-range')
-      rangeElement.classList.toggle('active')
-  }
-
   const logout = async () => {
     try {
-      await Auth.signOut({ global: true })
+      await signOut({ global: true })
       window.location.reload()
     } catch (err) {
       console.log(err)
@@ -90,13 +76,19 @@ function Navbar() {
           <div className='user-container'>
             <button className='basic-button' onClick={() => window.location.href = "/addApartment"}>Sublet</button>
             <div className='profile-picture'>
-              {(user.attributes.name).charAt(0)}
+              {String((user.name).charAt(0)).toUpperCase()}
             </div>
             <div className='hamburger-menu' onClick={toggleActive}>
               <span></span>
               <span></span>
               <span></span>
               <div className='dropdown'>
+              <Link href="/account/favorites" className='dropdown-item'>
+                <span className='dropdown-icons'>
+                  <FontAwesomeIcon icon={faHeart} />
+                </span>  
+                Favorites
+              </Link>
               <Link href="/account/apartments" className='dropdown-item'>
                 <span className='dropdown-icons'>
                   <FontAwesomeIcon icon={faList} />

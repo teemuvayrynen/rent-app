@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Auth } from "aws-amplify"
+import { signUp } from "aws-amplify/auth"
 import { Formik, Form, ErrorMessage, Field } from "formik"
 import * as Yup from "yup"
 import "./auth.css"
@@ -28,26 +28,28 @@ const Signup = ({ setVisible }) => {
             .required("Password confirmation is required")
             .oneOf([Yup.ref("password"), null], "Passwords must match")
           })}
-          onSubmit={(values, { setErrors, setSubmitting }) => {
-            Auth.signUp({
+          onSubmit={async (values, { setErrors, setSubmitting }) => {
+            signUp({
               username: values.email, 
               password: values.password,
-              attributes: {
-                name: values.name
-              },
-              autoSignIn: {
-                enabled: true
+              options: {
+                userAttributes: {
+                  name: values.name
+                },
+                autoSignIn: true
               }
             })
             .then(() => {
               setSuccess(true)
             })
             .catch((err) => {
-              switch (err.code) {
+              console.log(err.name)
+              switch (err.name) {
                 case "UsernameExistsException":
                   setErrors({email: "Account already exists"})
                   break
                 default:
+                  setErrors({email: "Error. Try again later"})
                   break
               }
             })

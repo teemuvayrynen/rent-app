@@ -2,7 +2,7 @@ import React from "react"
 import { Formik, Form, ErrorMessage, Field } from "formik"
 import * as Yup from "yup"
 import "./auth.css"
-import { Auth } from "aws-amplify"
+import { signIn } from "aws-amplify/auth"
 
 
 const Login = ({ setVisible }) => {
@@ -20,12 +20,12 @@ const Login = ({ setVisible }) => {
               .required("Password is required")
           })}
           onSubmit={async (values, { setSubmitting, setErrors }) => {
-            Auth.signIn(values.email, values.password)
+            signIn({ username: values.email, password: values.password })
               .then(() => {
                 window.location.reload()
               })
               .catch(err => {
-                switch (err.code) {
+                switch (err.name) {
                   case "NotAuthorizedException":
                     setErrors({password: "Incorrect email or password"})
                     break
@@ -33,10 +33,13 @@ const Login = ({ setVisible }) => {
                     setErrors({password: "User is not confirmed"})
                     break
                   default:
+                    setErrors({password: "Error. Try again later"})
                     break
                 }
-              }
-            )
+              })
+              .finally(() => {
+                setSubmitting(false)
+              })
           }}
         >
           {({

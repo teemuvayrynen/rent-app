@@ -22,7 +22,7 @@ export class GetMarkersLambda extends Construct {
 
 
     const code = new NodejsFunction(this, "code", {
-      path: path.join(__dirname, "../../../Lambda/getMarkers/index.js"),
+      path: path.join(__dirname, "../../../functions/lambda/getMarkers/index.js"),
     });
 
     const role = new IamRole(this, "lambda-exec", {

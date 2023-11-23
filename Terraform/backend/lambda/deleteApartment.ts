@@ -23,7 +23,7 @@ export class DeleteApartmentsLambda extends Construct {
 
 
     const code = new NodejsFunction(this, "code", {
-      path: path.join(__dirname, "../../../Lambda/deleteApartment/index.js"),
+      path: path.join(__dirname, "../../../functions/lambda/deleteApartment/index.js"),
     });
 
     const role = new IamRole(this, "lambda-exec", {

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 import Alert from "@/components/Alert"
 
-const UserApartments = () => {
+const Favorites = () => {
   const { user } = useUserData()
   const [apartments, setApartments] = useState([])
   const [search, setSearch] = useState("")
@@ -16,12 +16,28 @@ const UserApartments = () => {
   const id = useRef(null)
 
   const fetchData = async () => {
+    if (!user || !user.hasOwnProperty("custom:favorites")) return
+
+    const ids = user["custom:favorites"].split(";")
+    if (ids.length === 0) return
+
+    const convertedData = {
+      keys: ids.map((id) => ({ id, country: "finland" })),
+    };
+
+    const apiUrl = 'https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/get';
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(convertedData), 
+    };
     if (user) {
-      console.log(user)
       try {
-        const result = await fetch(`${apiUrl}/apartments/user/${user?.sub}`)
+        const result = await fetch(apiUrl, requestOptions)
         const data = await result.json()
-        setApartments(data.Items)
+        setApartments(data.apartments)
       } catch (err) {
         console.log(err)
       }
@@ -68,8 +84,7 @@ const UserApartments = () => {
       {user && (
         <section className={styles.user_ap_container}>
           <div className={styles.header_section}>
-            <h2>Own apartments</h2>
-            <button onClick={() => window.location.href = "/addApartment"} className="basic-button">Sublet</button>
+            <h2>Favorites</h2>
           </div>
           <input onChange={(e) => { setSearch(e.target.value) }} placeholder="Search" className={styles.search_input} />
           {apartments && apartments.length > 0 ? (
@@ -82,22 +97,14 @@ const UserApartments = () => {
               }).map((ap) => {
                 return (
                   <div key={ap.id} className={styles.card_container}>
-                    <ApartmentCard key={ap.id} apartment={ap} />
-                    <button onClick={() => { setAlertVisible(true); id.current = ap.id }} className={`${styles.circle_button} ${styles.top_right}`}>
-                      <FontAwesomeIcon icon={faTrash} color="black" size="xl" />
-                    </button>
-                    <button className={`${styles.circle_button} ${styles.top_left}`}>
-                      <FontAwesomeIcon icon={faPen} color="black" size="xl" />
-                    </button>
+                    <ApartmentCard apartment={ap} />
                   </div>
                 )
               })}
             </div>
           ) : (
             <div className={styles.no_ap_box}>
-              <h2>You don't have any listings</h2>
-              <h3>Create listing to sublet your apartment</h3>
-              <button onClick={() => window.location.href = "/addApartment"} className="basic-button">Sublet</button>
+              <h2>You don't have any favorites</h2>
             </div>
           )} 
         </section>  
@@ -107,4 +114,4 @@ const UserApartments = () => {
   )
 }
 
-export default UserApartments
+export default Favorites

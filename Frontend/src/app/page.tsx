@@ -12,7 +12,6 @@ export default function Home() {
     fetch('https://p2nldoza40.execute-api.eu-west-1.amazonaws.com/api/apartments/landing/get?places=espoo,helsinki,tampere')
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setApartments(data)
       })
   }, [])

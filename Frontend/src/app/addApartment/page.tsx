@@ -7,9 +7,9 @@ import React, { useState, useEffect } from 'react';
 import useUserData from '@/hooks/useUserData'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Storage } from 'aws-amplify'
 import { v4 as uuidv4 } from 'uuid';
-import { Auth } from 'aws-amplify'
+import { uploadData } from 'aws-amplify/storage';
+import { fetchAuthSession } from 'aws-amplify/auth'
 
 const DynamicEquipmentInfo = dynamic(() => import('@/components/AddApartment/EquiptmentInfo'), {
   loading: () => <p>Loading...</p>,
@@ -30,14 +30,6 @@ const DynamicLocationForm = dynamic(() => import('@/components/AddApartment/Loca
 const DynamicImageForm = dynamic(() => import('@/components/AddApartment/ImageForm'), {
   loading: () => <p>Loading...</p>,
 })
-
-interface ImgObj {
-  type: string
-  name: string
-  lastModified: number
-  size: number
-  webkitRelativePath: string
-}
 
 const initialApartmentState = {
     country: 'finland', // always finland
@@ -128,35 +120,34 @@ export default function AddApartmentsPage() {
         localStorage.setItem('apartmentData', JSON.stringify(apartmentData));
       }, [apartmentData]);
 
-      const handleUpdate = (keyString: string, value: any) => {
-
-        setApartmentData((prev) => {
-          const newState = { ...prev };
-          const keys = keyString.split('.');
-      
-          // Use reduce to traverse the nested object and update the target key
-          keys.reduce((acc: any, currentKey, index) => {
-            if (index === keys.length - 1) {
-              if(keyString.includes("equipment")){
-                let keyValue = acc[currentKey]
-                if(!keyValue){
-                    keyValue = true
-                  }
-                  else{
-                    keyValue = false
-                  }
-                  acc[currentKey] = keyValue;
-              }   
-              acc[currentKey] = value;
-            } else {
-              return acc[currentKey];
-            }
-            return acc;
-          }, newState);
-      
-          return newState;
-        });
-      };
+    const handleUpdate = (keyString: string, value: any) => {
+      setApartmentData((prev) => {
+        const newState = { ...prev };
+        const keys = keyString.split('.');
+    
+        // Use reduce to traverse the nested object and update the target key
+        keys.reduce((acc: any, currentKey, index) => {
+          if (index === keys.length - 1) {
+            if(keyString.includes("equipment")){
+              let keyValue = acc[currentKey]
+              if(!keyValue){
+                  keyValue = true
+                }
+                else{
+                  keyValue = false
+                }
+                acc[currentKey] = keyValue;
+            }   
+            acc[currentKey] = value;
+          } else {
+            return acc[currentKey];
+          }
+          return acc;
+        }, newState);
+    
+        return newState;
+      });
+    };
         
 
     const { steps, currentIndex, goBack, goForward, step } = useMultiStepForm({
@@ -168,22 +159,29 @@ export default function AddApartmentsPage() {
     const handleSubmission = async (e : any) => {
         try {
           e.preventDefault()
-          const userData = await Auth.currentUserInfo()
+          const userData = await fetchAuthSession()
           if (!userData) return
 
           const { images, ...updatedState } = apartmentData
 
-          const request = images.map(async (img: ImgObj) => {
+          const request = images.map(async (img: any) => {
             const type = img.type.split("/")
             const id = uuidv4()
             const name = `${id}.${type[1]}`
-            return await Storage.put(name, img, {
-              contentType: img.type
-            })
+            return await uploadData({
+              key: name,
+              data: img,
+              options: {
+                accessLevel: 'private'
+              }
+            }).result
           })
 
           const results = await Promise.all(request)
-          const sentImages = results.map(obj => obj.key);
+    
+          const sentImages = results.map((obj) => {
+            return obj.key
+          });          
 
           if (images.length !== sentImages.length) {
             console.log("Error when sending images")
@@ -194,10 +192,10 @@ export default function AddApartmentsPage() {
           const body = {
             apartment: {
               ...updatedState,
-              ownerId: userData.attributes.sub
+              ownerId: userData.userSub
             },
             images: sentImages,
-            federatedId: userData.id
+            federatedId: userData.identityId
           }
 
           const requestOptions = {

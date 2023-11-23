@@ -50,6 +50,17 @@ export class Cognito extends Construct {
             maxLength: "256",
             minLength: "1"
           },
+        },
+        {
+          name: "favorites",
+          attributeDataType: "String",
+          developerOnlyAttribute: false,
+          mutable: true,
+          required: false,
+          stringAttributeConstraints: {
+            maxLength: Token.asString(2048),
+            minLength: Token.asString(0)
+          },
         }
       ],
       emailConfiguration: {

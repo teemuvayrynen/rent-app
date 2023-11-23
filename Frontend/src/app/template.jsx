@@ -4,16 +4,17 @@ require('dotenv').config()
 
 Amplify.configure({
   Auth: {
-    region: "eu-west-1",
-    userPoolId: "eu-west-1_7yKEZnhvf", 
-    userPoolWebClientId: "4me4cjsoab9pifgiddkms4grt0",
-    identityPoolId: "eu-west-1:ad29b9bf-0428-4374-b37f-0f33c543336e"
+    Cognito: {
+      region: "eu-west-1",
+      userPoolId: "eu-west-1_52jVAzpr9", 
+      userPoolClientId: "7f36oai2rrlvq5e5a5c6nqnjc8",
+      identityPoolId: "eu-west-1:ad29b9bf-0428-4374-b37f-0f33c543336e"
+    }
   },
   Storage: {
-    AWSS3: {
+    S3: {
       bucket: "s3-image-bucket-apartments",
-      region: "eu-west-1",
-      level: "private"
+      region: "eu-west-1"
     }
   }
 });

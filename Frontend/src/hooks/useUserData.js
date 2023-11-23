@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Auth } from "aws-amplify"
+import { fetchUserAttributes } from "aws-amplify/auth"
 import { useRouter, usePathname } from 'next/navigation';
 
 const useUserData = () => {
@@ -10,9 +10,9 @@ const useUserData = () => {
   useEffect(() => {
     (async () => {
       try {
-        const result = await Auth.currentAuthenticatedUser()
-        if (result) {
-          setUser(result)
+        const userRes = await fetchUserAttributes();
+        if (userRes) {
+          setUser(userRes)
         }
       } catch (err) {   
         if (pathname.includes("addApartment") || pathname.includes("account")) {
