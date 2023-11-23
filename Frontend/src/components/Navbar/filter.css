@@ -16,6 +16,7 @@
     border-radius: 10px;
     box-shadow: 0px 0px 3px rgb(0, 0, 0, 0.4);
     user-select: none;
+    text-align-last: center;
   }
   
   .search-largefilter-container > p {
