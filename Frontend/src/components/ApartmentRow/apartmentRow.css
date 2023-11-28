@@ -1,0 +1,30 @@
+.apartment-row-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-grow: 1;
+  padding: 20px 0px;
+  width: 100%
+}
+
+.apartment-row-container > p {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.apartment-row-container > p > span {
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.apartment-row-flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-grow: 1;
+  width: 100%;
+  align-items: flex-start;
+  padding: 20px 0px;
+  overflow-x: scroll;
+}

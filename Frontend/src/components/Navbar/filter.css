@@ -1,0 +1,136 @@
+.filter-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.search-largefilter-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 400px;
+    height: 3rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 3px rgb(0, 0, 0, 0.4);
+    user-select: none;
+    text-align-last: center;
+  }
+  
+  .search-largefilter-container > p {
+    width: 2px;
+    background: rgb(0, 0, 0, 0.2);
+    height: 100%;
+  }
+  
+  .flex-column-largefilter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .flex-column-largefilter > input {
+    margin: 3px 0;
+    height: 20px;
+    background: none;
+    box-shadow: none;
+    border: none;
+    font-size: 13px;
+    max-width: 90px;
+    text-align: center;
+  }
+  
+  .flex-row-largefilter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+    transition: 100ms;
+  }
+  
+  .flex-row-largefilter > p {
+    margin-left: 1rem;
+    font-weight: 600;
+  }
+  
+  .flex-row-largefilter:active {
+    scale: 0.95;
+  }
+  
+  .flex-column-largefilter > p {
+    font-weight: 600;
+  }
+
+
+.price-filter {
+    flex-direction: column;
+}
+
+.price-filter > input {
+    margin-top: 6px;
+    border: none;
+    font-size: 13px;
+    max-width: 90px;  
+}
+
+.calendar {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 2000;
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 250ms ease, opacity 250ms ease;
+}
+
+.calendar.active{
+    opacity: 1;
+    transform: translateY(10px) translateX(-50%);
+    pointer-events: all;
+}
+
+.calendar-end {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2000;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 250ms ease, opacity 250ms ease;
+}
+
+.calendar-end.active{
+  opacity: 1;
+  transform: translateY(10px) translateX(-50%);
+  pointer-events: all;
+}
+
+.clear-date-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-left: 1rem;
+}
+
+.x-span {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.5);
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.x-span:first-child {
+  transform: rotate(-45deg);
+}
+

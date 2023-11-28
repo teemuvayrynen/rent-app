@@ -1,0 +1,132 @@
+.map-container{
+  flex: 1;
+}
+
+.leaflet-container {
+  height: 100%;
+  position: relative;
+  transition: height 0.5s ease-in-out;
+}
+
+.leaflet-container.active {
+  height: calc(100vh - 4rem);
+}
+
+.leaflet-geosearch-bar {
+  position: absolute;
+  left: 280px;
+  transform: translateX(-50%);
+  top: 10px;
+  width: 400px;
+  z-index: 2000;
+  border-radius: 4rem;
+  transition: left 250ms ease;
+}
+
+.leaflet-control-geosearch .results {
+  color: black;
+}
+
+.leaflet-touch .leaflet-geosearch-bar form {
+  border: 0.5px solid rgb(202, 177, 177);
+  border-radius: 0.6rem;
+  overflow: clip;
+  width: 100%;
+}
+
+.leaflet-control-geosearch form input {
+  background-color: white;
+  color: black;
+}
+
+.locate-me {
+  position: absolute;
+  left: 14px;
+  top: 140px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.open-me {
+  position: absolute;
+  left: 10px;
+  top: 90px;
+  z-index: 1000;
+  cursor: pointer;
+  transform: rotate(90deg);
+  transition: transform 250ms ease;
+}
+
+.open-me.active {
+  transform: rotate(270deg);
+}
+
+.map-apartment-list {
+  position: absolute;
+  left: 280px;
+  transform: translateX(-50%);
+  top: 140px;
+  width: 400px;
+  max-height: 30rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: white;
+  box-shadow: 5px 7px 4px 0px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  transition-delay: 1s;
+}
+
+/* Change the color of the scrollbar */
+.map-apartment-list::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(223, 223, 223); /* Change the scrollbar's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the track (scrollbar area not being used) */
+.map-apartment-list::-webkit-scrollbar-track {
+  background-color: rgb(223, 223, 223); /* Change the scrollbar track's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the scrollbar thumb (the draggable part) */
+.map-apartment-list::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 204, 204); /* Change the scrollbar thumb's background color */
+  border-radius: 10px;
+}
+
+/* Change the color of the scrollbar thumb on hover */
+.map-apartment-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(204, 204, 204); /* Change the scrollbar thumb's background color on hover */
+  border-radius: 10px;
+}
+
+.map-apartment-list.active{
+  opacity: 1;
+  pointer-events: all;
+  padding: 0.5rem 0.5rem;
+}
+
+.map-apartment-list.active .carousel-root{
+  width: 50%;
+}
+
+.map-apartment-list.active .control-dots {
+  height: unset !important;
+}
+.carousel .control-arrow, .carousel.carousel-slider .control-arrow {
+  opacity: 1 !important;
+  border-radius: 10px;
+}
+@media screen and (min-width: 2560) {
+  .leaflet-container {
+    height: calc(100vh - 32rem);
+  }
+}
+

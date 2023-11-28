@@ -1,0 +1,72 @@
+{
+  "id": "string - added in backend",
+  "country": "string - always finland",
+  "street_name": "string",
+  "street_number": "string",
+  "apt": "string - optional",
+  "floor": "number - optional",
+  "city": "string",
+  "zip": "string",
+  "size": "number",
+  "roomAmount": "number",
+  "apartmentType": "string",
+  "ownerId": "string - add in frontend",
+  "ownerName": "string - add in frontend",
+  "monthlyPrice": "number",
+  "waterPrice": "number",
+  "deposit": "number",
+  "rules": {
+    "pets": "boolean",
+    "smoking": "boolean",
+    "unobstructed": "boolean"
+  },
+  "equipment": {
+    "kitchen": {
+      "fridge": "boolean",
+      "freezer": "boolean",
+      "owen": "boolean",
+      "stove": "boolean",
+      "dishwasher": "boolean",
+      "microwave": "boolean"
+    },
+    "bathroom": {
+      "shower": "boolean",
+      "wc": "boolean",
+      "bath": "boolean"
+    },
+    "utility": {
+      "washing_machine": "boolean",
+      "dryer": "boolean",
+      "laundry": "boolean"
+    },
+    "electronics": {
+      "internet": "boolean",
+      "tv": "boolean"
+    },
+    "other": {
+      "sauna": "boolean",
+      "fireplace": "boolean",
+      "pool": "boolean",
+      "furnished": "boolean",
+      "balcony": "boolean"
+    },
+    "premises": {
+      "elevator": "boolean",
+      "bike_storage": "boolean",
+      "storage": "boolean",
+      "parking": "boolean",
+      "recycle_point": "boolean"
+    }
+  },
+  "images": [{ "id": "string" }],
+  "location": {
+    "lat": "number",
+    "lon": "number"
+  },
+  "description": "string",
+  "startDate": "string",
+  "endDate": "string",
+  "created": "string",
+  "building_society": "string - optional",
+  "status": "number - 1 or 0 depending if listing is online or not"
+}

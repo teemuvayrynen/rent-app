@@ -1,0 +1,38 @@
+.rules-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+  align-items: center;
+}
+
+.rules-container > h1 {
+  font-size: 26px;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+
+.rules-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.rules-category {
+  border: 1px solid #ccbbbb;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+.rules-title {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.mini-divider {
+  border: 1px solid #ccbbbb;
+  margin: 20px 0px;
+  width: 70%;
+}

@@ -1,0 +1,64 @@
+.card-container {
+    display: flex;
+    flex-direction: column;
+    color: black;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.card-container.map {
+    height: 8rem;
+    flex-direction: row;
+    overflow: unset;
+    border: 0.5px solid rgb(223, 203, 203);
+    border-radius: 10px;
+    padding: 0;
+    background-color: rgb(248, 246, 246);
+}
+
+.card-container.map:hover {
+    height: 8rem;
+    flex-direction: row;
+    overflow: unset;
+    border: 0.5px solid rgb(202, 177, 177);
+    border-radius: 10px;
+    padding: 0;
+    background-color: rgb(255, 255, 255);
+}
+
+.card-container.map * {
+    height: 100%; /* Set max-height for all direct children */
+  }
+
+.card-container.map .card-image {
+    height: 100%;
+    aspect-ratio: unset;
+}
+
+.card-image {
+    aspect-ratio: 1;
+    display: block;
+    border-radius: 20px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.apartment-info {
+    flex: 1;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: left;
+    padding: .5rem .5rem;
+}
+
+.apartment-info p:first-child{
+    font-weight: 700;
+}
+
+.apartment-info p:last-child{
+    font-weight: 700;
+}

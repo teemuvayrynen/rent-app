@@ -1,0 +1,265 @@
+/* Styles for screens greater than width of 2000px */
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  width: 75%;
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+.slider-map-container {
+  display: flex;
+  flex-direction: row;
+  height: 750px;
+  gap: 1rem;
+}
+
+.slider-container {
+  flex: 2 1;
+  background-color: #fadede;
+  border-radius: 10px;
+  height:100%;
+  
+  /* Hide the image from the corners when changing image */
+  overflow: hidden; 
+  position: relative;
+}
+
+.slider-container * {
+  height: 100%;
+}
+
+.control-dots {
+  height: auto !important;
+}
+
+.address-and-owner{
+  display: flex;
+  flex: 2 1;
+  flex-direction: row;
+  padding: 10px 0px;
+  justify-content: space-between;
+}
+
+.h1-streetname {
+  font-size: 26px;
+  font-weight: 600;
+  align-self: center;
+  padding: 5px;
+}
+
+.p-basic-text {
+  font-size: 16px;
+  padding: 5px;
+}
+
+.span-basic-text {
+  font-size: 16px;
+  padding: 5px;
+}
+
+.contact-container {
+  display: flex;
+  flex: 1 1;
+  justify-content: space-between;
+  border: 1px solid #ccbbbb;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer {
+  width: fit-content;
+  width: -moz-available;
+  display: inline-block;
+}
+
+.information-container {
+  display: flex;
+  flex-direction: column;
+  flex: 2 1;
+  padding: 5px;
+  justify-content: space-between;
+}
+
+.information-container-spacer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1;
+}
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+}
+
+/* Specify styles for screens with a maximum width of 2000px or smaller */
+@media screen and (max-width: 2000px) {
+  .main-container {
+    width: 85%;
+  }
+
+  .slider-map-container {
+    height: 525px;
+  }
+
+  .slider-container {
+    flex: 1.8 1;
+  }
+
+  .imageContainer {
+    height: 525px;
+  }
+
+  .address-and-owner{
+    flex: 1.8 1;
+  }
+
+  .information-container{
+    flex: 1.8 1;
+  }
+
+  .h1-streetname {
+    font-size: 20px;
+  }
+
+  .p-basic-text {
+    font-size: 14px;
+  }
+
+  .contact-container{
+    flex: 1 1;
+  }
+}
+
+
+/* Styles for all sizes of screens */
+.image {
+  width: 100%;
+  object-fit: contain;
+}
+
+.slider-map-container .map-container {
+  flex: 1 1;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.address-contact-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+  gap: 1rem;
+}
+
+.address-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.owner-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 60px;
+  flex: 2 1;
+  justify-content: flex-end;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-left: 20px;
+}
+
+.contact-button-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 40px;
+}
+
+.contact-button {
+  background-color: var(--main-color);
+  color: #ffffff; /* White text color */
+  font-size: 16px;
+  border: none;
+  padding: 15px 35px;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Add box shadow */
+}
+
+.contact-button:hover {
+  background-color: var(--main-color-shadow); /* Darker red on hover */
+}
+
+.description-container > h1 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
+}
+
+.description-container > p {
+  padding: 10px 0px;
+  font-size: 16px;
+}
+
+.divider {
+  color: var(--main-color);
+  border-style: solid;
+  margin: 20px 0px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.favorites-button-container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  width: 60px;
+}
+
+.favorites-button-container > p{
+  align-self: center;
+}
+
+.favorites-button-container:hover {
+  background-color: #f8f7f7;
+}
+
+.view-all-button{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+  bottom: 10px;
+  left: auto;
+  right: 10px;
+  width: 150px;
+  height: 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccbbbb;
+}
+
+.view-all-button:hover {
+  background-color: #eeeeee;
+}
+
+.view-all-button > p{
+  height: auto;
+  color: #000000; /* White text color */
+  font-size: 14px;
+}

@@ -1,0 +1,116 @@
+
+.container{
+    position: relative;
+    background: white;
+    height: 5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px 20px;
+    justify-content: space-between;
+    color: black;
+}
+
+.user-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile-picture{
+    background: rgb(200, 200, 200);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-left: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hamburger-menu {
+    width: 1.5rem;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    margin-left: 1rem;
+    cursor: pointer;
+}
+
+.hamburger-menu > span {
+    width: 100%;
+    height: 4px;
+    background-color: black;
+    transition: transform 200ms ease;
+    border-radius: 10px;
+}
+
+.hamburger-menu.active > span:nth-child(2){
+    opacity: 0;
+}
+
+.hamburger-menu.active > span:nth-child(1){
+    transform: translateY(5px) rotate(45deg);
+}
+
+.hamburger-menu.active > span:nth-child(3){
+    transform: translateY(-9px) rotate(-45deg);
+}
+
+.dropdown {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    right: 0;
+    top: 5rem;
+    width: 12rem;
+    z-index: 2000;
+    pointer-events: none;
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: opacity 250ms ease, transform 250ms ease;
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
+}
+
+.hamburger-menu.active > .dropdown {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 1rem 3rem;
+    border-bottom: 2px solid rgb(0, 0,0,0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-item:hover{
+    font-weight: 700;
+}
+
+.dropdown-icons {
+    padding-right: 6px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}   
+
+.login {
+    margin-right: 1rem;
+    font-weight: 600;
+    user-select: none;
+    cursor: pointer;
+}
